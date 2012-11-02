@@ -1,0 +1,19 @@
+Modelo:
+	1. Usuário (login e senha) para a professora
+		a) marcar um livro como comprado
+		b) exportar as sugestões numa planilha excel
+	
+	2. Livro (título, autores, ano, editora, área/assunto, edição, comprado)
+
+	3. Sugestão (Livro, comentário, autor, data [automatico])
+		
+	
+Telas:
+	1. Fazer sugestão (formulário)
+	
+	2. Visualizar livros sugeridos (filtros sobre o campo "comprado", botão "exportar planilha", busca por texto)
+		a) Planilha que pode ser ordenada pelas colunas (como excel)
+		b) Em cada livro mostrar o número de sugestões, que pode ser expandido para ver cada sugestão (autor, comentário, data)
+		c) Administrador pode:
+			I) marcar livro como comprado
+			II) remover livro e/ou sugestão
