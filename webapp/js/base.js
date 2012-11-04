@@ -7,6 +7,7 @@ function login(){
 $(function() {
 	
 	$('.login').hide();
+	$('input[placeholder], textarea[placeholder]').placeholder();
 	
 	$( ".accordion" ).accordion();
 	
