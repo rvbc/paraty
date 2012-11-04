@@ -81,12 +81,13 @@ input[type="text"], input[type="password"] {
 	margin: 0 auto;
 	width: 920px;
 	display: block;
-	top: -32px;
+	top: -30px;
 	position: relative;
 }
 
 .body .main.tabs .menu ul {
 	border-radius: 0;
+	border: none;
 	float: right;
 }
 
@@ -112,7 +113,7 @@ input[type="text"], input[type="password"] {
 }
 
 .add-button{
-	margin-left: 5px;
-	top: 4px;
+	margin: 0 0 0 5px;
 	display: inline-block;
+	vertical-align: middle;
 }

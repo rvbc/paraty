@@ -32,7 +32,7 @@
 					<button class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" onClick="login();">
 						<span class="ui-button-text">login</span>
 					</button>
-					<div style="border-top: none; border-top-right-radius: 0; position: relative; z-index: 2; width: 175px; height: 105px;right: -170px; top: -3px; padding: 10px;" class="login ui-widget ui-widget-content ui-corner-all">
+					<div style="border-top: none; border-top-right-radius: 0; position: relative; z-index: 2; width: 175px; height: 105px;right: -170px; top: -5px; padding: 10px;" class="login ui-widget ui-widget-content ui-corner-all">
 						<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
 							<form>
 								<input name="username" placeholder="Seu login" title="Informe seu login" type="text" value="" />
@@ -107,7 +107,7 @@
 							<h2>Livro</h2>
 							<input type="text" placeholder="T&itilde;tulo" title="Informe o t&itilde;tulo do livro" value=""/>
 							<div class="authors">
-								<input class="author-input" type="text" placeholder="Autor" title="Informe o autor" value="" style="display: inline-block; width: 269px;"/>
+								<input class="author-input" type="text" placeholder="Autor" title="Informe o autor" value="" style="display: inline-block; width: 269px; vertical-align: middle;"/>
 								<button class="button add-button" onClick="return add_author();"><span class="ui-icon ui-icon-plusthick"></span></button>
 								<p class="tip">Informe um autor por vez.</p>
 							</div>
@@ -155,8 +155,11 @@
 				
 				<div class="main_content">
 					<div class="accordion">
-						<h3><b>Livro com titulo 1</b>
-							<p class="author">por Autor principal (2012)</p>
+						<h3>
+							<div class="name">
+								<b>Livro com titulo 1</b>
+								<p class="author">por Autor principal (2012)</p>
+							</div>
 							<div class="buttons"> 
 								<button class="button"><span class="ui-icon ui-icon-cart"></span></button>
 								<button class="button"><span class="ui-icon ui-icon-trash"></span></button>
@@ -167,8 +170,11 @@
 							<label>Editora:</label><p>Moderna</p><br/>
 							<label>Edi&ccedil;&atilde;o:</label><p>2</p><br/><br/>
 						</div>
-						<h3><b>Livro com titulo 2</b>
-							<p class="author">por Autor principal (2012)</p>
+						<h3>
+							<div class="name">
+								<b>Livro com titulo 2</b>
+								<p class="author">por Autor principal (2012)</p>
+							</div>
 							<div class="buttons"> 
 								<button class="button"><span class="ui-icon ui-icon-cart"></span></button>
 								<button class="button"><span class="ui-icon ui-icon-trash"></span></button>
@@ -179,8 +185,11 @@
 							<label>Editora:</label><p>Moderna</p><br/>
 							<label>Edi&ccedil;&atilde;o:</label><p>2</p><br/><br/>
 						</div>
-						<h3><b>Livro com titulo 3</b>
-							<p class="author">por Autor principal (2012)</p>
+						<h3>
+							<div class="name">
+								<b>Livro com titulo 3</b>
+								<p class="author">por Autor principal (2012)</p>
+							</div>
 							<div class="buttons"> 
 								<button class="button"><span class="ui-icon ui-icon-cart"></span></button>
 								<button class="button"><span class="ui-icon ui-icon-trash"></span></button>

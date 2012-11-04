@@ -22,9 +22,17 @@
 	color: #777777;
 }
 
+.main_content .accordion .name {
+	width: 69%;
+	display: inline-block;
+	vertical-align: middle;
+}
+
 .main_content .accordion .buttons {
-	float: right;
-	height: 0;
+	width: 30%;
+	text-align: right;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .main_content .accordion .ui-state-active .buttons button {
