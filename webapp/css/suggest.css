@@ -1,0 +1,33 @@
+
+.body .content input[type="text"]{
+	display: block;
+	width: 300px;
+	margin: 10px 0;
+}
+
+.body .content input[type="text"].small{
+	width: 147px;
+}
+
+.body .content .authors {
+	margin: 20px 0;
+}
+
+.body .content .authors input {
+	margin: 2px 0;
+}
+
+.body .content textarea {
+	margin: 20px 0;
+}
+
+.body .content .button span {
+	padding: 1px;
+}
+
+.body .content .tip {
+	font-size: 0.9em;
+	top: -3px;
+	position: relative;
+	color: #666666;
+}
