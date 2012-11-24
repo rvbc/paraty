@@ -1,0 +1,55 @@
+
+.content .side_menu {
+	width: 29%;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.content .main_content {
+	width: 70%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.main_content .accordion .author {
+	display: inline-block;
+	font-size: 1.0em;
+	margin: 3px 0 3px 10px;
+	color: #DDDDDD;
+}
+
+.main_content .accordion .ui-state-active .author {
+	color: #777777;
+}
+
+.main_content .accordion .name {
+	width: 69%;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.main_content .accordion .buttons {
+	width: 30%;
+	text-align: right;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.main_content .accordion .ui-state-active .buttons button {
+	background-color: #FFFFFF;
+	background-image: none;
+}
+
+.main_content .accordion .buttons span {
+	padding: 1px;
+}
+
+.main_content .accordion .info label {
+	display: inline-block;
+	font-weight: bold;
+}
+
+.main_content .accordion .info p {
+	display: inline-block;
+	margin: 0 0 0 5px;
+}
