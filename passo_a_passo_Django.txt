@@ -27,7 +27,7 @@ Configuração Django:
 	-> Logo abaixo tem o campo "TIME_ZONE". Setar para 'America/Recife'
 
 7. Gerar base de dados: comando "python manage.py syncdb"
-	-> Criar um superusuario, conforme é pedido no prompt
+	-> Criar um superusuario, conforme é pedido no prompt. Aqui criei um com login "cin', email "ruanvbc@gmail.com" e senha "cin".
 
 8. Criar a app: https://docs.djangoproject.com/en/1.4/intro/tutorial01/#creating-models
 	-> Criar a app "biblioteca": comando "python manage.py startapp biblioteca"
@@ -100,5 +100,29 @@ suggestion1 = Suggestion(date=timezone.now(), book=b1, name='Ruan', email='rvbc@
 suggestion1.save()
 ###########################################################################
 
+11. Página admin
+	-> Descomentar a linha "'django.contrib.admin'," da variável INSTALLED_APPS em settings.py.
+	-> Atualizar o BD para gerar os dados do admin: rodar o comando "python manage.py syncdb"
+	-> Alterar o arquivo "projetobiblioteca/urls.py": descomentar 3 linhas do arquivo (linhas 3, 4 e 16). Essas linhas estão sinalizadas no arquivo por comentários do tipo "Uncomment the next line..." logo acima =)
+	-> Rodar o servidor: comando "python manage.py runserver". 
+	-> Acessar "http://localhost:8000/admin/" no browser: será carregada a página admin. Usuario e senha "cin".
 
+12. Adicionar as nossas tabelas na página admin
+	->Na pasta da app (ou seja, em "biblioteca"), criar um arquivo "admin.py" com o seguinte conteúdo:
+
+####################################
+from biblioteca.models import Book, User, Writer, Suggestion
+from django.contrib import admin
+
+admin.site.register(Book)
+admin.site.register(User)
+admin.site.register(Writer)
+admin.site.register(Suggestion)
+######################################
+
+	-> Matar o servidor (Ctrl+C ou Ctrl+Break) e rodá-lo novamente: "python manage.py runserver"
+	-> Acessar "http://localhost:8000/admin/" no browser: as nossas classes podem ser vistas!
+	-> É uma visualização simples...Mas a partir de agora iremos alterar o template atual (o default de Django) e usar o nosso.
+	-> A página abaixo explica de forma superficial o que temos que fazer para alterar o template:
+	"https://docs.djangoproject.com/en/1.4/intro/tutorial02/#customize-the-admin-look-and-feel"
 	
