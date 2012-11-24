@@ -1,0 +1,92 @@
+Configuração Django:
+
+0. Instalar Python
+	-> No caso do Windows, após a instalação é preciso alterar a variável de ambiente "Path".
+	Para fazer isso, basta seguir https://docs.djangoproject.com/en/dev/topics/install/ (é a segunda caixa verde, com o título "Python on Windows")
+
+1. Baixar Django 1.4.2 daqui: https://www.djangoproject.com/download/
+
+2. Instalar Django
+	-> Extrair Django
+	-> No prompt, ir até o diretório onde Django foi extraído e executar o comando: "python setup.py install"
+	-> No caso do Ubuntu, adicionar "sudo" no início
+
+3. Criar um projeto Django:
+	-> Pelo prompt, ir até um diretório onde voce quer salvar o projeto e executara "django-admin.py startproject projetobiblioteca"
+	-> Esse comando irá criar uma pasta "projetobiblioteca" e alguns arquivos nela
+	
+4. Mude o diretório para a primeira pasta "projetobiblioteca" (a mais externa) e execute "python manage.py runserver"
+	-> Verificar em localhost:8000 se o servidor rodou corretamente. Depois pode matá-lo (Ctrl+C, Ctrl+Break etc)
+
+5. Configurar a base de dados:
+	-> Em projetobiblioteca/settings.py, vá em "DATABASES", no campo 'ENGINE' coloque 'django.db.backends.sqlite3' (com aspas
+	simples). Escolhi sqlite porque ele já vem no Python (não é preciso instalar nada)
+	-> Logo abaixo, em 'NAME', é preciso colocar o caminho onde será criada a base de dados. Por exemplo: 'C:/Users/Ruan/Documents/Mestrado/Paraty/Projeto/mysite/sqlite3.db'
+	
+6. Fuso horário:
+	-> Logo abaixo tem o campo "TIME_ZONE". Setar para 'America/Recife'
+
+7. Gerar base de dados: comando "python manage.py syncdb"
+	-> Criar um superusuario, conforme é pedido no prompt
+
+8. Criar a app: https://docs.djangoproject.com/en/1.4/intro/tutorial01/#creating-models
+	-> Criar a app "biblioteca": comando "python manage.py startapp biblioteca"
+	-> Dentro do projeto será criada a pasta "biblioteca"
+
+9. Criar o modelo da app biblioteca
+	-> Alterar o arquivo models.py dentro da pasta da app (criada no passo anterior):
+#################################################################################	
+from django.db import models
+
+# Create your models here.
+class User(models.Model):
+    login = models.CharField(max_length=20)
+    password = models.CharField(max_length=40)
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    year = models.IntegerField()
+    publisher = models.CharField(max_length=100)
+    edition = models.IntegerField()
+    purchased = models.BooleanField()
+    #subject = models.CharField(max_length=100)
+    
+class Writer(models.Model):
+    name = models.CharField(max_length=100)
+    book = models.ForeignKey(Book)
+
+class Suggestion(models.Model):
+    date = models.DateTimeField()
+    book = models.ForeignKey(Book)
+    name = models.CharField(max_length=200)
+    email = models.CharField(max_length=100)
+    amount = models.IntegerField()
+    comment = models.CharField(max_length=500)
+#####################################################################################################
+
+	-> Alterar a variável "INSTALLED_APPS" em settings.py: adicionar a aplicação => 'biblioteca'
+	-> Tabelas: rodar o comando: 'python manage.py sql biblioteca'
+	-> Criar a nova base de dados: 'python manage.py syncdb'
+
+10. Teste povoamento
+	-> 'python manage.py shell'
+	-> Comandos para povoar:
+#####################################################################
+from biblioteca.models import User, Book, Writer, Suggestion
+u = User(login='rvbc', password='rvbc')
+l = User(login='lsa', password='lsa')
+u.save()
+l.save()
+j = User(login='jlmm', password='jlmm')
+j.save()
+b1 = Book(title='O mundo assombrado pelos demonios', year=2006, publisher='Companhia de bolso', edition=1, purchased=False)
+b1.save()
+sagan = Writer(name='Carl Sagan', book=b1)
+sagan.save()
+from django.utils import timezone
+suggestion1 = Suggestion(date=timezone.now(), book=b1, name='Ruan', email='rvbc@cin.ufpe.br', amount=3, comment='Esse livro eh muito bom!')
+suggestion1.save()
+###########################################################################
+
+
+	
