@@ -16,6 +16,7 @@
 	<script src="js/jquery.placeholder.min.js"></script>
 	<script src="js/base.js"></script>
 	<script src="js/suggest.js"></script>
+	<script src="js/view.js"></script>
 </head>
 <body>
 	<div class="header">
@@ -153,34 +154,48 @@
 
 				<h1>Livros</h1>
 				<div class="block">
-					<input class="autocomplete" type="text" placeholder="Busca por título, autor, editora..." title="Buscar" value="" style="width: 210px;"/>
+					<form class="search">
+						<input class="autocomplete" type="text" placeholder="Buscar por título, autor, editora..." title="Buscar" value="" style="width: 210px; display: inline-block;" />
+						<input type="submit" class="button" value="buscar" />
+					</form>
 				</div>
 				
 				<div class="main_content">
 					<div class="accordion">
 						<h3>
-							<div class="name">
+							<div class="left">
 								<b>Livro com titulo 1</b>
 								<p class="author">por Autor principal (2012)</p>
 							</div>
-							<div class="buttons"> 
-								<button class="button"><span class="ui-icon ui-icon-cart"></span></button>
-								<button class="button"><span class="ui-icon ui-icon-trash"></span></button>
+							<div class="right">
+								<div class="tags">
+									<span title="Livro comprado" class="ui-icon ui-icon-circle-check"></span>
+								</div>
+								<div class="buttons"> 
+									<button title="Marcar como comprado" class="button"><span class="ui-icon ui-icon-cart"></span></button>
+									<button title="Deletar" class="button"><span class="ui-icon ui-icon-trash"></span></button>
+								</div>
 							</div>
 						</h3>
 						<div class="info">
 							<label>Autores:</label><p>Autor 1, Autor 2, Autor 3</p><br/>
 							<label>Editora:</label><p>Moderna</p><br/>
 							<label>Edi&ccedil;&atilde;o:</label><p>2</p><br/><br/>
+							<label>Sugest&otilde;es:</label><p>3</p><br/><br/>
 						</div>
 						<h3>
-							<div class="name">
+							<div class="left">
 								<b>Livro com titulo 2</b>
 								<p class="author">por Autor principal (2012)</p>
 							</div>
-							<div class="buttons"> 
-								<button class="button"><span class="ui-icon ui-icon-cart"></span></button>
-								<button class="button"><span class="ui-icon ui-icon-trash"></span></button>
+							<div class="right">
+								<div class="tags">
+									<span title="Livro comprado" class="ui-icon ui-icon-circle-check"></span>
+								</div>
+								<div class="buttons"> 
+									<button title="Marcar como comprado" class="button"><span class="ui-icon ui-icon-cart"></span></button>
+									<button title="Deletar" class="button"><span class="ui-icon ui-icon-trash"></span></button>
+								</div>
 							</div>
 						</h3>
 						<div class="info">
@@ -189,13 +204,18 @@
 							<label>Edi&ccedil;&atilde;o:</label><p>2</p><br/><br/>
 						</div>
 						<h3>
-							<div class="name">
+							<div class="left">
 								<b>Livro com titulo 3</b>
 								<p class="author">por Autor principal (2012)</p>
 							</div>
-							<div class="buttons"> 
-								<button class="button"><span class="ui-icon ui-icon-cart"></span></button>
-								<button class="button"><span class="ui-icon ui-icon-trash"></span></button>
+							<div class="right">
+								<div class="tags">
+									<span title="Livro comprado" class="ui-icon ui-icon-circle-check"></span>
+								</div>
+								<div class="buttons"> 
+									<button title="Marcar como comprado" class="button"><span class="ui-icon ui-icon-cart"></span></button>
+									<button title="Deletar" class="button"><span class="ui-icon ui-icon-trash"></span></button>
+								</div>
 							</div>
 						</h3>
 						<div class="info">
@@ -209,7 +229,36 @@
 				<div class="side_menu">
 					<div style="padding: 10px;" class="ui-widget ui-widget-content ui-corner-all">
 						<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							<div>
+								<h3>Sugest&otilde;es</h3>
+								<div class="navigator">
+									<button class="button right"><span class="ui-icon ui-icon-triangle-1-w"></span></button>
+									<button class="button left"><span class="ui-icon ui-icon-triangle-1-e"></span></button>
+								</div>
+								<div class="cleared"/>
+							</div>
+							<div class="suggestion">
+								<span class="name"/>Lais Andrade</span><span class="email">(lsa@cin.ufpe.br)</span><br/>
+								<label>Quantidade:</label><p>2</p><br/>
+								<label>Comentário:</label><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</div>
+							<div class="suggestion">
+								<span class="name"/>Lais Andrade</span><span class="email">(lsa@cin.ufpe.br)</span><br/>
+								<label>Quantidade:</label><p>2</p><br/>
+								<label>Comentário:</label><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</div>
+							<div class="suggestion">
+								<span class="name"/>Lais Andrade</span><span class="email">(lsa@cin.ufpe.br)</span><br/>
+								<label>Quantidade:</label><p>2</p><br/>
+								<label>Comentário:</label><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+							</div>
+							<div>
+								<div class="navigator">
+									<button class="button right"><span class="ui-icon ui-icon-triangle-1-w"></span></button>
+									<button class="button left"><span class="ui-icon ui-icon-triangle-1-e"></span></button>
+								</div>
+								<div class="cleared"/>
+							</div>
 						</div>
 					</div>
 				</div>
