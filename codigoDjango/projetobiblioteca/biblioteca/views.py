@@ -1,6 +1,6 @@
 # Create your views here.
 from biblioteca.models import Book, User, Writer, Suggestion
-from biblioteca.insertionForms import 
+from biblioteca.insertionForms import SuggestionForm
 from django.http import HttpResponse, HttpResponseRedirect
 import django.template.loader
 import django.template  
