@@ -79,9 +79,9 @@ input[type="text"], input[type="password"] {
 
 .body .main .radioset {
 	margin: 0 auto;
-	width: 900px;
+	width: 920px;
 	display: block;
-	top: -24px;
+	top: -44px;
 	position: relative;
 }
 
@@ -116,4 +116,9 @@ input[type="text"], input[type="password"] {
 	margin: 0 0 0 5px;
 	display: inline-block;
 	vertical-align: middle;
+}
+
+.body .error, .body .message {
+	width: 850px;
+	margin: 10px auto;
 }
