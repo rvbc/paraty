@@ -27,6 +27,14 @@
 	display: inline-block;
 }
 
+.side_menu .navigator button {
+	margin: 0;
+}
+
+.side_menu .navigator span {
+	padding: 0;
+}
+
 .side_menu .suggestion {
 	margin-top: 15px;
 }
@@ -77,6 +85,7 @@
 
 .main_content .accordion .tags {
 	display: inline-block;
+	vertical-align: middle;
 }
 
 .main_content .accordion .tags span {
@@ -85,11 +94,13 @@
 
 .main_content .accordion .buttons {
 	display: inline-block;
+	vertical-align: middle;
 }
 
 .main_content .accordion .ui-state-active .buttons button {
 	background-color: #FFFFFF;
 	background-image: none;
+	margin: 0;
 }
 
 .main_content .accordion .buttons span {

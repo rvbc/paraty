@@ -1,6 +1,6 @@
 
 function accordion_change(pos){
-	var margin = pos * 38;
+	var margin = pos * 44;
 	$('.side_menu').css('margin-top', margin+'px');
 }
 
