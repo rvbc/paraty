@@ -9,3 +9,9 @@ function add_author(){
 	
 	return false;
 }
+
+$(
+	function(){
+		$('.body .radioset #suggestion').click();
+	}
+);

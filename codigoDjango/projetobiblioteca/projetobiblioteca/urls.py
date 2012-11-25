@@ -4,11 +4,12 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = patterns('biblioteca.views',
     # Examples:
-    url(r'^biblioteca/$', 'biblioteca.views.home', name='home'),
-    # url(r'^projetobiblioteca/', include('projetobiblioteca.foo.urls')),
-    url(r'^biblioteca/suggestion', 'biblioteca.views.add_suggestion'),
+    url(r'^biblioteca/$', 'home', name='home'),
+    url(r'^biblioteca/suggestion', 'suggestion'),
+    url(r'^biblioteca/books', 'books'),
+
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

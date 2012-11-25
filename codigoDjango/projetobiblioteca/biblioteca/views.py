@@ -10,9 +10,14 @@ def home(request):
     c = django.template.Context()
     return HttpResponse(t.render(c))
 
-def add_suggestion(request):
-    t = django.template.loader.get_template("add_sugestao.html")
+def suggestion(request):
+    t = django.template.loader.get_template("suggestion.html")
     c = django.template.Context()
     return HttpResponse(t.render(c))
     
+def books(request):
+    t = django.template.loader.get_template("books.html")
+    c = django.template.Context()
+    return HttpResponse(t.render(c))
+
     #if request.method == 'POST'

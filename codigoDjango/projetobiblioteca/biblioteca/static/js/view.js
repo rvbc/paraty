@@ -6,6 +6,8 @@ function accordion_change(pos){
 
 $(
 	function () {
+		$('.body .radioset #books').click();
+		
 		$('.accordion h3').click(function (e) {
 			accordion_change(parseInt(this.id.substring('ui-accordion-1-header-'.length)));
 		});

@@ -59,14 +59,20 @@
 
 	<div class="body">
 		<div class="tabs main">
+		<div class="radioset">
+			<input type="radio" id="books" name="radio"><label for="books"><a href="{% url biblioteca.views.books %}">ACOMPANHAR SUGEST&Otilde;ES</a></label>
+			<input type="radio" id="suggestion" name="radio"><label for="suggestion"><a href="{% url biblioteca.views.suggestion %}">SUGERIR LIVRO</a></label>
+			<input type="radio" id="home" name="radio"><label for="home"><a href="{% url biblioteca.views.home %}">HOME</a></label>
+		</div>
+<!--
 			<div class="menu">
 				<ul>
-					<li><a href="/home">HOME</a></li>
+					<li><a href="{% url biblioteca.views.home %}">HOME</a></li>
 					<li><a href="/suggestion">SUGERIR LIVRO</a></li>
 					<li><a href="/books">ACOMPANHAR SUGEST&Otilde;ES</a></li>
 				</ul>
 			</div>
-
+-->
 			{% block content %}{% endblock %}
 
 		</div>

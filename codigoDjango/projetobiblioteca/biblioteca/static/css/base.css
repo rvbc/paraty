@@ -77,15 +77,15 @@ input[type="text"], input[type="password"] {
 	width: 100%;
 }
 
-.body .main .menu {
+.body .main .radioset {
 	margin: 0 auto;
-	width: 920px;
+	width: 900px;
 	display: block;
-	top: -30px;
+	top: -24px;
 	position: relative;
 }
 
-.body .main.tabs .menu ul {
+.body .main.tabs .radioset label {
 	border-radius: 0;
 	border: none;
 	float: right;

@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 
+
+{% block head %}
+	<script src="{% get_static_prefix %}js/home.js"></script>
+{% endblock %}
+
+
 {% block content %}
 	<div class="content" id="tabs-home">
 		<div class="ui-widget message">
