@@ -21,3 +21,11 @@ def books(request):
     return HttpResponse(t.render(c))
 
     #if request.method == 'POST'
+
+def add_suggestion(request):
+    #form = SuggestionForm(request.POST)
+    #if form.is_valid():#add suggestion at DB and notify user
+        
+    #else:#Notify errors and user must try again
+        
+    return HttpResponse('INCOMPLETO!')

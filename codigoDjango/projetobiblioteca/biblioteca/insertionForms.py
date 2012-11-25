@@ -11,3 +11,6 @@ class SuggestionForm(forms.Form):
     publisher = forms.CharField(max_length=100)
     year = forms.IntegerField(min_value=1, max_value=datetime.datetime.now().year)
     edition = forms.IntegerField(min_value=1)
+
+    amount = forms.IntegerField(min_value=1)
+    comment = forms.CharField(max_length=200, required=False)
