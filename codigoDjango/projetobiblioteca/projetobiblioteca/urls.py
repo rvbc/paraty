@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'projetobiblioteca.views.home', name='home'),
+    url(r'^biblioteca/$', 'biblioteca.views.home', name='home'),
     # url(r'^projetobiblioteca/', include('projetobiblioteca.foo.urls')),
     url(r'^biblioteca/suggestion', 'biblioteca.views.add_suggestion'),
     # Uncomment the admin/doc line below to enable admin documentation:
