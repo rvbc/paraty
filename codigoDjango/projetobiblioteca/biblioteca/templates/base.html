@@ -64,16 +64,26 @@
 			<input type="radio" id="suggestion" name="radio" /><label for="suggestion" onClick="window.location.href='{% url biblioteca.views.suggestion %}';">SUGERIR LIVRO</label>
 			<input type="radio" id="home" name="radio" /><label for="home" onClick="window.location.href='{% url biblioteca.views.home %}';">HOME</label>
 		</div>
-<!--
-			<div class="menu">
-				<ul>
-					<li><a href="{% url biblioteca.views.home %}">HOME</a></li>
-					<li><a href="/suggestion">SUGERIR LIVRO</a></li>
-					<li><a href="/books">ACOMPANHAR SUGEST&Otilde;ES</a></li>
-				</ul>
+	
+		{% block message %}
+		<div class="ui-widget message">
+			<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+				<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+				<strong>Hey!</strong> {{ messages.info }}</p>
 			</div>
--->
-			{% block content %}{% endblock %}
+		</div>
+		{% endblock %}
+		
+		{% block error %}
+		<div class="ui-widget error">
+			<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+				<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+				<strong>Alerta:</strong> {{ messages.error }}</p>
+			</div>
+		</div>
+		{% endblock %}
+
+		{% block content %}{% endblock %}
 
 		</div>
 
