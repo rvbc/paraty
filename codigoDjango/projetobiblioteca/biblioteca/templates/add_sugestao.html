@@ -1,97 +1,51 @@
-<!doctype html>
-<html lang="us">
-<head>
-	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-	<meta content="pt-br" http-equiv="Content-Language">
+{% extends "base.html" %}
+{% load static %}
 
-	<title>CIn - Biblioteca</title>
-	{% load static %}
-	<link href="{% get_static_prefix %}css/cin-theme/jquery-ui-1.9.1.custom.css" rel="stylesheet">
-	<link href="{% get_static_prefix %}css/base.css" type="text/css" rel="stylesheet">
+{% block head %}
 	<link href="{% get_static_prefix %}css/suggest.css" type="text/css" rel="stylesheet">
-	<link href="{% get_static_prefix %}css/view.css" type="text/css" rel="stylesheet">
-	
-	<script src="{% get_static_prefix %}js/jquery-1.8.2.min.js"></script>
-	<script src="{% get_static_prefix %}js/jquery-ui-1.9.1.custom.min.js"></script>
-	<script src="{% get_static_prefix %}js/jquery.placeholder.min.js"></script>
-	<script src="{% get_static_prefix %}js/base.js"></script>
 	<script src="{% get_static_prefix %}js/suggest.js"></script>
-</head>
-<body>
-	<div class="header">
-		<div class="content">
-			<div class="left">
-				<a href="http://www.cin.ufpe.br" >
-					<img src="{% get_static_prefix %}images/cin-logo2.jpg" alt="CIn - Centro de Inform&aacute;tica"  height="140px"/>
-				</a>
-			</div>
-			<div class="middle">
-				<p class="ui-widget">Biblioteca</p>
-			</div>
-			<div class="right">
-				<div class="dislogged">
-					<button class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" onClick="login();">
-						<span class="ui-button-text">login</span>
-					</button>
-					<div style="border-top: none; border-top-right-radius: 0; position: relative; z-index: 2; width: 175px; height: 105px;right: -170px; top: -5px; padding: 10px;" class="login ui-widget ui-widget-content ui-corner-all">
-						<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
-							<form>
-								<input name="username" placeholder="Seu login" title="Informe seu login" type="text" value="" />
-								<input name="password" placeholder="Sua senha" title="Informe sua senha" type="password" value="" />
-								<input class="button" type="submit" value="ENTRAR"/>
-							</form>
-						</div>
+{% endblock %}
+
+
+{% block content %}
+	<div class="content" id="tabs-sugerir">
+		<h1>Sugest&atilde;o</h1>
+		<div class="ui-widget">
+			<form id="suggest-form">
+				<div class="block">
+					<h2>Sua Informa&ccedil;&atilde;o para Contato</h2>
+					<input type="text" placeholder="Nome" title="Informe seu nome" value=""/>
+					<input type="text" placeholder="Email" title="Informe seu email" value=""/>
+				</div>
+				<div class="block">
+					<h2>Livro</h2>
+					<input type="text" placeholder="T&iacute;tulo" title="Informe o t&iacute;tulo do livro" value=""/>
+					
+					<div class="authors">
+						<input class="author-input" type="text" placeholder="Autor" title="Informe o autor" value="" style="display: inline-block; width: 269px; vertical-align: middle;"/>
+						<button class="button add-button" onClick="return add_author();"><span class="ui-icon ui-icon-plusthick"></span></button>
 					</div>
+					<p class="tip">Informe um autor por vez.</p>
+					
+					<input type="text" placeholder="Editora" title="Informe a editora" value=""/>
+					<input class="small" type="text" placeholder="Ano" title="Informe o ano" value="" style="display: inline-block;"/>
+					<input class="small" type="text" placeholder="Edi&ccedil;&atilde;o" title="Informe a edi&ccedil;&atilde;o" value="" style="display: inline-block;"/>
 				</div>
-				<div class="logged" style="display: none;">
-					<p class="salute">Ol&aacute;, ago</p>
+				<div class="block">
+					<h2>Quantidade Sugerida</h2>
+					<span class="ui-spinner ui-widget ui-widget-content ui-corner-all">
+						<input class="spinner ui-spinner-input" autocomplete="off" role="spinbutton" value="0" style="width: 100px;"/>
+					</span>
 				</div>
-			</div>
+				<div class="block">
+					<h2>Coment&aacute;rio</h2>
+					<textarea rows="4" cols="46" placeholder="Seu coment&aacute;rio aqui..." value=""></textarea>
+				</div>
+				<div class="block">
+					<input type="reset" class="button" value="CANCELAR" />
+					<input type="submit" class="button" value="SUGERIR" />
+				</div>
+			</form>
 		</div>
 	</div>
-	
-	<div class="body">
-		<div class="tabs main">
-			<div class="content" id="tabs-sugerir">
-				<h1>Sugest&atilde;o</h1>
-				<div class="ui-widget">
-					<form id="suggest-form">
-						<div class="block">
-							<h2>Sua Informa&ccedil;&atilde;o para Contato</h2>
-							<input type="text" placeholder="Nome" title="Informe seu nome" value="" name="name"/>
-							<input type="text" placeholder="Email" title="Informe seu email" value="" name="email"/>
-						</div>
-						<div class="block">
-							<h2>Livro</h2>
-							<input type="text" placeholder="T&iacute;tulo" title="Informe o t&iacute;tulo do livro" value="" name="title"/>
-							
-							<div class="authors">
-								<input class="author-input" type="text" placeholder="Autor" title="Informe o autor" value="" style="display: inline-block; width: 269px; vertical-align: middle;" name="writer"/>
-								<button class="button add-button" onClick="return add_author();"><span class="ui-icon ui-icon-plusthick"></span></button>
-							</div>
-							<p class="tip">Informe um autor por vez.</p>
-							
-							<input type="text" placeholder="Editora" title="Informe a editora" value=""/ name="publisher">
-							<input class="small" type="text" placeholder="Ano" title="Informe o ano" value="" style="display: inline-block;"/>
-							<input class="small" type="text" placeholder="Edi&ccedil;&atilde;o" title="Informe a edi&ccedil;&atilde;o" value="" style="display: inline-block;"/>
-						</div>
-						<div class="block">
-							<h2>Quantidade Sugerida</h2>
-							<span class="ui-spinner ui-widget ui-widget-content ui-corner-all">
-								<input class="spinner ui-spinner-input" autocomplete="off" role="spinbutton" value="0" style="width: 100px;"/>
-							</span>
-						</div>
-						<div class="block">
-							<h2>Coment&aacute;rio</h2>
-							<textarea rows="4" cols="46" placeholder="Seu coment&aacute;rio aqui..." value=""></textarea>
-						</div>
-						<div class="block">
-							<input type="reset" class="button" value="CANCELAR" />
-							<input type="submit" class="button" value="SUGERIR" />
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-</body>
+{% endblock %}

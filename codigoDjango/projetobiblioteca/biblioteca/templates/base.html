@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<meta content="pt-br" http-equiv="Content-Language">
+
+	<title>CIn - Biblioteca</title>
+
+{% load static %}
+
+	<link href="{% get_static_prefix %}css/cin-theme/jquery-ui-1.9.1.custom.css" rel="stylesheet">
+	<link href="{% get_static_prefix %}css/base.css" type="text/css" rel="stylesheet">
+	
+	<script src="{% get_static_prefix %}js/jquery-1.8.2.min.js"></script>
+	<script src="{% get_static_prefix %}js/jquery-ui-1.9.1.custom.min.js"></script>
+	<script src="{% get_static_prefix %}js/jquery.placeholder.min.js"></script>
+	<script src="{% get_static_prefix %}js/base.js"></script>
+	
+{% block head %}{% endblock %}
+	
+</head>
+<body>
+
+{% block header %}
+
+	<div class="header">
+		<div class="content">
+			<div class="left">
+				<a href="http://www.cin.ufpe.br" >
+					<img src="{% get_static_prefix %}images/cin-logo2.jpg" alt="CIn - Centro de Inform&aacute;tica"  height="140px"/>
+				</a>
+			</div>
+			<div class="middle">
+				<p class="ui-widget">Biblioteca</p>
+			</div>
+			<div class="right">
+				<div class="dislogged">
+					<button class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" onClick="login();">
+						<span class="ui-button-text">login</span>
+					</button>
+					<div style="border-top: none; border-top-right-radius: 0; position: relative; z-index: 2; width: 175px; height: 105px;right: -170px; top: -5px; padding: 10px;" class="login ui-widget ui-widget-content ui-corner-all">
+						<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
+							<form>
+								<input name="username" placeholder="Seu login" title="Informe seu login" type="text" value="" />
+								<input name="password" placeholder="Sua senha" title="Informe sua senha" type="password" value="" />
+								<input class="button" type="submit" value="ENTRAR"/>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="logged" style="display: none;">
+					<p class="salute">Ol&aacute;, ago</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+	
+	<div class="body">
+		<div class="tabs main">
+			<div class="menu">
+				<ul>
+					<li><a href="/home">HOME</a></li>
+					<li><a href="/suggestion">SUGERIR LIVRO</a></li>
+					<li><a href="/books">ACOMPANHAR SUGEST&Otilde;ES</a></li>
+				</ul>
+			</div>
+
+{% block content %}{% endblock %}
