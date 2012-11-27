@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 class User(models.Model):
@@ -36,3 +37,25 @@ class Suggestion(models.Model):
 
     def __unicode__(self):
         return self.name + ' suggests ' + str(self.amount) + ' volumes of \'' + self.book.title + '\''
+
+def addSuggestion(request):
+    #book
+    book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False)
+    book.save()
+    
+    #writer
+    writer = Writer(name=request.POST['escritor'], book=book)
+    writer.save()
+    
+    #suggestion
+    processed_comment = processTextArea(request.POST['comentario'])
+    suggestion = Suggestion(date=timezone.now(), book=book, name=request.POST['nome'], email=request.POST['email'], amount=request.POST['quantidade'], comment=processed_comment)
+    suggestion.save()
+
+def processTextArea(comment):
+    lines = comment.split('\r\n') #['line1', '', '', 'line4', 'line5']
+
+    while '' in lines:#remove empty lines -> ['line1', 'line4', 'line5']
+        lines.remove('')
+
+    return '#'.join(lines)#join elements -> 'line1#line4#line5'
