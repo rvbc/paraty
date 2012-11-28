@@ -9,6 +9,7 @@ import django.template
 from django.contrib import messages
 from django.template.response import TemplateResponse
 
+import json
 import tkMessageBox
 
 def home(request):
@@ -66,3 +67,13 @@ def add_suggestion(request):
         #return HttpResponse(t.render(c))
 
         return TemplateResponse(request, 'suggestion.html', {'error': errorMessage, 'form':form})
+
+def search(request):
+    books, suggestions = models.searchSuggestion(str(request.GET['field']))
+
+    if len(books) == 0:#Nothing found!
+        return HttpResponse('Nada foi encontrado!')
+    else:#Display results at books.html
+        return HttpResponse(request.GET['field'])
+
+    

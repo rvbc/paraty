@@ -25,8 +25,8 @@
 
 		<h1>Livros</h1>
 		<div class="block">
-			<form class="search">
-				<input class="autocomplete" type="text" placeholder="Buscar por t&iacute;tulo, autor, editora..." title="Buscar" value="" style="width: 210px; display: inline-block;" />
+			<form class="search" action="{% url biblioteca.views.search %}" method="get">
+				<input class="autocomplete" type="text" placeholder="Buscar por t&iacute;tulo, autor, editora..." title="Buscar" value="" style="width: 210px; display: inline-block;" name="field"/>
 				<input type="submit" class="button" value="buscar" />
 			</form>
 		</div>

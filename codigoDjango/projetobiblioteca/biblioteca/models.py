@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from sets import Set
+
 # Create your models here.
 class User(models.Model):
     login = models.CharField(max_length=20)
@@ -51,6 +53,59 @@ def addSuggestion(request):
     processed_comment = processTextArea(request.POST['comentario'])
     suggestion = Suggestion(date=timezone.now(), book=book, name=request.POST['nome'], email=request.POST['email'], amount=request.POST['quantidade'], comment=processed_comment)
     suggestion.save()
+
+def searchSuggestion(value):
+    suggestions = []
+    book_id_set = Set([])
+
+    #Writer table###################################
+    #writer.name
+    writers = Writer.objects.filter(name__icontains=value)
+    for w in writers:
+        book_writer = w.book
+        book_id_set.add(book_writer.pk)
+    
+    #Book table######################################
+    #book.title
+    book_titles = Book.objects.filter(title__icontains=value)
+    for b in book_titles:
+        book_id_set.add(b.pk)
+
+    #book.year is integer...
+
+    #book.publisher
+    book_publisher = Book.objects.filter(publisher__icontains=value)
+    for b in book_publisher:
+        book_id_set.add(b.pk)
+
+    #book.edition is integer...
+    
+    #Suggestion table###############################
+    #suggestion.name
+    suggestion_name = Suggestion.objects.filter(name__icontains=value)
+    for s in suggestion_name:
+        book_id_set.add(s.book.pk)
+
+    #suggestion.email
+    suggestion_email = Suggestion.objects.filter(email__icontains=value)
+    for s in suggestion_email:
+        book_id_set.add(s.book.pk)
+
+    #suggestion.comment
+    suggestion_comment = Suggestion.objects.filter(comment__icontains=value)
+    for s in suggestion_comment:
+        book_id_set.add(s.book.pk)
+
+    #From book_id_set, we get the Book objects and their corresponding Suggestion's
+    books_match = []
+    suggestions_match = []
+    for book_id in book_id_set:
+        books_match.append(Book.objects.get(pk=book_id))
+        suggestions_match.extend(Suggestion.objects.filter(book__exact=book_id))
+
+    #x = z #DEBUG!
+
+    return books_match, suggestions_match
 
 def processTextArea(comment):
     lines = comment.split('\r\n') #['line1', '', '', 'line4', 'line5']
