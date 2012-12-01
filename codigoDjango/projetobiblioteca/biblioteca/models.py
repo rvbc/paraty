@@ -40,14 +40,15 @@ class Suggestion(models.Model):
     def __unicode__(self):
         return self.name + ' suggests ' + str(self.amount) + ' volumes of \'' + self.book.title + '\''
 
-def addSuggestion(request):
+def addSuggestion(request, writers_list):
     #book
     book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False)
     book.save()
     
     #writer
-    writer = Writer(name=request.POST['escritor'], book=book)
-    writer.save()
+    for writer_name in writers_list:
+        writer = Writer(name=writer_name, book=book)
+        writer.save()
     
     #suggestion
     processed_comment = processTextArea(request.POST['comentario'])

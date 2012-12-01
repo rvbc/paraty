@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.datastructures import MultiValueDictKeyError
 import datetime
 
 class SuggestionForm(forms.Form):
@@ -34,17 +35,21 @@ class SuggestionForm(forms.Form):
         
         return message
 
-    def validate_writers(request):
+    def validate_writers(trash, request):
         count = 1
         fields = []
         found_error = False
         message_error = ''
-        
-        while request.POST.has_key('escritor_' + str(count)):
-            count = count + 1
-            if request.POST['escritor_' + str(count)] != '':
-                fields.append(request.POST['escritor_' + str(count)])
-        
+        try:
+            while request.POST.has_key('escritor_' + str(count)):
+                if request.POST['escritor_' + str(count)] != '':
+                    fields.append(request.POST['escritor_' + str(count)])
+                count = count + 1
+        except MultiValueDictKeyError:
+            #Nothing...
+            count = count
+        count = count - 1
+
         if len(fields) == 0:
             found_error = True
             message_error = 'Nenhum escritor.'
@@ -54,4 +59,5 @@ class SuggestionForm(forms.Form):
                     found_error = True
                     message_error = 'O campo escritor suporta apenas 100 caracteres'
 
+        #x = z#DEBUG
         return fields, found_error, message_error

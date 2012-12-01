@@ -31,19 +31,25 @@ def books(request):
 
 def add_suggestion(request):
     form = SuggestionForm(request.POST)
+    witers_list, has_writer_error, writer_error_message = form.validate_writers(request)
     errorMessage = ''
     #warningMessage = 'Caso queira alterar os dados da tentativa anterior, volte.'
-    if form.is_valid():#add suggestion at DB and notify user
+    if form.is_valid() and not has_writer_error:#add suggestion at DB and notify user
         #x = request.POST['comentario']
         #y=x.split('\r\n')
         #y = (value for value in y if value != '\n') 
         #form.get_error_message(x)
         #tkMessageBox.showinfo(title="Greetings", message="Hello World!")
         #z = 1 + k
-        models.addSuggestion(request)
+        models.addSuggestion(request, witers_list)
         return TemplateResponse(request, 'suggestion.html', {'msg': {'title' : 'OK', 'content' : 'Seu livro sugerido foi cadastrado com sucesso. Obrigado!'}})
     else:#Notify errors and user must try again
         emptyFields = []
+        if has_writer_error:
+            if writer_error_message == 'Nenhum escritor.':
+                emptyFields.append('autor')
+            else:
+                errorMessage = errorMessage + 'Cada campo \'autor\' suporta somente 100 caracteres.'
         for key in form.errors:#wrong fields
             field = str(key)
             value = request.POST[key]
