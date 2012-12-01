@@ -6,7 +6,7 @@ class SuggestionForm(forms.Form):
     email = forms.EmailField()
     
     titulo = forms.CharField(max_length=100)
-    escritor = forms.CharField(max_length=100)
+    #escritor = forms.CharField(max_length=100)
 
     editora = forms.CharField(max_length=100)
     ano = forms.IntegerField(min_value=1, max_value=datetime.datetime.now().year)
@@ -33,3 +33,25 @@ class SuggestionForm(forms.Form):
             message = 'Email com formato incorreto'
         
         return message
+
+    def validate_writers(request):
+        count = 1
+        fields = []
+        found_error = False
+        message_error = ''
+        
+        while request.POST.has_key('escritor_' + str(count)):
+            count = count + 1
+            if request.POST['escritor_' + str(count)] != '':
+                fields.append(request.POST['escritor_' + str(count)])
+        
+        if len(fields) == 0:
+            found_error = True
+            message_error = 'Nenhum escritor.'
+        else:
+            for writer in fields:
+                if len(writer) > 100:
+                    found_error = True
+                    message_error = 'O campo escritor suporta apenas 100 caracteres'
+
+        return fields, found_error, message_error
