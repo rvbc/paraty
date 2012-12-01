@@ -111,7 +111,7 @@ def searchSuggestion(value):
     return books_grouping_by_title, suggestion_grouping_by_book_title
 
 def searchBooks(value):
-    words_list = value.split('\\s')
+    words_list = value.split()
     book_id_set = Set([])
 
     #Writer table###################################
