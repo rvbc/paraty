@@ -12,6 +12,6 @@ function add_author(){
 
 $(
 	function(){
-		$('.body .radioset #suggestion').click();
+		$('.header .radioset #suggestion').click();
 	}
 );

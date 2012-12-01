@@ -51,6 +51,11 @@
 				<div class="logged" style="display: none;">
 					<p class="salute">Ol&aacute;, ago</p>
 				</div>
+				<div class="radioset">
+					<input type="radio" id="home" name="radio" /><label for="home" onClick="window.location.href='{% url biblioteca.views.home %}';">HOME</label>
+					<input type="radio" id="suggestion" name="radio" /><label for="suggestion" onClick="window.location.href='{% url biblioteca.views.suggestion %}';">SUGERIR LIVRO</label>
+					<input type="radio" id="books" name="radio" /><label for="books" onClick="window.location.href='{% url biblioteca.views.books %}';">ACOMPANHAR SUGEST&Otilde;ES</label>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -59,29 +64,24 @@
 
 	<div class="body">
 		<div class="tabs main">
-		<div class="radioset">
-			<input type="radio" id="books" name="radio" /><label for="books" onClick="window.location.href='{% url biblioteca.views.books %}';">ACOMPANHAR SUGEST&Otilde;ES</label>
-			<input type="radio" id="suggestion" name="radio" /><label for="suggestion" onClick="window.location.href='{% url biblioteca.views.suggestion %}';">SUGERIR LIVRO</label>
-			<input type="radio" id="home" name="radio" /><label for="home" onClick="window.location.href='{% url biblioteca.views.home %}';">HOME</label>
-		</div>
 	
-		{% block message %}
+		{% if msg %}
 		<div class="ui-widget message">
 			<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
 				<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-				<strong>Hey!</strong> {{ messages.info }}</p>
+				<strong>{{ msg.title }}!</strong> {{ msg.content }}</p>
 			</div>
 		</div>
-		{% endblock %}
-		
-		{% block error %}
+		{% endif %}
+		<br/>
+		{% if error %}
 		<div class="ui-widget error">
 			<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
 				<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-				<strong>Alerta:</strong> {{ messages.error }}</p>
+				<strong>Alerta:</strong> {{ error }}</p>
 			</div>
 		</div>
-		{% endblock %}
+		{% endif %}
 
 		{% block content %}{% endblock %}
 

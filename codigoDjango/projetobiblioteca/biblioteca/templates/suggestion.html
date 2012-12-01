@@ -4,31 +4,11 @@
 {% block head %}
 	<link href="{% get_static_prefix %}css/suggest.css" type="text/css" rel="stylesheet">
 	<script src="{% get_static_prefix %}js/suggest.js"></script>
-    {% if sucess %}
-		<script>alert('Seu livro sugerido foi cadastrado com sucesso. Obrigado!')</script>
-    {% endif %}
 {% endblock %}
 
 
 {% block content %}
 	<div class="content" id="tabs-sugerir">
-		{% if warning %}
-		<div class="ui-widget message">
-			<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-				<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-				<strong>Hey!</strong> {{warning}}</p>
-			</div>
-		</div>
-		{% endif %}
-		<br/>
-		{% if error %}
-		<div class="ui-widget error">
-			<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
-				<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-				<strong>Alert:</strong> {{error}}</p>
-			</div>
-		</div>
-		{% endif %}
 		<h1>Sugest&atilde;o</h1>
 		<div class="ui-widget">
 			<form id="suggest-form" action="{% url biblioteca.views.add_suggestion %}" method="post">
@@ -54,7 +34,7 @@
 				<div class="block">
 					<h2>Quantidade Sugerida</h2>
 					<span class="ui-spinner ui-widget ui-widget-content ui-corner-all">
-						<input class="spinner ui-spinner-input" autocomplete="off" role="spinbutton" value="{{form.quantidade.value}}" name="quantidade" style="width: 100px;"/>
+						<input class="spinner ui-spinner-input" autocomplete="off" role="spinbutton" value="{% firstof form.quantidade.value 1 %}" name="quantidade" style="width: 100px;"/>
 					</span>
 				</div>
 				<div class="block">
@@ -62,7 +42,7 @@
 					<textarea rows="4" cols="46" placeholder="Seu coment&aacute;rio aqui..." value="" name="comentario">{{form.comentario.value}}</textarea>
 				</div>
 				<div class="block">
-					<input type="reset" class="button" value="CANCELAR" />
+					<input type="reset" class="button" value="CANCELAR" onClick="window.location.href='{% url biblioteca.views.home %}';" />
 					<input type="submit" class="button" value="SUGERIR" />
 				</div>
 			</form>

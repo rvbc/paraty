@@ -1,5 +1,5 @@
 $(
 	function(){
-		$('.body .radioset #home').click();
+		$('.header .radioset #home').click();
 	}
 );

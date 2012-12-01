@@ -41,7 +41,7 @@ def add_suggestion(request):
         #tkMessageBox.showinfo(title="Greetings", message="Hello World!")
         #z = 1 + k
         models.addSuggestion(request)
-        return TemplateResponse(request, 'suggestion.html', {'sucess': True})
+        return TemplateResponse(request, 'suggestion.html', {'msg': {'title' : 'OK', 'content' : 'Seu livro sugerido foi cadastrado com sucesso. Obrigado!'}})
     else:#Notify errors and user must try again
         emptyFields = []
         for key in form.errors:#wrong fields
