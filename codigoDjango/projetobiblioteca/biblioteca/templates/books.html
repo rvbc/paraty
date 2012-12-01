@@ -12,8 +12,12 @@
 		<h1>Livros</h1>
 		<div class="block">
 			<form class="search" action="{% url biblioteca.views.search %}" method="get">
-				<input class="autocomplete" type="text" placeholder="Buscar por t&iacute;tulo, autor, editora..." title="Buscar" value="" style="width: 210px; display: inline-block;" name="q"/>
+				<input class="autocomplete" type="text" placeholder="Buscar por t&iacute;tulo, autor, editora..." title="Buscar" value="{{ q }}" style="width: 210px; display: inline-block;" name="q"/>
 				<input type="submit" class="button" value="buscar" />
+			</form>
+			<form id="export_form" class="export" action="{% url biblioteca.views.export %}" method="post">
+				<input type="hidden" value="{{ q }}" name="q" />
+				<button class="button" title="Exportar como planilha" onClick="exportButton();"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></button>
 			</form>
 		</div>
 		

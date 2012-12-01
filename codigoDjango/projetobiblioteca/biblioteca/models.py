@@ -55,7 +55,7 @@ def addSuggestion(request):
     suggestion.save()
 
 def searchSuggestion(value):
-    words_list = value.split(' ')
+    words_list = value.split('\\s')
     book_id_set = Set([])
 
     #Writer table###################################

@@ -69,11 +69,21 @@ def add_suggestion(request):
         return TemplateResponse(request, 'suggestion.html', {'error': errorMessage, 'form':form})
 
 def search(request):
-    books, suggestions = models.searchSuggestion(str(request.GET['q']))
+    q = str(request.GET['q']).strip();
+    books, suggestions = models.searchSuggestion(q)
 
     if len(books) == 0:#Nothing found!
         #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
-        return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'msg': {'title' : 'Hey', 'content' : 'Nenhum livro foi encontrado nesta pesquisa. Tente com outros termos.'}})
+        return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'msg': {'title' : 'Hey', 'content' : 'Nenhum livro foi encontrado nesta pesquisa. Tente com outros termos.'}, 'q' : q})
     else:#Display results at books.html
-        return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions})
+        return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'q' : q})
 
+def export(request):
+    q = str(request.POST['q']).strip();
+    books, suggestions = models.searchSuggestion(q)
+
+    if len(books) == 0:#Nothing found!
+        #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
+        return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'error': 'Nenhum livro para ser exportado. Se uma busca foi feita, tente utilizar novos termos.', 'q' : q})
+    else:#Display results at books.html
+        return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'q' : q})

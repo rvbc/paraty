@@ -12,6 +12,11 @@ function accordion_change(pos){
 	$('.side_menu').css('margin-top', margin+'px');
 }
 
+function exportButton(){
+	$('#export_form').submit();
+	return false;
+}
+
 $(
 	function () {
 		$('.header .radioset #books').click();
