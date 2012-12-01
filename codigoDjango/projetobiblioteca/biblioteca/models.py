@@ -1,7 +1,9 @@
-from django.db import models
+﻿from django.db import models
 from django.utils import timezone
 
 from sets import Set
+from xlwt import Workbook
+
 
 # Create your models here.
 class User(models.Model):
@@ -56,51 +58,7 @@ def addSuggestion(request, writers_list):
     suggestion.save()
 
 def searchSuggestion(value):
-    words_list = value.split('\\s')
-    book_id_set = Set([])
-
-    #Writer table###################################
-    #writer.name
-    
-    writers = Writer.objects.filter(name__icontains=words_list[0])
-    for word in words_list[1:]:
-        writers = writers.filter(name__icontains=word)
-
-    for w in writers:
-        book_writer = w.book
-        book_id_set.add(book_writer.pk)
-    
-    #Book table######################################
-    #book.title
-
-    book_titles = Book.objects.filter(title__icontains=words_list[0])
-    for word in words_list[1:]:
-        book_titles = book_titles.filter(title__icontains=word)
-
-    for b in book_titles:
-        book_id_set.add(b.pk)
-
-    #book.year is integer...
-
-    #book.publisher
-
-    book_publisher = Book.objects.filter(publisher__icontains=words_list[0])
-    for word in words_list[1:]:
-        book_publisher = book_publisher.filter(publisher__icontains=word)
-
-    for b in book_publisher:
-        book_id_set.add(b.pk)
-
-    
-    #book.edition is integer...
-
-    #Get books from id set (and their corresponding suggestions)
-    books_match = Book.objects.filter(pk__in=book_id_set)
-    suggestions_match = Suggestion.objects.filter(book__in=book_id_set)
-
-    #Order books by title
-    books_match = books_match.order_by('title')
-    suggestions_match = suggestions_match.order_by('book__title')
+    books_match, suggestions_match = searchBooks(value)
 
     books_grouping_by_title = [] #lista de lista
     suggestion_grouping_by_book_title = []
@@ -152,6 +110,55 @@ def searchSuggestion(value):
 
     return books_grouping_by_title, suggestion_grouping_by_book_title
 
+def searchBooks(value):
+    words_list = value.split('\\s')
+    book_id_set = Set([])
+
+    #Writer table###################################
+    #writer.name
+    
+    writers = Writer.objects.filter(name__icontains=words_list[0])
+    for word in words_list[1:]:
+        writers = writers.filter(name__icontains=word)
+
+    for w in writers:
+        book_writer = w.book
+        book_id_set.add(book_writer.pk)
+    
+    #Book table######################################
+    #book.title
+
+    book_titles = Book.objects.filter(title__icontains=words_list[0])
+    for word in words_list[1:]:
+        book_titles = book_titles.filter(title__icontains=word)
+
+    for b in book_titles:
+        book_id_set.add(b.pk)
+
+    #book.year is integer...
+
+    #book.publisher
+
+    book_publisher = Book.objects.filter(publisher__icontains=words_list[0])
+    for word in words_list[1:]:
+        book_publisher = book_publisher.filter(publisher__icontains=word)
+
+    for b in book_publisher:
+        book_id_set.add(b.pk)
+
+    
+    #book.edition is integer...
+
+    #Get books from id set (and their corresponding suggestions)
+    books_match = Book.objects.filter(pk__in=book_id_set)
+    suggestions_match = Suggestion.objects.filter(book__in=book_id_set)
+
+    #Order books by title
+    books_match = books_match.order_by('title')
+    suggestions_match = suggestions_match.order_by('book__title')
+
+    return books_match, suggestions_match
+
 def processTextArea(comment):
     lines = comment.split('\r\n') #['line1', '', '', 'line4', 'line5']
 
@@ -159,3 +166,28 @@ def processTextArea(comment):
         lines.remove('')
 
     return '#'.join(lines)#join elements -> 'line1#line4#line5'
+
+def exportWorkbook(query):
+    books, suggestions = searchBooks(query)
+    book = Workbook(encoding='utf-8')
+    sheet = book.add_sheet('Livros Sugeridos')
+    cols = [u'Título','Autores','Ano','Editora',u'Edição','Sugerido por','Email','Quantidade sugerida',u'Comentário'];
+
+    c = 0
+    while len(cols) > c:
+        sheet.write(0,c,cols[c])
+        sheet.col(c).width = len(cols[c])+10
+
+    c = 0
+    while len(books) > c:
+        sheet.write(c,0,books[c].title)
+        # define how author enters here
+        sheet.write(c,2,books[c].year)
+        sheet.write(c,3,books[c].publisher)
+        sheet.write(c,4,books[c].edition)
+        sheet.write(c,5,suggestions[c].name)
+        sheet.write(c,6,suggestions[c].email)
+        sheet.write(c,7,suggestions[c].amount)
+        sheet.write(c,8,suggestions[c].comment)
+
+    return book
