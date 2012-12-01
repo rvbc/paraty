@@ -49,7 +49,7 @@ def add_suggestion(request):
             if writer_error_message == 'Nenhum escritor.':
                 emptyFields.append('autor')
             else:
-                errorMessage = errorMessage + 'Cada campo \'autor\' suporta somente 100 caracteres.'
+                errorMessage = errorMessage + 'Cada campo \'autor\' suporta somente 100 caracteres. '
         for key in form.errors:#wrong fields
             field = str(key)
             value = request.POST[key]
@@ -72,7 +72,7 @@ def add_suggestion(request):
         #c = django.template.Context()
         #return HttpResponse(t.render(c))
 
-        return TemplateResponse(request, 'suggestion.html', {'error': errorMessage, 'form':form})
+        return TemplateResponse(request, 'suggestion.html', {'error': errorMessage, 'form':form, 'writers': witers_list})
 
 def search(request):
     q = str(request.GET['q']).strip();
