@@ -12,7 +12,7 @@
 		<h1>Livros</h1>
 		<div class="block">
 			<form class="search" action="{% url biblioteca.views.search %}" method="get">
-				<input class="autocomplete" type="text" placeholder="Buscar por t&iacute;tulo, autor, editora..." title="Buscar" value="" style="width: 210px; display: inline-block;" name="field"/>
+				<input class="autocomplete" type="text" placeholder="Buscar por t&iacute;tulo, autor, editora..." title="Buscar" value="" style="width: 210px; display: inline-block;" name="q"/>
 				<input type="submit" class="button" value="buscar" />
 			</form>
 		</div>
@@ -23,7 +23,7 @@
 					<h3>
 						<div class="left">
 							<b>{{book_group.0.title}}</b>
-							<p class="author">por Autor principal ({{book_group.0.year}})</p>
+							<!-- <p class="author">por Autor principal ({{book_group.0.year}})</p> -->
 						</div>
 						<div class="right">
 							<div class="tags">
@@ -46,7 +46,7 @@
 				<h3>
 					<div class="left">
 						<b>Livro com titulo 3</b>
-						<p class="author">por Autor principal (2012)</p>
+						<!-- <p class="author">por Autor principal (2012)</p> -->
 					</div>
 					<div class="right">
 						<div class="tags">
@@ -72,19 +72,9 @@
 				<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
 					<div>
 						<h3>Sugest&otilde;es</h3>
-						<div class="navigator">
-							<button class="button right"><span class="ui-icon ui-icon-triangle-1-w"></span></button>
-							<button class="button left"><span class="ui-icon ui-icon-triangle-1-e"></span></button>
-						</div>
-						<div class="cleared"/>
 					</div>
 					<div class="suggestion">
 						<span class="name"/>Ruan</span><span class="email">(lsa@cin.ufpe.br)</span><br/>
-						<label>Quantidade:</label><p>2</p><br/>
-						<label>Coment&aacute;rio:</label><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-					</div>
-					<div class="suggestion">
-						<span class="name"/>Lais Andrade</span><span class="email">(lsa@cin.ufpe.br)</span><br/>
 						<label>Quantidade:</label><p>2</p><br/>
 						<label>Coment&aacute;rio:</label><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 					</div>
@@ -98,10 +88,17 @@
 							<button class="button right"><span class="ui-icon ui-icon-triangle-1-w"></span></button>
 							<button class="button left"><span class="ui-icon ui-icon-triangle-1-e"></span></button>
 						</div>
-						<div class="cleared"/>
+						<div class="cleared"></div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="main_navigator">
+		<button class="button rightmost"><span class="ui-icon ui-icon-seek-prev"></span></button>
+		<button class="button right"><span class="ui-icon ui-icon-triangle-1-w"></span></button>
+		<span class="page">{% firstof page_num 1 %}</span>
+		<button class="button left"><span class="ui-icon ui-icon-triangle-1-e"></span></button>
+		<button class="button leftmost"><span class="ui-icon ui-icon-seek-next"></span></button>
 	</div>
 {% endblock %}

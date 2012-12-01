@@ -1,12 +1,13 @@
 
 .content .side_menu {
-	width: 29%;
+	width: 39%;
 	display: inline-block;
 	vertical-align: middle;
+	margin-top: 2px;
 }
 
 .content .main_content {
-	width: 70%;
+	width: 60%;
 	display: inline-block;
 	vertical-align: top;
 }
@@ -115,4 +116,26 @@
 .main_content .accordion .info p {
 	display: inline-block;
 	margin: 0 0 0 5px;
+}
+
+.body .main_navigator {
+	width: 100%;
+	text-align: center;
+	margin: 10px 0;
+}
+
+.body .main_navigator button {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.body .main_navigator .page {
+	border: 1px solid #91342C;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	margin: 0 5px;
+	padding: 5px 10px;
+	display: inline-block;
+	vertical-align: middle;
 }

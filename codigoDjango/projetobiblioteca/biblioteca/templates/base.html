@@ -65,28 +65,27 @@
 	<div class="body">
 		<div class="tabs main">
 	
-		{% if msg %}
-		<div class="ui-widget message">
-			<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-				<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-				<strong>{{ msg.title }}!</strong> {{ msg.content }}</p>
+			{% if msg %}
+			<div class="ui-widget message">
+				<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+					<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+					<strong>{{ msg.title }}!</strong> {{ msg.content }}</p>
+				</div>
 			</div>
-		</div>
-		{% endif %}
-		<br/>
-		{% if error %}
-		<div class="ui-widget error">
-			<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
-				<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-				<strong>Alerta:</strong> {{ error }}</p>
+			{% endif %}
+			<br/>
+			{% if error %}
+			<div class="ui-widget error">
+				<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+					<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+					<strong>Alerta:</strong> {{ error }}</p>
+				</div>
 			</div>
+			{% endif %}
+
+			{% block content %}{% endblock %}
+
 		</div>
-		{% endif %}
-
-		{% block content %}{% endblock %}
-
-		</div>
-
 	</div>
 </body>
 </html>
