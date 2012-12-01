@@ -4,6 +4,9 @@
 {% block head %}
 	<link href="{% get_static_prefix %}css/suggest.css" type="text/css" rel="stylesheet">
 	<script src="{% get_static_prefix %}js/suggest.js"></script>
+    {% if sucess %}
+		<script>alert('Seu livro sugerido foi cadastrado com sucesso. Obrigado!')</script>
+    {% endif %}
 {% endblock %}
 
 

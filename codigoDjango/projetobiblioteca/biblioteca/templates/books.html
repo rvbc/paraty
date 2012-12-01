@@ -33,48 +33,30 @@
 		
 		<div class="main_content">
 			<div class="accordion">
-				<h3>
-					<div class="left">
-						<b>Livro com titulo 1</b>
-						<p class="author">por Autor principal (2012)</p>
-					</div>
-					<div class="right">
-						<div class="tags">
-							<span title="Livro comprado" class="ui-icon ui-icon-circle-check"></span>
+				{% for book_group in group_book_list %}
+					<h3>
+						<div class="left">
+							<b>{{book_group.0.title}}</b>
+							<p class="author">por Autor principal ({{book_group.0.year}})</p>
 						</div>
-						<div class="buttons"> 
-							<button title="Marcar como comprado" class="button"><span class="ui-icon ui-icon-cart"></span></button>
-							<button title="Deletar" class="button"><span class="ui-icon ui-icon-trash"></span></button>
+						<div class="right">
+							<div class="tags">
+								<span title="Livro comprado" class="ui-icon ui-icon-circle-check"></span>
+							</div>
+							<div class="buttons"> 
+								<button title="Marcar como comprado" class="button"><span class="ui-icon ui-icon-cart"></span></button>
+								<button title="Deletar" class="button"><span class="ui-icon ui-icon-trash"></span></button>
+							</div>
 						</div>
+					</h3>
+					<div class="info">
+						<label>Autores:</label><p>Autor 1, Autor 2, Autor 3</p><br/>
+						<label>Editora:</label><p>{{book_group.0.publisher}}</p><br/>
+						<label>Edi&ccedil;&atilde;o:</label><p>{{book_group.0.edition}}</p><br/><br/>
+						<label>Sugest&otilde;es:</label><p>{{book_group|length}}</p><br/><br/>
 					</div>
-				</h3>
-				<div class="info">
-					<label>Autores:</label><p>Autor 1, Autor 2, Autor 3</p><br/>
-					<label>Editora:</label><p>Moderna</p><br/>
-					<label>Edi&ccedil;&atilde;o:</label><p>2</p><br/><br/>
-					<label>Sugest&otilde;es:</label><p>3</p><br/><br/>
-				</div>
-				<h3>
-					<div class="left">
-						<b>Livro com titulo 2</b>
-						<p class="author">por Autor principal (2012)</p>
-					</div>
-					<div class="right">
-						<div class="tags">
-							<span title="Livro comprado" class="ui-icon ui-icon-circle-check"></span>
-						</div>
-						<div class="buttons"> 
-							<button title="Marcar como comprado" class="button"><span class="ui-icon ui-icon-cart"></span></button>
-							<button title="Deletar" class="button"><span class="ui-icon ui-icon-trash"></span></button>
-						</div>
-					</div>
-				</h3>
-				<div class="info">
-					<label>Autores:</label><p>Autor 1, Autor 2, Autor 3</p><br/>
-					<label>Editora:</label><p>Moderna</p><br/>
-					<label>Edi&ccedil;&atilde;o:</label><p>2</p><br/><br/>
-					<label>Sugest&otilde;es:</label><p>3</p><br/><br/>
-				</div>
+				{% endfor %}
+				
 				<h3>
 					<div class="left">
 						<b>Livro com titulo 3</b>
@@ -111,7 +93,7 @@
 						<div class="cleared"/>
 					</div>
 					<div class="suggestion">
-						<span class="name"/>Lais Andrade</span><span class="email">(lsa@cin.ufpe.br)</span><br/>
+						<span class="name"/>Ruan</span><span class="email">(lsa@cin.ufpe.br)</span><br/>
 						<label>Quantidade:</label><p>2</p><br/>
 						<label>Coment&aacute;rio:</label><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 					</div>

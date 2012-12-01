@@ -41,7 +41,7 @@ def add_suggestion(request):
         #tkMessageBox.showinfo(title="Greetings", message="Hello World!")
         #z = 1 + k
         models.addSuggestion(request)
-        return HttpResponse('<script>alert(\'Cadastro realizado com sucesso. Obrigado!\')</script>')
+        return TemplateResponse(request, 'suggestion.html', {'sucess': True})
     else:#Notify errors and user must try again
         emptyFields = []
         for key in form.errors:#wrong fields
@@ -72,8 +72,9 @@ def search(request):
     books, suggestions = models.searchSuggestion(str(request.GET['field']))
 
     if len(books) == 0:#Nothing found!
+        #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
         return HttpResponse('Nada foi encontrado!')
     else:#Display results at books.html
-        return HttpResponse(request.GET['field'])
+        return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions})
 
     
