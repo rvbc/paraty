@@ -4,6 +4,8 @@ from django.utils import timezone
 from sets import Set
 from xlwt import Workbook
 
+from tempfile import TemporaryFile
+
 import datetime
 
 import unicodedata
@@ -243,7 +245,9 @@ def exportWorkbook(query):
     now = datetime.datetime.now()
     name = strip_accents(query) + '_' + str(now.day) + '-' + str(now.month) + '-' + str(now.year) + '.xls'
 
-    book.save(name)
+    #book.save(name)
+    
+    book.save(TemporaryFile())
 
     return book, name
 
