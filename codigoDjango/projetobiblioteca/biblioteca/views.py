@@ -110,3 +110,14 @@ def export(request):
     else:#Display results at books.html
         #return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'q' : q})
        return models.xls_to_response(planilha,name)
+
+def login(request):
+    user = User.objects.get(login=request.POST['username'])
+    if user:
+        if user.password == request.POST['password']:
+            request.session['login'] = user.login
+            return TemplateResponse(request, 'home.html')
+        else:
+            return TemplateResponse(request, 'home.html', {'error':'Senha inválida.'})
+    else:
+        return TemplateResponse(request, 'home.html', {'error':'Login inexistente.'})
