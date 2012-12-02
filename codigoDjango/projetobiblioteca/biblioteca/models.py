@@ -4,6 +4,10 @@ from django.utils import timezone
 from sets import Set
 from xlwt import Workbook
 
+import unicodedata
+
+def strip_accents(s):
+    return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
 
 # Create your models here.
 class User(models.Model):
@@ -19,7 +23,7 @@ class Book(models.Model):
     publisher = models.CharField(max_length=100)
     edition = models.IntegerField()
     purchased = models.BooleanField()
-    #subject = models.CharField(max_length=100)
+    search = models.CharField(max_length=1000)
 
     def __unicode__(self):
         return self.title
@@ -27,6 +31,7 @@ class Book(models.Model):
 class Writer(models.Model):
     name = models.CharField(max_length=100)
     book = models.ForeignKey(Book)
+    search = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name + ' wrote \'' + self.book.title + '\''
@@ -38,23 +43,26 @@ class Suggestion(models.Model):
     email = models.CharField(max_length=100)
     amount = models.IntegerField()
     comment = models.CharField(max_length=200)
+    search = models.CharField(max_length=1000)
 
     def __unicode__(self):
         return self.name + ' suggests ' + str(self.amount) + ' volumes of \'' + self.book.title + '\''
 
 def addSuggestion(request, writers_list):
     #book
-    book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False)
+    s = request.POST['titulo'] + ' ' + request.POST['editora']
+    book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, search=strip_accents(s))
     book.save()
     
     #writer
     for writer_name in writers_list:
-        writer = Writer(name=writer_name, book=book)
+        writer = Writer(name=writer_name, book=book, search=strip_accents(writer_name))
         writer.save()
     
     #suggestion
     processed_comment = processTextArea(request.POST['comentario'])
-    suggestion = Suggestion(date=timezone.now(), book=book, name=request.POST['nome'], email=request.POST['email'], amount=request.POST['quantidade'], comment=processed_comment)
+    s = processed_comment + ' ' + request.POST['nome'] + ' ' + request.POST['email']
+    suggestion = Suggestion(date=timezone.now(), book=book, name=request.POST['nome'], email=request.POST['email'], amount=request.POST['quantidade'], comment=processed_comment, search=strip_accents(s))
     suggestion.save()
 
 def searchSuggestion(value):
@@ -116,39 +124,24 @@ def searchBooks(value):
     book_id_set = Set([])
 
     #Writer table###################################
-    #writer.name
-    
-    writers = Writer.objects.filter(name__icontains=words_list[0])
+   
+    writers = Writer.objects.filter(search__icontains=strip_accents(words_list[0]))
     for word in words_list[1:]:
-        writers = writers.filter(name__icontains=word)
+        writers = writers.filter(search__icontains=strip_accents(word))
 
     for w in writers:
         book_writer = w.book
         book_id_set.add(book_writer.pk)
     
     #Book table######################################
-    #book.title
 
-    book_titles = Book.objects.filter(title__icontains=words_list[0])
+    book_titles = Book.objects.filter(search__icontains=strip_accents(words_list[0]))
     for word in words_list[1:]:
-        book_titles = book_titles.filter(title__icontains=word)
+        book_titles = book_titles.filter(search__icontains=strip_accents(word))
 
     for b in book_titles:
         book_id_set.add(b.pk)
 
-    #book.year is integer...
-
-    #book.publisher
-
-    book_publisher = Book.objects.filter(publisher__icontains=words_list[0])
-    for word in words_list[1:]:
-        book_publisher = book_publisher.filter(publisher__icontains=word)
-
-    for b in book_publisher:
-        book_id_set.add(b.pk)
-
-    
-    #book.edition is integer...
 
     #Get books from id set (and their corresponding suggestions)
     books_match = Book.objects.filter(pk__in=book_id_set)

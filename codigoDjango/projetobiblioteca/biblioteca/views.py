@@ -75,9 +75,9 @@ def add_suggestion(request):
         return TemplateResponse(request, 'suggestion.html', {'error': errorMessage, 'form':form, 'writers': witers_list})
 
 def search(request):
-    q = str(request.GET['q'])
+    q = request.GET['q']
     if len(q) > 0:
-        q.strip()
+        q = q.strip()
     books, suggestions = models.searchSuggestion(q)
 
     if len(books) == 0:#Nothing found!
@@ -87,7 +87,9 @@ def search(request):
         return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'q' : q})
 
 def export(request):
-    q = str(request.POST['q']).strip();
+    q = request.POST['q']
+    if len(q) > 0:
+        q = q.strip()
     books, suggestions = models.searchSuggestion(q)
 
     if len(books) == 0:#Nothing found!
