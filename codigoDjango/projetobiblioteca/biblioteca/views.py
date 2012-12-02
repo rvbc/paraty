@@ -118,6 +118,6 @@ def login(request):
             request.session['login'] = user.login
             return TemplateResponse(request, 'home.html')
         else:
-            return TemplateResponse(request, 'home.html', {'error':'Senha inválida.'})
+            return TemplateResponse(request, 'home.html', {'error':'Senha inv&atilde;lida.'})
     else:
         return TemplateResponse(request, 'home.html', {'error':'Login inexistente.'})
