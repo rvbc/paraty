@@ -92,10 +92,15 @@ def export(request):
     q = request.POST['q']
     if len(q) > 0:
         q = q.strip()
-    books, suggestions = models.searchSuggestion(q)
+    books, suggestions, writers = models.searchSuggestion(q)
+
+    planilha, name = models.exportWorkbook(q)
+
+    #x = z#DEBUG
 
     if len(books) == 0:#Nothing found!
         #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
         return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'error': 'Nenhum livro para ser exportado. Se uma busca foi feita, tente utilizar novos termos.', 'q' : q})
     else:#Display results at books.html
-        return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'q' : q})
+        #return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'q' : q})
+       return models.xls_to_response(planilha,name)

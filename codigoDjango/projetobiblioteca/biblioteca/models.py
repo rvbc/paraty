@@ -4,7 +4,11 @@ from django.utils import timezone
 from sets import Set
 from xlwt import Workbook
 
+import datetime
+
 import unicodedata
+
+from django.http import HttpResponse
 
 def strip_accents(s):
     return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
@@ -207,18 +211,32 @@ def exportWorkbook(query):
     c = 0
     while len(cols) > c:
         sheet.write(0,c,cols[c])
-        sheet.col(c).width = len(cols[c])+10
+        sheet.col(c).width = len(cols[c])*500
+        c = c + 1
 
     c = 0
     while len(books) > c:
-        sheet.write(c,0,books[c].title)
+        sheet.write(c+1,0,books[c].title)
         # define how author enters here
-        sheet.write(c,2,books[c].year)
-        sheet.write(c,3,books[c].publisher)
-        sheet.write(c,4,books[c].edition)
-        sheet.write(c,5,suggestions[c].name)
-        sheet.write(c,6,suggestions[c].email)
-        sheet.write(c,7,suggestions[c].amount)
-        sheet.write(c,8,suggestions[c].comment)
+        
+        sheet.write(c+1,2,books[c].year)
+        sheet.write(c+1,3,books[c].publisher)
+        sheet.write(c+1,4,books[c].edition)
+        sheet.write(c+1,5,suggestions[c].name)
+        sheet.write(c+1,6,suggestions[c].email)
+        sheet.write(c+1,7,suggestions[c].amount)
+        sheet.write(c+1,8,suggestions[c].comment)
+        c = c + 1
 
-    return book
+    now = datetime.datetime.now()
+    name = strip_accents(query) + '_' + str(now.day) + '-' + str(now.month) + '-' + str(now.year) + '.xls'
+
+    book.save(name)
+
+    return book, name
+
+def xls_to_response(xls, fname):
+    response = HttpResponse(mimetype="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=%s' % fname
+    xls.save(response)
+    return response
