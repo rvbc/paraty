@@ -2,6 +2,7 @@
 from biblioteca.models import Book, User, Writer, Suggestion
 from biblioteca import models
 from biblioteca.insertionForms import SuggestionForm
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 import django.template.loader
@@ -50,7 +51,7 @@ def add_suggestion(request):
         #tkMessageBox.showinfo(title="Greetings", message="Hello World!")
         #z = 1 + k
         models.addSuggestion(request, witers_list)
-        c['msg'] = {'title' : 'OK', 'content' : 'Seu livro sugerido foi cadastrado com sucesso. Obrigado!'}
+        messages.add_message(request,messages.INFO, 'Seu livro sugerido foi cadastrado com sucesso. Obrigado!')
         return TemplateResponse(request, 'suggestion.html', c)
     else:#Notify errors and user must try again
         emptyFields = []
@@ -80,7 +81,7 @@ def add_suggestion(request):
         #t = django.template.loader.get_template("suggestion.html")
         #c = django.template.Context()
         #return HttpResponse(t.render(c))
-        c['error'] = errorMessage
+        messages.add_message(request,messages.ERROR, errorMessage)
         c['form'] = form		
         c['writers'] = witers_list
         return TemplateResponse(request, 'suggestion.html', c)
@@ -99,7 +100,7 @@ def search(request):
 
     if len(books) == 0:#Nothing found!
         #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
-        c['msg'] = {'title' : 'Hey', 'content' : 'Nenhum livro foi encontrado nesta pesquisa. Tente com outros termos.'}
+        messages.add_message(request,messages.INFO, 'Nenhum livro foi encontrado nesta pesquisa. Tente com outros termos.')
         return TemplateResponse(request, 'books.html', c)
     else:#Display results at books.html
         return TemplateResponse(request, 'books.html', c)
@@ -119,7 +120,7 @@ def export(request):
         #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
         c['group_book_list'] = books
         c['group_suggestion_list'] = suggestions
-        c['error'] = 'Nenhum livro para ser exportado. Se uma busca foi feita, tente utilizar novos termos.'
+        messages.add_message(request,messages.ERROR, 'Nenhum livro para ser exportado. Se uma busca foi feita, tente utilizar novos termos.')
         c['q'] = q
         return TemplateResponse(request, 'books.html', c)
     else:#Display results at books.html
@@ -127,32 +128,30 @@ def export(request):
        return models.xls_to_response(planilha,name)
 
 def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
     c = RequestContext(request)
 
-    if username:
-        if password:
+    if request.POST.has_key('username') and request.POST['username']:
+        username = request.POST['username']
+
+        if request.POST.has_key('password') and request.POST['password']:
+            password = request.POST['password']
 
             try:
                 user = User.objects.get(login=username)
                 if user.password == request.POST['password']:
                     request.session['login'] = user.login
-                    return TemplateResponse(request, 'index.html')
                 else:
-                    c['error'] = 'Senha inv&aacute;lida.'
-                    return TemplateResponse(request, 'index.html', c)
+                    messages.add_message(request, messages.ERROR, 'Senha inv&aacute;lida.')
 
             except User.DoesNotExist:
-                c['error'] = 'Login inexistente.'
-                return TemplateResponse(request, 'index.html', c)
+                messages.add_message(request, messages.ERROR, 'Login inexistente.')
 
         else:
-            c['error'] = 'Informe sua senha para login.'
-            return TemplateResponse(request, 'index.html', c)
+            messages.add_message(request, messages.ERROR, 'Informe sua senha para login.')
     else:
-        c['error'] = 'Informe seu nome de usu&aacute;rio para login.'
-        return TemplateResponse(request, 'index.html', c)
+        messages.add_message(request, messages.ERROR, 'Informe seu nome de usu&aacute;rio para login.')
+
+    return HttpResponseRedirect(reverse('biblioteca.views.home'))
 
 def logout(request):
     login = request.session['login']
@@ -160,7 +159,7 @@ def logout(request):
 
     if login:
         del request.session['login']
-        return TemplateResponse(request, 'index.html')
     else:
-        c['error'] = 'Sess&atilde;o expirada.'
-        return TemplateResponse(request, 'index.html', c)
+        messages.add_message(request, messages.ERROR, 'Sess&atilde;o expirada.')
+
+    return HttpResponseRedirect(reverse('biblioteca.views.home'))

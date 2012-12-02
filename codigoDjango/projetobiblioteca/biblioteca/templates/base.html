@@ -71,22 +71,31 @@
 	<div class="body">
 		<div class="tabs main">
 	
-			{% if msg %}
-			<div class="ui-widget message">
-				<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-					<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-					{% autoescape off %}<strong>{{ msg.title }}!</strong> {{ msg.content }}</p>{% endautoescape %}
+			{% if messages %}
+			{% for message in messages %}
+			{% ifequal message.tags 'info' %}
+				<div class="ui-widget message">
+					<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+						<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+						{% autoescape off %}<strong>Hey!</strong> {{ message }}</p>{% endautoescape %}
+					</div>
 				</div>
-			</div>
+			{% endifequal %}
+			{% endfor %}
 			{% endif %}
 			<br/>
-			{% if error %}
-			<div class="ui-widget error">
-				<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
-					<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-					{% autoescape off %}<strong>Alerta:</strong> {{ error }}</p>{% endautoescape %}
+
+			{% if messages %}
+			{% for message in messages %}
+			{% ifequal message.tags 'error' %}
+				<div class="ui-widget error">
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+						{% autoescape off %}<strong>Alerta:</strong> {{ message }}</p>{% endautoescape %}
+					</div>
 				</div>
-			</div>
+			{% endifequal %}
+			{% endfor %}
 			{% endif %}
 
 			{% block content %}{% endblock %}
