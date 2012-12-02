@@ -11,7 +11,7 @@
 	<div class="content" id="tabs-sugerir">
 		<h1>Sugest&atilde;o</h1>
 		<div class="ui-widget">
-			<form id="suggest-form" action="{% url biblioteca.views.add_suggestion %}" method="post">
+			<form id="suggest-form" action="{% url biblioteca.views.suggestion %}" method="post">
 				<div class="block">
 					<h2>Sua Informa&ccedil;&atilde;o para Contato</h2>
 					<input type="text" placeholder="Nome" title="Informe seu nome" value="{{ form.nome.value }}" name="nome"/>
