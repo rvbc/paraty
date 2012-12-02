@@ -204,6 +204,7 @@ def processTextArea(comment):
 
 def exportWorkbook(query):
     books, suggestions = searchBooks(query)
+    authors = getWritersFromBooks(books)
     book = Workbook(encoding='utf-8')
     sheet = book.add_sheet('Livros Sugeridos')
     cols = [u'Título','Autores','Ano','Editora',u'Edição','Sugerido por','Email','Quantidade sugerida',u'Comentário'];
@@ -214,11 +215,22 @@ def exportWorkbook(query):
         sheet.col(c).width = len(cols[c])*500
         c = c + 1
 
+    sheet.col(0).width = sheet.col(0).width * 2; #title
+    sheet.col(1).width = sheet.col(1).width * 2; #authors
+    sheet.col(6).width = sheet.col(6).width * 2; #email
+    sheet.col(7).width = sheet.col(7).width / 2; #amount
+    sheet.col(8).width = sheet.col(8).width * 4; #comment
+
     c = 0
     while len(books) > c:
         sheet.write(c+1,0,books[c].title)
-        # define how author enters here
-        
+        authorStr = '';
+        for author in authors[c]:
+            authorStr = authorStr + author.name + ', '
+        if len(authorStr) > 0:
+            authorStr = authorStr[:-2]
+
+        sheet.write(c+1,1,authorStr)
         sheet.write(c+1,2,books[c].year)
         sheet.write(c+1,3,books[c].publisher)
         sheet.write(c+1,4,books[c].edition)
