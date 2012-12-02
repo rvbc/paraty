@@ -8,6 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns('biblioteca.views',
     # Examples:
     url(r'^biblioteca/$', 'home', name='home'),
+    url(r'^biblioteca/login', views.login),
     url(r'^biblioteca/suggestion/$', 'suggestion'),
     url(r'^biblioteca/books/$', 'books'),
     url(r'^biblioteca/books/search', views.search),
