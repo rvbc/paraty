@@ -120,7 +120,7 @@ def searchSuggestion(value):
 
 def searchBooks(value):
     words_list = value.split()
-    words_list = words_list if len(words_list) > 0 else ['']
+    words_list = words_list if len(words_list) > 0 else [u'']
     book_id_set = Set([])
 
     #Writer table###################################
