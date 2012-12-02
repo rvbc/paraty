@@ -70,6 +70,7 @@ def searchSuggestion(value):
 
     books_grouping_by_title = [] #lista de lista
     suggestion_grouping_by_book_title = []
+    writers_stringName_for_each_book_group = []
 
     #Group books by title
     count = 0
@@ -89,6 +90,7 @@ def searchSuggestion(value):
             
         books_grouping_by_title.append(goup_list_books)
         suggestion_grouping_by_book_title.append(goup_list_suggestions)
+        writers_stringName_for_each_book_group.append(getWritersStringFromGroupBookWithSameTitle(goup_list_books))
         
         
     #Suggestion table###############################
@@ -116,7 +118,7 @@ def searchSuggestion(value):
 
     #x = z #DEBUG!
 
-    return books_grouping_by_title, suggestion_grouping_by_book_title
+    return books_grouping_by_title, suggestion_grouping_by_book_title, writers_stringName_for_each_book_group
 
 def searchBooks(value):
     words_list = value.split()
@@ -151,7 +153,42 @@ def searchBooks(value):
     books_match = books_match.order_by('title')
     suggestions_match = suggestions_match.order_by('book__title')
 
+    #writers_list_list = getWritersFromBooks(books_match)
+
     return books_match, suggestions_match
+
+def getWritersFromBooks(book_list):
+    writers_list_list = []
+
+    for b in book_list:
+        writers_book = Writer.objects.filter(book__exact=b.id)
+        writers_book.order_by('name')
+        writers_list_list.append(writers_book)
+    
+    #x = z#DEBUG
+
+    return writers_list_list
+
+def getWritersStringFromGroupBookWithSameTitle(group_book):
+
+    writers_list_list = getWritersFromBooks(group_book)
+    writers_nameSearch_set = Set([])
+    writers_string = ''
+
+    for writers_list in writers_list_list:
+    
+        for writer in writers_list:
+            if not writer.search in writers_nameSearch_set:
+                writers_nameSearch_set.add(writer.search)
+                writers_string = writers_string + ', ' + writer.name
+            
+        
+    writers_string = writers_string[2: ] + '.'
+
+    #x = z#DEBUG
+
+    return writers_string
+
 
 def processTextArea(comment):
     lines = comment.split('\r\n') #['line1', '', '', 'line4', 'line5']

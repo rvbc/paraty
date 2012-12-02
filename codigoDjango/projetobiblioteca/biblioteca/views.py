@@ -78,13 +78,15 @@ def search(request):
     q = request.GET['q']
     if len(q) > 0:
         q = q.strip()
-    books, suggestions = models.searchSuggestion(q)
+    books, suggestions, writers = models.searchSuggestion(q)
+
+    #x = z#DEBUG
 
     if len(books) == 0:#Nothing found!
         #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
         return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'msg': {'title' : 'Hey', 'content' : 'Nenhum livro foi encontrado nesta pesquisa. Tente com outros termos.'}, 'q' : q})
     else:#Display results at books.html
-        return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'q' : q})
+        return TemplateResponse(request, 'books.html', {'group_book_list': books, 'group_suggestion_list':suggestions, 'writers': writers, 'q' : q})
 
 def export(request):
     q = request.POST['q']
