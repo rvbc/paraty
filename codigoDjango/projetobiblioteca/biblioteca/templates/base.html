@@ -34,23 +34,26 @@
 				<p class="ui-widget">Biblioteca</p>
 			</div>
 			<div class="right">
-				<div class="dislogged">
-					<button class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" onClick="login();">
-						<span class="ui-button-text">login</span>
-					</button>
-					<div style="border-top: none; border-top-right-radius: 0; position: relative; z-index: 2; width: 175px; height: 105px;right: -170px; top: -5px; padding: 10px;" class="login ui-widget ui-widget-content ui-corner-all">
-						<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
-							<form>
-								<input name="username" placeholder="Seu login" title="Informe seu login" type="text" value="" />
-								<input name="password" placeholder="Sua senha" title="Informe sua senha" type="password" value="" />
-								<input class="button" type="submit" value="ENTRAR"/>
-							</form>
+				{% if request.session.login %}
+					<div class="logged" style="display: none;">
+						<p class="salute">Ol&aacute;, {{ request.session.login }}</p>
+					</div>
+				{% else %}
+					<div class="dislogged">
+						<button class="button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" onClick="login();">
+							<span class="ui-button-text">login</span>
+						</button>
+						<div style="border-top: none; border-top-right-radius: 0; position: relative; z-index: 2; width: 175px; height: 105px;right: -170px; top: -5px; padding: 10px;" class="login ui-widget ui-widget-content ui-corner-all">
+							<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
+								<form>
+									<input name="username" placeholder="Seu login" title="Informe seu login" type="text" value="" />
+									<input name="password" placeholder="Sua senha" title="Informe sua senha" type="password" value="" />
+									<input class="button" type="submit" value="ENTRAR"/>
+								</form>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="logged" style="display: none;">
-					<p class="salute">Ol&aacute;, ago</p>
-				</div>
+				{% endif %}
 				<div class="radioset">
 					<input type="radio" id="home" name="radio" /><label for="home" onClick="window.location.href='{% url biblioteca.views.home %}';">HOME</label>
 					<input type="radio" id="suggestion" name="radio" /><label for="suggestion" onClick="window.location.href='{% url biblioteca.views.suggestion %}';">SUGERIR LIVRO</label>

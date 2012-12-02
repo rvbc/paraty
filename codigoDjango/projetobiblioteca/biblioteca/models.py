@@ -15,7 +15,7 @@ def strip_accents(s):
 
 # Create your models here.
 class User(models.Model):
-    login = models.CharField(max_length=20)
+    login = models.CharField(max_length=20,primary_key=True)
     password = models.CharField(max_length=40)
 
     def __unicode__(self):
