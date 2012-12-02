@@ -1,4 +1,10 @@
 
+function selectBook(id){
+	$('.suggestions').hide();	
+	$('.suggestions#'+id).show();
+	return true;
+}
+
 function accordion_change(pos){
 	var h = parseInt($('.main_content .accordion h3').height());
 	h = h + parseInt($('.main_content .accordion h3').css('margin-top').replace('px', ''));
@@ -19,6 +25,8 @@ function exportButton(){
 
 $(
 	function () {
+		$('.suggestions').hide();
+		$('.suggestions:first').show();
 		$('.header .radioset #books').click();
 		
 		$('.accordion h3').click(function (e) {

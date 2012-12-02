@@ -31,11 +31,19 @@ def books(request):
     if request.method == 'POST':#export excel!
         return export(request)
     else:#books' home
-        t = django.template.loader.get_template("books.html")
         c = RequestContext(request)
-        return HttpResponse(t.render(c))
+        books, suggestions, writers = models.searchSuggestion('')
 
-    #if request.method == 'POST'
+        c['group_book_list'] = books
+        c['group_suggestion_list'] = suggestions
+        c['writers'] = writers
+
+        if len(books) == 0:#Nothing found!
+            #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
+            messages.add_message(request,messages.INFO, 'Nenhum livro foi sugerido.')
+
+        t = django.template.loader.get_template("books.html")
+        return HttpResponse(t.render(c))
 
 def add_suggestion(request):
     form = SuggestionForm(request.POST)
