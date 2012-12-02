@@ -31,7 +31,7 @@ input[type="text"], input[type="password"] {
 	margin: 0 auto;
 }
 
-.header .content button {
+.header .content .login_button {
 	background-color: #FFFFFF;
 	background-image: none;
 	color: #91342C;
@@ -110,6 +110,13 @@ input[type="text"], input[type="password"] {
 	font-size: 1.5em;
 	font-weight: bold;
 	font-style: italic;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.logout {
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .add-button{

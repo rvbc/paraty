@@ -153,3 +153,14 @@ def login(request):
     else:
         c['error'] = 'Informe seu nome de usu&aacute;rio para login.'
         return TemplateResponse(request, 'index.html', c)
+
+def logout(request):
+    login = request.session['login']
+    c = RequestContext(request)
+
+    if login:
+        del request.session['login']
+        return TemplateResponse(request, 'index.html')
+    else:
+        c['error'] = 'Sess&atilde;o expirada.'
+        return TemplateResponse(request, 'index.html', c)
