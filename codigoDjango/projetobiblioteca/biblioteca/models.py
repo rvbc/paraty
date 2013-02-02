@@ -2,7 +2,7 @@
 from django.utils import timezone
 
 from sets import Set
-from xlwt import Workbook
+from xlwt import Workbook, easyxf
 
 from tempfile import TemporaryFile
 
@@ -208,7 +208,7 @@ def exportWorkbook(query):
     books, suggestions = searchBooks(query)
     authors = getWritersFromBooks(books)
     book = Workbook(encoding='utf-8')
-    sheet = book.add_sheet('Livros Sugeridos')
+    sheet = book.add_sheet('Livros Sugeridos', cell_overwrite_ok=True)
     #cols = [u'Título','Autores','Ano','Editora',u'Edição','Sugerido por','Email','Quantidade sugerida',u'Comentário'];
     cols = ['ITEM', 'QTD', 'AUTORES', u'TÍTULO', 'EDITORA', 'ISBN', u'EDIÇÃO', 'ANO', 'SUGERIDO POR', 'EMAIL', u'COMENTÁRIO']
 
@@ -270,9 +270,13 @@ def exportWorkbook(query):
         #    authorStr = authorStr[:-2]        
         #sheet.write(c+1,2,authorStr)
 
+        initial_row = c+1
+        authorStr = ''
         for author in authors[item]:
-            sheet.write(c+1,2,author.name)
+            authorStr = authorStr + author.name + '\n'
+            #sheet.write(c+1,2,author.name)
             c = c + 1
+        sheet.write_merge(r1=initial_row, c1=2, r2=c, c2=2, label=authorStr[:-1], style=easyxf('alignment: wrap True;'))
 
 
         c = c + 1
