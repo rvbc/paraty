@@ -209,7 +209,8 @@ def exportWorkbook(query):
     authors = getWritersFromBooks(books)
     book = Workbook(encoding='utf-8')
     sheet = book.add_sheet('Livros Sugeridos')
-    cols = [u'Título','Autores','Ano','Editora',u'Edição','Sugerido por','Email','Quantidade sugerida',u'Comentário'];
+    #cols = [u'Título','Autores','Ano','Editora',u'Edição','Sugerido por','Email','Quantidade sugerida',u'Comentário'];
+    cols = ['ITEM', 'QTD', 'AUTORES', u'TÍTULO', 'EDITORA', 'ISBN', u'EDIÇÃO', 'ANO', 'SUGERIDO POR', 'EMAIL', u'COMENTÁRIO']
 
     c = 0
     while len(cols) > c:
@@ -217,30 +218,65 @@ def exportWorkbook(query):
         sheet.col(c).width = len(cols[c])*500
         c = c + 1
 
-    sheet.col(0).width = sheet.col(0).width * 2; #title
-    sheet.col(1).width = sheet.col(1).width * 2; #authors
-    sheet.col(6).width = sheet.col(6).width * 2; #email
-    sheet.col(7).width = sheet.col(7).width / 2; #amount
-    sheet.col(8).width = sheet.col(8).width * 4; #comment
+    #sheet.col(0).width = sheet.col(0).width * 2; #title
+    #sheet.col(1).width = sheet.col(1).width * 2; #authors
+    #sheet.col(6).width = sheet.col(6).width * 2; #email
+    #sheet.col(7).width = sheet.col(7).width / 2; #amount
+    #sheet.col(8).width = sheet.col(8).width * 4; #comment
+    
+    #sheet.col(0).width = sheet.col(1).width * 2; #amount
+    sheet.col(2).width = sheet.col(2).width * 2; #authors
+    sheet.col(3).width = sheet.col(3).width * 2; #title
+    sheet.col(5).width = sheet.col(5).width * 3; #ISBN
+    sheet.col(9).width = sheet.col(9).width * 2; #email
+    sheet.col(10).width = sheet.col(10).width * 4; #comment
 
     c = 0
-    while len(books) > c:
-        sheet.write(c+1,0,books[c].title)
-        authorStr = '';
-        for author in authors[c]:
-            authorStr = authorStr + author.name + ', '
-        if len(authorStr) > 0:
-            authorStr = authorStr[:-2]
+    item = 0
+    while len(books) > item:
+        #sheet.write(c+1,0,books[c].title)
+        #authorStr = '';
+        #for author in authors[c]:
+        #    authorStr = authorStr + author.name + ', '
+        #if len(authorStr) > 0:
+        #    authorStr = authorStr[:-2]
+        #
+        #sheet.write(c+1,1,authorStr)
+        #sheet.write(c+1,2,books[c].year)
+        #sheet.write(c+1,3,books[c].publisher)
+        #sheet.write(c+1,4,books[c].edition)
+        #sheet.write(c+1,5,suggestions[c].name)
+        #sheet.write(c+1,6,suggestions[c].email)
+        #sheet.write(c+1,7,suggestions[c].amount)
+        #sheet.write(c+1,8,suggestions[c].comment)
+        
+        sheet.write(c+1,0,item+1)
+        sheet.write(c+1,1,suggestions[item].amount)
+        
 
-        sheet.write(c+1,1,authorStr)
-        sheet.write(c+1,2,books[c].year)
-        sheet.write(c+1,3,books[c].publisher)
-        sheet.write(c+1,4,books[c].edition)
-        sheet.write(c+1,5,suggestions[c].name)
-        sheet.write(c+1,6,suggestions[c].email)
-        sheet.write(c+1,7,suggestions[c].amount)
-        sheet.write(c+1,8,suggestions[c].comment)
+        sheet.write(c+1,3,books[item].title)
+        sheet.write(c+1,4,books[item].publisher)
+        sheet.write(c+1,5,'ISBN Aqui')
+        sheet.write(c+1,6,books[item].edition)
+        sheet.write(c+1,7,books[item].year)
+        sheet.write(c+1,8,suggestions[item].name)
+        sheet.write(c+1,9,suggestions[item].email)
+        sheet.write(c+1,10,suggestions[item].comment)
+        
+        #authorStr = '';
+        #for author in authors[c]:
+        #    authorStr = authorStr + author.name + ', '
+        #if len(authorStr) > 0:
+        #    authorStr = authorStr[:-2]        
+        #sheet.write(c+1,2,authorStr)
+
+        for author in authors[item]:
+            sheet.write(c+1,2,author.name)
+            c = c + 1
+
+
         c = c + 1
+        item = item + 1
 
     now = datetime.datetime.now()
     name = strip_accents(query) + '_' + str(now.day) + '-' + str(now.month) + '-' + str(now.year) + '.xls'
