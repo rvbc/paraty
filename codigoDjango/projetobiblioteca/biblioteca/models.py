@@ -30,7 +30,7 @@ class Book(models.Model):
     edition = models.IntegerField()
     purchased = models.BooleanField()
     search = models.CharField(max_length=1000)
-    isbn = models.CharField(max_length=13)
+    isbn = models.CharField(max_length=100)
 	
     def __unicode__(self):
         return self.title
