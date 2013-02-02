@@ -13,6 +13,7 @@ urlpatterns = patterns('biblioteca.views',
     url(r'^biblioteca/suggestion/$', 'suggestion'),
     url(r'^biblioteca/books/$', 'books'),
     url(r'^biblioteca/books/search', views.search),
+    url(r'^biblioteca/table/$', 'table'),
     #url(r'^biblioteca/books/export', views.export),
     #url(r'^biblioteca/suggestion/$', views.add_suggestion),
     # Uncomment the admin/doc line below to enable admin documentation:

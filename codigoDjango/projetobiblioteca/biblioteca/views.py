@@ -27,7 +27,8 @@ def suggestion(request):
         c = RequestContext(request)
         return HttpResponse(t.render(c))
     
-def books(request):
+
+def list_books(request,page):
     if request.method == 'POST':#export excel!
         return export(request)
     else:#books' home
@@ -42,8 +43,14 @@ def books(request):
             #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
             messages.add_message(request,messages.INFO, 'Nenhum livro foi sugerido.')
 
-        t = django.template.loader.get_template("books.html")
+        t = django.template.loader.get_template(page)
         return HttpResponse(t.render(c))
+
+def books(request):
+    return list_books(request,"books.html")
+
+def table(request):
+    return list_books(request,"table.html")
 
 def add_suggestion(request):
     form = SuggestionForm(request.POST)

@@ -34,6 +34,7 @@
 				<p class="ui-widget">Biblioteca</p>
 			</div>
 			<div class="right">
+<!--
 				{% if request.session.login %}
 					<div>
 						<p class="salute">Ol&aacute;, {{ request.session.login }}</p>
@@ -57,10 +58,12 @@
 						</div>
 					</div>
 				{% endif %}
+-->
 				<div class="radioset">
 					<input type="radio" id="home" name="radio" /><label for="home" onClick="window.location.href='{% url biblioteca.views.home %}';">HOME</label>
 					<input type="radio" id="suggestion" name="radio" /><label for="suggestion" onClick="window.location.href='{% url biblioteca.views.suggestion %}';">SUGERIR LIVRO</label>
-					<input type="radio" id="books" name="radio" /><label for="books" onClick="window.location.href='{% url biblioteca.views.books %}';">ACOMPANHAR SUGEST&Otilde;ES</label>
+					<input type="radio" id="table" name="radio" /><label for="table" onClick="window.location.href='{% url biblioteca.views.table %}';">ACOMPANHAR SUGEST&Otilde;ES</label>
+					<input type="radio" id="books" name="radio" /><label for="books" onClick="window.location.href='{% url biblioteca.views.books %}';">BUSCAR</label>
 				</div>
 			</div>
 		</div>
