@@ -30,7 +30,8 @@ class Book(models.Model):
     edition = models.IntegerField()
     purchased = models.BooleanField()
     search = models.CharField(max_length=1000)
-
+    isbn = models.CharField(max_length=13)
+	
     def __unicode__(self):
         return self.title
     
@@ -57,7 +58,7 @@ class Suggestion(models.Model):
 def addSuggestion(request, writers_list):
     #book
     s = request.POST['titulo'] + ' ' + request.POST['editora']
-    book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, search=strip_accents(s))
+    book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, search=strip_accents(s), isbn=request.POST['isbn'])
     book.save()
     
     #writer

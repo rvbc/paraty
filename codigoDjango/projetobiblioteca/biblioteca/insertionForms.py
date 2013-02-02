@@ -12,6 +12,7 @@ class SuggestionForm(forms.Form):
     editora = forms.CharField(max_length=100)
     ano = forms.IntegerField(min_value=1, max_value=datetime.datetime.now().year)
     edicao = forms.IntegerField(min_value=1)
+    isbn = forms.CharField(max_length=13)
 
     quantidade = forms.IntegerField(min_value=1)
     comentario = forms.CharField(max_length=200, required=False, widget=forms.Textarea)
@@ -26,6 +27,8 @@ class SuggestionForm(forms.Form):
             message = 'O campo \'' + field_name + '\' suporta somente 200 caracteres'
         elif field_name == 'titulo' or field_name == 'escritor' or field_name == 'editora':#CharField(max_length=100)
             message = 'O campo \'' + field_name + '\' suporta somente 100 caracteres'
+        elif field_name == 'isbn':#CharField(max_length=13)
+            message = 'O campo \'' + field_name + '\' suporta somente 13 caracteres'
         elif field_name == 'edicao' or field_name == 'quantidade':#IntegerField
             message = 'Insira um inteiro correto para o campo \'' + field_name + '\''
         elif field_name == 'ano':

@@ -8,6 +8,7 @@
 
 
 {% block content %}
+{% if group_book_list %}
 	<div class="content" id="tabs-view">
 		<h1>Livros</h1>
 		<div class="block">
@@ -52,7 +53,8 @@
 					{% endfor %}
 
 						<label>Editora:</label><p>{{book_group.0.publisher}}</p><br/>
-						<label>Edi&ccedil;&atilde;o:</label><p>{{book_group.0.edition}}</p><br/><br/>
+						<label>Edi&ccedil;&atilde;o:</label><p>{{book_group.0.edition}}{{"ª"}}</p><br/><br/>
+						<label>ISBN:</label><p>{{book_group.0.isbn}}</p><br/>
 						<label>Sugest&otilde;es:</label><p>{{book_group|length}}</p><br/><br/>
 					</div>
 				{% endfor %}
@@ -85,4 +87,5 @@
 		<button class="button left"><span class="ui-icon ui-icon-triangle-1-e"></span></button>
 		<button class="button leftmost"><span class="ui-icon ui-icon-seek-next"></span></button>
 	</div>
+{% endif %}
 {% endblock %}

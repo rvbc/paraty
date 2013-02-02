@@ -8,6 +8,7 @@
 
 
 {% block content %}
+{% if books_search %}
 	<div class="content" id="tabs-table">
 		<h1>Livros</h1>
 		<div class="block">
@@ -71,10 +72,10 @@
 					<span>{{book.publisher}}</span>
 				</div>
 				<div class="isbn">
-					<span>ISBN</span>
+					<span>{{book.isbn}}</span>
 				</div>
 				<div class="year">
-					<span>{{book.edition}}/{{book.year}}</span>
+					<span>{{book.edition}}{{"ª"}}/{{book.year}}</span>
 				</div>
 				<div class="suggestion">
 					<span>{{suggestion.name}}</span>
@@ -93,4 +94,5 @@
 		<button class="button left"><span class="ui-icon ui-icon-triangle-1-e"></span></button>
 		<button class="button leftmost"><span class="ui-icon ui-icon-seek-next"></span></button>
 	</div>
+{% endif %}
 {% endblock %}
