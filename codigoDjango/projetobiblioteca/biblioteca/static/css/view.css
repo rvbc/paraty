@@ -163,6 +163,10 @@
 	border: 1px solid #91342C;
 }
 
+.body .table > div {
+	padding: 0 5px;
+}
+
 .body .table > div > div {
 	text-align: center;
 	vertical-align: middle;
@@ -179,11 +183,8 @@
 	color: #FFFFFF;
 	font-weight: bold;
 	font-size: 10pt;
-	padding: 5px 0;
-}
-
-.body .table .table-title > div {
-	padding: 0 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .body .table .table-entry {
@@ -192,5 +193,17 @@
 }
 
 .body .table .index, .qtd {
-	width: 7%;
+	width: 5%;
+}
+
+.body .table .isbn, .editora {
+	width: 10%;
+}
+
+.body .table .suggestion, .year, .author {
+	width: 15%;
+}
+
+.body .table .title {
+	width: 20%;
 }
