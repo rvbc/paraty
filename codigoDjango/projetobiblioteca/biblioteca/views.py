@@ -34,10 +34,14 @@ def list_books(request,page):
     else:#books' home
         c = RequestContext(request)
         books, suggestions, writers = models.searchSuggestion('')
+        books_search, suggestions_search, writers_search = models.searchBooks('')
 
         c['group_book_list'] = books
         c['group_suggestion_list'] = suggestions
         c['writers'] = writers
+        c['books_search'] = books_search
+        c['suggestions_search'] = suggestions_search
+        c['writers_search'] = writers_search
 
         if len(books) == 0:#Nothing found!
             #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
