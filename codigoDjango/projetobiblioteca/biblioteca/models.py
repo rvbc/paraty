@@ -2,7 +2,7 @@
 from django.utils import timezone
 
 from sets import Set
-from xlwt import Workbook
+from xlwt import Workbook, easyxf
 
 from tempfile import TemporaryFile
 
@@ -269,9 +269,14 @@ def exportWorkbook(query):
         #    authorStr = authorStr[:-2]        
         #sheet.write(c+1,2,authorStr)
 
+        initial_row = c+1
+        authorStr = ''
         for author in authors[item]:
-            sheet.write(c+1,2,author.name)
+            authorStr = authorStr + author.name + '\n'
+            #sheet.write(c+1,2,author.name)
             c = c + 1
+        sheet.write_merge(r1=initial_row, c1=2, r2=c, c2=2, label=authorStr[:-1], style=easyxf('alignment: wrap True;'))
+
 
 
         c = c + 1
