@@ -256,7 +256,7 @@ def exportWorkbook(query):
 
         sheet.write(c+1,3,books[item].title)
         sheet.write(c+1,4,books[item].publisher)
-        sheet.write(c+1,5,'ISBN Aqui')
+        sheet.write(c+1,5,books[item].isbn)
         sheet.write(c+1,6,books[item].edition)
         sheet.write(c+1,7,books[item].year)
         sheet.write(c+1,8,suggestions[item].name)
