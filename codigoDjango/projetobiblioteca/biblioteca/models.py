@@ -2,7 +2,7 @@
 from django.utils import timezone
 
 from sets import Set
-from xlwt import Workbook, easyxf
+from xlwt import Workbook
 
 from tempfile import TemporaryFile
 
@@ -72,7 +72,7 @@ def addSuggestion(request, writers_list):
     suggestion.save()
 
 def searchSuggestion(value):
-    books_match, suggestions_match = searchBooks(value)
+    books_match, suggestions_match, writers_list_list = searchBooks(value)
 
     books_grouping_by_title = [] #lista de lista
     suggestion_grouping_by_book_title = []
@@ -159,9 +159,9 @@ def searchBooks(value):
     books_match = books_match.order_by('title')
     suggestions_match = suggestions_match.order_by('book__title')
 
-    #writers_list_list = getWritersFromBooks(books_match)
+    writers_list_list = getWritersFromBooks(books_match)
 
-    return books_match, suggestions_match
+    return books_match, suggestions_match, writers_list_list
 
 def getWritersFromBooks(book_list):
     writers_list_list = []
@@ -205,10 +205,9 @@ def processTextArea(comment):
     return '#'.join(lines)#join elements -> 'line1#line4#line5'
 
 def exportWorkbook(query):
-    books, suggestions = searchBooks(query)
-    authors = getWritersFromBooks(books)
+    books, suggestions, authors = searchBooks(query)
     book = Workbook(encoding='utf-8')
-    sheet = book.add_sheet('Livros Sugeridos', cell_overwrite_ok=True)
+    sheet = book.add_sheet('Livros Sugeridos')
     #cols = [u'Título','Autores','Ano','Editora',u'Edição','Sugerido por','Email','Quantidade sugerida',u'Comentário'];
     cols = ['ITEM', 'QTD', 'AUTORES', u'TÍTULO', 'EDITORA', 'ISBN', u'EDIÇÃO', 'ANO', 'SUGERIDO POR', 'EMAIL', u'COMENTÁRIO']
 
@@ -270,13 +269,9 @@ def exportWorkbook(query):
         #    authorStr = authorStr[:-2]        
         #sheet.write(c+1,2,authorStr)
 
-        initial_row = c+1
-        authorStr = ''
         for author in authors[item]:
-            authorStr = authorStr + author.name + '\n'
-            #sheet.write(c+1,2,author.name)
+            sheet.write(c+1,2,author.name)
             c = c + 1
-        sheet.write_merge(r1=initial_row, c1=2, r2=c, c2=2, label=authorStr[:-1], style=easyxf('alignment: wrap True;'))
 
 
         c = c + 1
