@@ -41,7 +41,7 @@ def list_books(request,page):
         c['writers'] = writers
         c['books_search'] = books_search
         c['suggestions_search'] = suggestions_search
-        c['writers_search'] = writers_search
+        c['writers_search'] = models.joinListListWritersInListWritersString(writers_search)
 
         if len(books) == 0:#Nothing found!
             #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html

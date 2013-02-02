@@ -196,7 +196,20 @@ def getWritersStringFromGroupBookWithSameTitle(group_book):
 
     return writers_string
 
+def joinListListWritersInListWritersString (writers_list_list):
 
+    writers_list_string = []
+
+    for writers_list in writers_list_list:
+        string_concat = ''
+
+        for writer in writers_list:
+            string_concat = string_concat + writer.name + ', '
+
+        writers_list_string.append(string_concat[:-2])
+    
+    return writers_list_string
+    
 def processTextArea(comment):
     lines = comment.split('\r\n') #['line1', '', '', 'line4', 'line5']
 
