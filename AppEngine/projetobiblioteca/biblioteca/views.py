@@ -11,8 +11,6 @@ from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.template import RequestContext
 
-import json
-
 def home(request):
     t = django.template.loader.get_template("index.html")
     c = RequestContext(request)

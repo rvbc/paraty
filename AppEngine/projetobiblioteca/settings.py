@@ -50,8 +50,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # corresponding output. Helps a lot with print-debugging.
 TEST_RUNNER = 'djangotoolbox.test.CapturingTestSuiteRunner'
 
+SETTINGS_PATH = os.path.dirname(os.path.realpath(__file__))
+
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
 
 ROOT_URLCONF = 'urls'
 
