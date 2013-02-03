@@ -7,7 +7,6 @@
 
 
 {% block content %}
-{% if group_book_list %}
 	<div class="content" id="tabs-view">
 		<h1>Livros</h1>
 		<div class="block">
@@ -15,12 +14,15 @@
 				<input class="autocomplete" type="text" placeholder="Buscar por t&iacute;tulo, autor, editora..." title="Buscar" value="{{ q }}" style="width: 210px; display: inline-block;" name="q"/>
 				<input type="submit" class="button" value="buscar" />
 			</form>
+			{% if group_book_list %}
 			<form id="export_form" class="export" action="{% url biblioteca.views.books %}" method="post">
 				<input type="hidden" value="{{ q }}" name="q" />
 				<button class="button" title="Exportar como planilha" onClick="return exportButton();"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></button>
 			</form>
+			{% endif %}
 		</div>
 		
+	{% if group_book_list %}
 		<div class="main_content">
 			<div class="accordion">
 				{% for book_group in group_book_list %}
@@ -78,7 +80,9 @@
 				</div>
 			{% endfor %}
 		</div>
+		{% endif %}
 	</div>
+	{% if group_book_list %}
 	<div class="main_navigator">
 		<button class="button rightmost"><span class="ui-icon ui-icon-seek-prev"></span></button>
 		<button class="button right"><span class="ui-icon ui-icon-triangle-1-w"></span></button>
@@ -86,5 +90,5 @@
 		<button class="button left"><span class="ui-icon ui-icon-triangle-1-e"></span></button>
 		<button class="button leftmost"><span class="ui-icon ui-icon-seek-next"></span></button>
 	</div>
-{% endif %}
+	{% endif %}
 {% endblock %}
