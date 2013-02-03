@@ -22,6 +22,7 @@ INSTALLED_APPS = (
     'dbindexer',
 	'biblioteca',
 	'xlwt',
+    'django.contrib.messages',
 
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
@@ -34,6 +35,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -41,6 +43,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.core.context_processors.media',
 	'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages'
 )
 
 # This test runner captures stdout and associates tracebacks with their
@@ -51,3 +54,5 @@ ADMIN_MEDIA_PREFIX = '/media/admin/'
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
 
 ROOT_URLCONF = 'urls'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'

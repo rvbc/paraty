@@ -33,6 +33,9 @@ class Book(models.Model):
 	
     def __unicode__(self):
         return self.title
+
+    def run_query(name):
+        Book.objects.filter(search__icontains=name)
     
 class Writer(models.Model):
     name = models.CharField(max_length=100)
@@ -41,6 +44,9 @@ class Writer(models.Model):
 
     def __unicode__(self):
         return self.name + ' wrote \'' + self.book.title + '\''
+
+    def run_query(name):
+        Writer.objects.filter(search__icontains=name)
 
 class Suggestion(models.Model):
     date = models.DateTimeField()
