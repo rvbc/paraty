@@ -159,11 +159,15 @@ def searchBooks(value):
 
     #Get books from id set (and their corresponding suggestions)
     books_match = Book.objects.filter(pk__in=book_id_set)
-    suggestions_match = Suggestion.objects.filter(book__in=book_id_set)
+    suggestions_match = []
+    #suggestions_match = Suggestion.objects.filter(book__in=book_id_set)
 
     #Order books by title
     books_match = books_match.order_by('title')
-    suggestions_match = suggestions_match.order_by('book__title')
+    #suggestions_match = suggestions_match.order_by('book__title')
+    for b in books_match:
+        s = Suggestion.objects.get(book=b.pk)
+        suggestions_match.append(s)
 
     writers_list_list = getWritersFromBooks(books_match)
 
