@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="us">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+	<meta content="pt-br" http-equiv="Content-Language">
+
+	<title>CIn - Biblioteca</title>
+
+	<link href="/css/cin-theme/jquery-ui-1.9.1.custom.css" rel="stylesheet">
+	<link href="/css/base.css" type="text/css" rel="stylesheet">
+	
+	<script src="/js/jquery-1.8.2.min.js"></script>
+	<script src="/js/jquery-ui-1.9.1.custom.min.js"></script>
+	<script src="/js/jquery.placeholder.min.js"></script>
+	<script src="/js/base.js"></script>
+	
+{% block head %}{% endblock %}
+	
+</head>
+<body>
+
+{% block header %}
+
+	<div class="header">
+		<div class="content">
+			<div class="left">
+				<a href="http://www.cin.ufpe.br" >
+					<img src="/images/cin-logo2.jpg" alt="CIn - Centro de Inform&aacute;tica"  height="140px"/>
+				</a>
+			</div>
+			<div class="middle">
+				<p class="ui-widget">Biblioteca</p>
+			</div>
+			<div class="right">
+<!--
+				{% if request.session.login %}
+					<div>
+						<p class="salute">Ol&aacute;, {{ request.session.login }}</p>
+						<button class="button logout" title="logout" onClick="window.location.href='{% url biblioteca.views.logout %}';">
+							<span class="ui-icon ui-icon-arrowreturnthick-1-n"></span>
+						</button>
+					</div>
+				{% else %}
+					<div>
+						<button class="button login_button ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" onClick="login();">
+							<span class="ui-button-text">login</span>
+						</button>
+						<div style="border-top: none; border-top-right-radius: 0; position: relative; z-index: 2; width: 175px; height: 105px;right: -170px; top: -5px; padding: 10px;" class="login ui-widget ui-widget-content ui-corner-all">
+							<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
+								<form action="{% url biblioteca.views.login %}" method="post">
+									<input name="username" placeholder="Seu login" title="Informe seu login" type="text" value="" />
+									<input name="password" placeholder="Sua senha" title="Informe sua senha" type="password" value="" />
+									<input class="button" type="submit" value="ENTRAR"/>
+								</form>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+-->
+				<div class="radioset">
+					<input type="radio" id="home" name="radio" /><label for="home" onClick="window.location.href='{% url biblioteca.views.home %}';">HOME</label>
+					<input type="radio" id="suggestion" name="radio" /><label for="suggestion" onClick="window.location.href='{% url biblioteca.views.suggestion %}';">SUGERIR LIVRO</label>
+					<input type="radio" id="table" name="radio" /><label for="table" onClick="window.location.href='{% url biblioteca.views.table %}';">ACOMPANHAR SUGEST&Otilde;ES</label>
+					<input type="radio" id="books" name="radio" /><label for="books" onClick="window.location.href='{% url biblioteca.views.books %}';">BUSCAR</label>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+	<div class="body">
+		<div class="tabs main">
+	
+			{% if messages %}
+			{% for message in messages %}
+			{% ifequal message.tags 'info' %}
+				<div class="ui-widget message">
+					<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+						<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+						{% autoescape off %}<strong>Hey!</strong> {{ message }}</p>{% endautoescape %}
+					</div>
+				</div>
+			{% endifequal %}
+			{% endfor %}
+			{% endif %}
+			<br/>
+
+			{% if messages %}
+			{% for message in messages %}
+			{% ifequal message.tags 'error' %}
+				<div class="ui-widget error">
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;">
+						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+						{% autoescape off %}<strong>Alerta:</strong> {{ message }}</p>{% endautoescape %}
+					</div>
+				</div>
+			{% endifequal %}
+			{% endfor %}
+			{% endif %}
+
+			{% block content %}{% endblock %}
+
+		</div>
+	</div>
+</body>
+</html>

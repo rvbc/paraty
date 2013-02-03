@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block head %}
+	<link href="/css/view.css" type="text/css" rel="stylesheet">
+	<script src="/js/table.js"></script>
+{% endblock %}
+
+
+{% block content %}
+{% if books_search %}
+	<div class="content" id="tabs-table">
+		<h1>Livros</h1>
+		<div class="block">
+			<div class="search" >
+			</div>
+			<form id="export_form" class="export" action="{% url biblioteca.views.books %}" method="post">
+				<input type="hidden" value="{{ q }}" name="q" />
+				<button class="button" title="Exportar como planilha" onClick="return exportButton();"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></button>
+			</form>
+		</div>
+		
+		<div class="table">
+			<div class="table-title">
+				<div class="index">
+					<span>Item</span>
+				</div>
+				<div class="qtd">
+					<span>Qtd</span>
+				</div>
+				<div class="author">
+					<span>Autor</span>
+				</div>
+				<div class="title">
+					<span>T&iacute;tulo</span>
+				</div>
+				<div class="editora">
+					<span>Editora</span>
+				</div>
+				<div class="isbn">
+					<span>ISBN</span>
+				</div>
+				<div class="year">
+					<span>Edi&ccedil;&atilde;o/Ano</span>
+				</div>
+				<div class="suggestion">
+					<span>Sugerido por</span>
+				</div>
+			</div>
+
+	{% for book in books_search %}
+		{% for suggestion in suggestions_search %}
+			{% if forloop.counter == forloop.parentloop.counter %}
+			<div class="table-entry">
+				<div class="index">
+					<span>{{ forloop.counter }}</span>
+				</div>
+				<div class="qtd">
+					<span>{{ suggestion.amount }}</span>
+				</div>
+				<div class="author">
+				{% for writer in writers_search %}
+					{% if forloop.counter == forloop.parentloop.counter %}
+						<span>{{writer}}</span>
+					{% endif %}
+				{% endfor %}
+				</div>
+				<div class="title">
+					<span>{{book.title}}</span>
+				</div>
+				<div class="editora">
+					<span>{{book.publisher}}</span>
+				</div>
+				<div class="isbn">
+					<span>{{book.isbn}}</span>
+				</div>
+				<div class="year">
+					<span>{{book.edition}}{{"ª"}}/{{book.year}}</span>
+				</div>
+				<div class="suggestion">
+					<span>{{suggestion.name}}</span>
+					<span>{{suggestion.email}}</span>
+				</div>
+			</div>
+			{% endif %}
+		{% endfor %}
+	{% endfor %}
+		</div>
+	</div>
+	<div class="main_navigator">
+		<button class="button rightmost"><span class="ui-icon ui-icon-seek-prev"></span></button>
+		<button class="button right"><span class="ui-icon ui-icon-triangle-1-w"></span></button>
+		<span class="page">{% firstof page_num 1 %}</span>
+		<button class="button left"><span class="ui-icon ui-icon-triangle-1-e"></span></button>
+		<button class="button leftmost"><span class="ui-icon ui-icon-seek-next"></span></button>
+	</div>
+{% endif %}
+{% endblock %}

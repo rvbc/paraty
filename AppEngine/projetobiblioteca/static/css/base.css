@@ -1,0 +1,130 @@
+body {
+	font: 62.5% "Trebuchet MS",sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	margin-bottom: 13px;
+}
+
+input[type="text"], input[type="password"] {
+	color: #959595;
+	height: 25px;
+	width: 162px;
+	margin: 5px;
+	border: 1px solid #CCCCCC;
+	background-color: #FDFDFD;
+}
+
+.header {
+	background: #91342C repeat;
+	color: #FFFFFF;
+	width: 100%;
+}
+
+.header .content {
+	width: 920px;
+	height: 140px;
+	position: relative;
+	margin: 0 auto;
+}
+
+.header .content .login_button {
+	background-color: #FFFFFF;
+	background-image: none;
+	color: #91342C;
+}
+
+.header .content .left {
+	display: inline-block;
+	vertical-align: middle;
+	width: 20%;
+}
+
+.header .content .middle {
+	display: inline-block;
+	vertical-align: middle;
+	width: 39%;
+}
+
+.header .content .middle p {
+	font: 33px/33px "proxima-nova","Helvetica Neue",Arial,Helvetica,Geneva,sans-serif;
+	text-shadow: black 1px 2px 0;
+}
+
+.header .content .right {
+	display: inline-block;
+	width: 40%;
+	text-align: right;
+	vertical-align:top;
+	padding-top: 20px;
+}
+
+.header .radioset {
+	position: absolute;
+	top: 116px;
+	right: 10px;
+	width: 100%;
+	margin: 0;
+}
+
+.header .radioset label {
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+	border: none;
+}
+
+.body {
+	background: #FFFFFF repeat;
+	width: 100%;
+	text-align: justify;
+	margin: 0;
+}
+
+.body .main{
+	border: none;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
+.body .content {
+	width: 850px;
+	margin: 0 auto;
+	padding: 20px 10px;
+	border: none;
+}
+
+.body .content .block {
+	margin-top: 40px;
+}
+
+.login form {
+	text-align: right;
+}
+
+.salute {
+	font-size: 1.5em;
+	font-weight: bold;
+	font-style: italic;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.logout {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.add-button{
+	margin: 0 0 0 5px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.body .error, .body .message {
+	width: 850px;
+	margin: 10px auto;
+}

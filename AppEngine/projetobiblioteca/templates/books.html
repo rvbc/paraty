@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block head %}
+	<link href="/css/view.css" type="text/css" rel="stylesheet">
+	<script src="/js/view.js"></script>
+{% endblock %}
+
+
+{% block content %}
+{% if group_book_list %}
+	<div class="content" id="tabs-view">
+		<h1>Livros</h1>
+		<div class="block">
+			<form class="search" action="{% url biblioteca.views.search %}" method="get">
+				<input class="autocomplete" type="text" placeholder="Buscar por t&iacute;tulo, autor, editora..." title="Buscar" value="{{ q }}" style="width: 210px; display: inline-block;" name="q"/>
+				<input type="submit" class="button" value="buscar" />
+			</form>
+			<form id="export_form" class="export" action="{% url biblioteca.views.books %}" method="post">
+				<input type="hidden" value="{{ q }}" name="q" />
+				<button class="button" title="Exportar como planilha" onClick="return exportButton();"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></button>
+			</form>
+		</div>
+		
+		<div class="main_content">
+			<div class="accordion">
+				{% for book_group in group_book_list %}
+					<h3 onClick="return selectBook('{% for suggestion_group in group_suggestion_list %}{% if forloop.counter == forloop.parentloop.counter %}{{ suggestion_group.0.book }}{% endif %}{% endfor %}');">
+						<div class="left">
+							<b>{{book_group.0.title}}</b>
+							<p class="author">({{book_group.0.year}})</p>
+						</div>
+						<div class="right">
+							{% if book_group.0.purchased %}
+								<div class="tags">
+									<span title="Livro comprado" class="ui-icon ui-icon-circle-check"></span>
+								</div>
+							{% endif %}
+							{% if request.session.login %}
+								<div class="buttons"> 
+									<button title="Marcar como comprado" class="button"><span class="ui-icon ui-icon-cart"></span></button>
+									<button title="Deletar" class="button"><span class="ui-icon ui-icon-trash"></span></button>
+								</div>
+							{% endif %}
+						</div>
+					</h3>
+					<div class="info">
+
+					{% for writer in writers %}
+						{% if forloop.counter == forloop.parentloop.counter %}
+							<label>Autores:</label><p>{{writer}}</p><br/>
+						{% endif %}
+					{% endfor %}
+
+						<label>Editora:</label><p>{{book_group.0.publisher}}</p><br/>
+						<label>Edi&ccedil;&atilde;o:</label><p>{{book_group.0.edition}}{{"ª"}}</p><br/><br/>
+						<label>ISBN:</label><p>{{book_group.0.isbn}}</p><br/>
+						<label>Sugest&otilde;es:</label><p>{{book_group|length}}</p><br/><br/>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+		
+		<div class="side_menu">
+			{% for suggestion_group in group_suggestion_list %}
+				<div id="{{ suggestion_group.0.book }}" style="padding: 10px;" class="suggestions ui-widget ui-widget-content ui-corner-all">
+					<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
+						<div>
+							<h3>Sugest&otilde;es</h3>
+						</div>
+						{% for suggestion in suggestion_group %}
+							<div class="suggestion">
+								<span class="name"/>{{ suggestion.name }}</span><span class="email">({{ suggestion.email }})</span><br/>
+								<label>Quantidade:</label><p>{{ suggestion.amount }}</p><br/>
+								<label>Coment&aacute;rio:</label><p>{{ suggestion.comment }}</p>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="main_navigator">
+		<button class="button rightmost"><span class="ui-icon ui-icon-seek-prev"></span></button>
+		<button class="button right"><span class="ui-icon ui-icon-triangle-1-w"></span></button>
+		<span class="page">{% firstof page_num 1 %}</span>
+		<button class="button left"><span class="ui-icon ui-icon-triangle-1-e"></span></button>
+		<button class="button leftmost"><span class="ui-icon ui-icon-seek-next"></span></button>
+	</div>
+{% endif %}
+{% endblock %}

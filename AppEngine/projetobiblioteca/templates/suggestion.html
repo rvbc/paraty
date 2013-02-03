@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block head %}
+	<link href="/css/suggest.css" type="text/css" rel="stylesheet">
+	<script src="/js/suggest.js"></script>
+{% endblock %}
+
+
+{% block content %}
+	<div class="content" id="tabs-sugerir">
+		<h1>Sugest&atilde;o</h1>
+		<div class="ui-widget">
+			<form id="suggest-form" action="{% url biblioteca.views.suggestion %}" method="post">
+				<div class="block">
+					<h2>Sua Informa&ccedil;&atilde;o para Contato</h2>
+					<input type="text" placeholder="Nome" title="Informe seu nome" value="{{ form.nome.value }}" name="nome"/>
+					<input type="text" placeholder="Email" title="Informe seu email" value="{{form.email.value}}" name="email"/>
+				</div>
+				<div class="block">
+					<h2>Livro</h2>
+					<input type="text" placeholder="T&iacute;tulo" title="Informe o t&iacute;tulo do livro" value="{{form.titulo.value}}" name="titulo"/>
+					
+					<div class="authors">
+
+						{% if writers %}
+
+							{% for writer in writers %}
+								{% if forloop.last %}
+									<input class="author-input" type="text" placeholder="Autor" title="Informe o autor" value="{{writer}}" name="escritor_{{forloop.counter}}" style="display: inline-block; width: 269px; vertical-align: middle;"/>
+								{% else %}
+									<input class="author-input" type="text" placeholder="Autor" title="Informe o autor" value="{{writer}}" name="escritor_{{forloop.counter}}" style="display: block; width: 269px; vertical-align: middle;"/>
+								{% endif %}
+							{% endfor %}
+
+						{% else %}
+
+							<input class="author-input" type="text" placeholder="Autor" title="Informe o autor" value="{{form.escritor.value}}" name="escritor_1" style="display: inline-block; width: 269px; vertical-align: middle;"/>
+
+						{% endif %}
+
+						<button class="button add-button" onClick="return add_author();"><span class="ui-icon ui-icon-plusthick"></span></button>
+					</div>
+					<p class="tip">Informe um autor por vez.</p>
+					
+					<input type="text" placeholder="ISBN" title="Informe o ISBN" value="{{form.isbn.value}}" name="isbn"/>
+					<input type="text" placeholder="Editora" title="Informe a editora" value="{{form.editora.value}}" name="editora"/>
+					<input class="small" type="text" placeholder="Ano" title="Informe o ano" value="{{form.ano.value}}" name="ano" style="display: inline-block;"/>
+					<input class="small" type="text" placeholder="Edi&ccedil;&atilde;o" title="Informe a edi&ccedil;&atilde;o" value="{{form.edicao.value}}" name="edicao" style="display: inline-block;"/>
+				</div>
+				<div class="block">
+					<h2>Quantidade Sugerida</h2>
+					<span class="ui-spinner ui-widget ui-widget-content ui-corner-all">
+						<input class="spinner ui-spinner-input" autocomplete="off" role="spinbutton" value="{% firstof form.quantidade.value 1 %}" name="quantidade" style="width: 100px;"/>
+					</span>
+				</div>
+				<div class="block">
+					<h2>Coment&aacute;rio</h2>
+					<textarea rows="4" cols="46" placeholder="Seu coment&aacute;rio aqui..." value="" name="comentario">{{form.comentario.value}}</textarea>
+				</div>
+				<div class="block">
+					<input type="reset" class="button" value="CANCELAR" onClick="window.location.href='{% url biblioteca.views.home %}';" />
+					<input type="submit" class="button" value="SUGERIR" />
+				</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}

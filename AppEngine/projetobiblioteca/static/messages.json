@@ -1,0 +1,5 @@
+{
+	home : {
+		welcome_message : "Este é o sistema de recomendações de livros para a biblioteca do Centro de Informática da UFPE.\nNa aba <em>SUGERIR LIVRO</em> é possível fazer uma nova sugestão.\nEm <em>ACOMPANHAR SUGESTÕES</em> é possível acompanha todos od livros que foram sugeridos e também adquiridos pela biblioteca."
+	}
+}
