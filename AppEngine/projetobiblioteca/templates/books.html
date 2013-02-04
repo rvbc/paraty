@@ -26,7 +26,7 @@
 		<div class="main_content">
 			<div class="accordion">
 				{% for book_group in group_book_list %}
-					<h3 onClick="return selectBook('{% for suggestion_group in group_suggestion_list %}{% if forloop.counter == forloop.parentloop.counter %}{{ suggestion_group.0.book }}{% endif %}{% endfor %}');">
+					<h3 onClick="return selectBook('{% for suggestion_group in group_suggestion_list %}{% if forloop.counter == forloop.parentloop.counter %}{{ suggestion_group.0.id }}{% endif %}{% endfor %}');">
 						<div class="left">
 							<b>{{book_group.0.title}}</b>
 							<p class="author">({{book_group.0.year}})</p>
@@ -64,7 +64,7 @@
 		
 		<div class="side_menu">
 			{% for suggestion_group in group_suggestion_list %}
-				<div id="{{ suggestion_group.0.book }}" style="padding: 10px;" class="suggestions ui-widget ui-widget-content ui-corner-all">
+				<div id="{{ suggestion_group.0.id }}" style="padding: 10px;" class="suggestions ui-widget ui-widget-content ui-corner-all">
 					<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
 						<div>
 							<h3>Sugest&otilde;es</h3>

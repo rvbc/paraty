@@ -85,13 +85,12 @@
 }
 
 .main_content .accordion .left {
-	width: 58%;
+	min-width: 84%;
 	display: inline-block;
 	vertical-align: middle;
 }
 
 .main_content .accordion .right {
-	width: 40%;
 	text-align: right;
 	display: inline-block;
 	vertical-align: middle;
@@ -202,6 +201,6 @@
 	width: 10%;
 }
 
-.body .table .isbn, .author, .suggestion, .year, .title {
+.body .table .isbn, .author, .sug, .year, .title {
 	width: 15%;
 }
