@@ -69,7 +69,7 @@ class BookView:
         self.total_amount = amount
 
 def addSuggestion(request, writers_list):
-    isbn_field = request.POST['isbn']
+    isbn_field = request.POST['isbn'].upper()
     
     #If there is a book with isbn, then dont add book and writers again.
     book = []
@@ -136,7 +136,8 @@ def processTextArea(comment):
 
 
 def exportWorkbook(query, withCourse=1):
-    books, suggestions, authors = searchBooks(query)
+    #books, suggestions, authors = searchBooks(query)
+    bookView = searchBooks(query)
     book = Workbook(encoding='utf-8')
     sheet = book.add_sheet('Livros Sugeridos')
     cols = ['ITEM', 'QTD', 'AUTORES', u'TÍTULO', 'EDITORA', 'ISBN', u'EDIÇÃO', 'ANO', 'SUGERIDO POR', 'EMAIL', u'COMENTÁRIO']
@@ -165,7 +166,7 @@ def exportWorkbook(query, withCourse=1):
 
     c = 0
     item = 0
-    while len(books) > item:
+    while len(bookView) > item:
         #sheet.write(c+1,0,books[c].title)
         #authorStr = '';
         #for author in authors[c]:
@@ -186,18 +187,18 @@ def exportWorkbook(query, withCourse=1):
         #sheet.write(c+1,1,suggestions[item].amount)
         
 
-        sheet.write(c+1,3,books[item].title)
-        sheet.write(c+1,4,books[item].publisher)
-        sheet.write(c+1,5,books[item].isbn)
-        sheet.write(c+1,6,books[item].edition)
-        sheet.write(c+1,7,books[item].year)
+        sheet.write(c+1,3,bookView[item].book.title)
+        sheet.write(c+1,4,bookView[item].book.publisher)
+        sheet.write(c+1,5,bookView[item].book.isbn)
+        sheet.write(c+1,6,bookView[item].book.edition)
+        sheet.write(c+1,7,bookView[item].book.year)
         #sheet.write(c+1,8,suggestions[item].name)
         #sheet.write(c+1,9,suggestions[item].email)
         #sheet.write(c+1,10,suggestions[item].comment)
 
         countSuggestion = 0
         
-        for suggestion in suggestions[item]:
+        for suggestion in bookView[item].suggestions:
             sheet.write(c+1 + countSuggestion,1,suggestion.amount)
             
             if withCourse == 1:
@@ -217,14 +218,14 @@ def exportWorkbook(query, withCourse=1):
 
         initial_row = c+1
         authorStr = ''
-        for author in authors[item]:
+        for author in bookView[item].writers:
             authorStr = authorStr + author.name + '\n'
             #sheet.write(c+1,2,author.name)
             c = c + 1
         sheet.write_merge(r1=initial_row, c1=2, r2=c, c2=2, label=authorStr[:-1], style=easyxf('alignment: wrap True;'))
 
-        if len(suggestions[item]) > len(authors[item]):
-            c = c + (len(suggestions[item]) - len(authors[item]))
+        if countSuggestion > len(bookView[item].writers):
+            c = c + (countSuggestion - len(bookView[item].writers))
 
         c = c + 1
         item = item + 1
