@@ -29,7 +29,7 @@ class User(models.Model):
 class Book(models.Model):
     isbn = models.CharField(max_length=13,primary_key=True)
     title = models.CharField(max_length=100)
-    year = models.IntegerField()
+    year = models.CharField(max_length=4)
     publisher = models.CharField(max_length=100)
     edition = models.IntegerField()
     purchased = models.BooleanField()
@@ -78,7 +78,7 @@ def addSuggestion(request, writers_list):
     except ObjectDoesNotExist:
         
         #book
-        book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, isbn=request.POST['isbn'].upper())
+        book = Book(title=request.POST['titulo'], year=str(request.POST['ano']), publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, isbn=request.POST['isbn'].upper())
         book.save()
         
         #writer
@@ -101,8 +101,6 @@ def searchBooks(value):
     if value is not None and len(value) > 0:
         books = search(Book, value)
         writers = search(Writer, value)
-        print '============================= search: '+value
-        print len(books)
     else:
         books = Book.objects.all()
     
@@ -116,14 +114,14 @@ def searchBooks(value):
         result.append(BookView(book=b, suggestions=s, writers=w, amount=a))
     
     for writer in writers:
-        if(writer.book not in book_ids):
-            book_ids.add(writer.book)
-            s = Suggestion.objects.filter(book=writer.book).order_by('-date')
-            w = Writer.objects.filter(book=writer.book).order_by('name')
+        if(writer.book.pk not in book_ids):
+            book_ids.add(writer.book.pk)
+            s = Suggestion.objects.filter(book=writer.book.pk).order_by('-date')
+            w = Writer.objects.filter(book=writer.book.pk).order_by('name')
             a = 0
             for sug in s:
                 a += sug.amount
-            result.append(BookView(book=b, suggestions=s, writers=w, amount=a))
+            result.append(BookView(book=writer.book, suggestions=s, writers=w, amount=a))
 
     return result
 
