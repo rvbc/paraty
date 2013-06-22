@@ -33,6 +33,7 @@ class Book(models.Model):
     publisher = models.CharField(max_length=100)
     edition = models.IntegerField()
     purchased = models.BooleanField()
+    authors = models.CharField(max_length=100)
     
     def __unicode__(self):
         return self.title
@@ -77,15 +78,22 @@ def addSuggestion(request, writers_list):
         book = Book.objects.get(pk=isbn_field)
     except ObjectDoesNotExist:
         
+        s = []   
+        #writer
+        for writer_name in writers_list:
+            s += writer_name+' '
+
+        print '===================================== '+s
+
         #book
-        book = Book(title=request.POST['titulo'], year=str(request.POST['ano']), publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, isbn=request.POST['isbn'].upper())
+        book = Book(title=request.POST['titulo'], year=str(request.POST['ano']), publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, isbn=request.POST['isbn'].upper(), authors=s)
         book.save()
-        
+
         #writer
         for writer_name in writers_list:
             writer = Writer(name=writer_name, book=book)
             writer.save()
-    
+            
     #suggestion
     processed_comment = processTextArea(request.POST['comentario'])
     suggestion = Suggestion(date=datetime.datetime.now(), book=book, name=request.POST['nome'], email=request.POST['email'], course=request.POST['disciplina'], amount=request.POST['quantidade'], comment=processed_comment)
@@ -97,10 +105,8 @@ def searchBooks(value):
     
     #Get books from id set (and their corresponding suggestions)
     books = []
-    writers = []
     if value is not None and len(value) > 0:
         books = search(Book, value)
-        writers = search(Writer, value)
     else:
         books = Book.objects.all()
     
@@ -112,16 +118,6 @@ def searchBooks(value):
         for sug in s:
             a += sug.amount
         result.append(BookView(book=b, suggestions=s, writers=w, amount=a))
-    
-    for writer in writers:
-        if(writer.book.pk not in book_ids):
-            book_ids.add(writer.book.pk)
-            s = Suggestion.objects.filter(book=writer.book).order_by('-date')
-            w = Writer.objects.filter(book=writer.book).order_by('name')
-            a = 0
-            for sug in s:
-                a += sug.amount
-            result.append(BookView(book=writer.book, suggestions=s, writers=w, amount=a))
 
     return result
 
