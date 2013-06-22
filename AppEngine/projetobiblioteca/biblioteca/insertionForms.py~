@@ -4,7 +4,7 @@ from django.core.validators import RegexValidator
 import datetime
 
 class SuggestionForm(forms.Form):
-    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Apenas letras e n&uacute;meros permitidos.')
+    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Apenas letras e numeros permitidos.')
     
     nome = forms.CharField(max_length=200)
     email = forms.EmailField()
