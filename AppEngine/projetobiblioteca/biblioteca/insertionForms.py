@@ -11,7 +11,7 @@ class SuggestionForm(forms.Form):
     
     nome = forms.CharField(max_length=200)
     email = forms.EmailField()
-    disciplina = forms.CharField(max_length=100)
+    disciplina = forms.CharField(max_length=100, required=False)
     
     titulo = forms.CharField(max_length=100)
     #escritor = forms.CharField(max_length=100)
