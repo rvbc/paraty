@@ -15,7 +15,7 @@ import bisect
 import datetime
 import unicodedata
 
-excel_columns = [['Quantidade', 'QTD'], ['Autores', 'AUTORES'], [u'Título do livro', u'TÍTULO'], ['Editora', 'EDITORA'], ['ISBN', 'ISBN'], [u'Edição', u'EDIÇÃO'], ['Ano', 'ANO'], ['Disciplina', 'DISCIPLINA'],['Nome do professor', 'SUGERIDO POR'], ['Email do professor', 'EMAIL'], [u'Comentário do professor', u'COMENTÁRIO']]
+excel_columns = [['Autores', 'AUTORES'], [u'Título do livro', u'TÍTULO'], ['Editora', 'EDITORA'], ['ISBN', 'ISBN'], [u'Edição', u'EDIÇÃO'], ['Ano', 'ANO'], ['Quantidade', 'QTD'], ['Disciplina', 'DISCIPLINA'],['Nome do professor', 'SUGERIDO POR'], ['Email do professor', 'EMAIL'], [u'Comentário do professor', u'COMENTÁRIO']]
 
 def strip_accents(s):
     return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
@@ -205,9 +205,10 @@ def exportWorkbook(query, selection):
             sheet.write(c+1 + countSuggestion,colInds['SUGERIDO POR'],suggestion.name)
             sheet.write(c+1 + countSuggestion,colInds['EMAIL'],suggestion.email)
             sheet.write(c+1 + countSuggestion,colInds[u'COMENTÁRIO'],suggestion.comment)
+            sheet.write(c+1 + countSuggestion,colInds['QTD'],suggestion.amount)
             countSuggestion = countSuggestion + 1
         
-        sheet.write(c+1 + countSuggestion,colInds['QTD'],countSuggestion)
+        
         
         #authorStr = '';
         #for author in authors[c]:
