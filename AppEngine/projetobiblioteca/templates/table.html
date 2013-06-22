@@ -48,49 +48,37 @@
 			</div>
 
 	{% for book in books %}
-		{% for suggestion in suggestions %}
-			{% if forloop.counter == forloop.parentloop.counter %}
 			<div class="table-entry">
 				<div class="index">
 					<span>{{ forloop.counter }}</span>
 				</div>
 				<div class="qtd">
-				{% for amount in amounts %}
-					{% if forloop.counter == forloop.parentloop.counter %}
-						<span>{{ amount }}</span>
-					{% endif %}
-				{% endfor %}
+					<span>{{ book.total_amount }}</span>
 				</div>
 				<div class="author">
-				{% for writer in writers %}
-					{% if forloop.counter == forloop.parentloop.counter %}
-						{% for w in writer %}
-							<span>{{w.name}}</span>
-						{% endfor %}
-					{% endif %}
+				{% for writer in book.writers %}
+					<span>{{writer.name}}</span>
 				{% endfor %}
 				</div>
 				<div class="title">
-					<span>{{book.title}}</span>
+					<span>{{book.book.title}}</span>
 				</div>
 				<div class="editora">
-					<span>{{book.publisher}}</span>
+					<span>{{book.book.publisher}}</span>
 				</div>
 				<div class="isbn">
-					<span>{{book.isbn}}</span>
+					<span>{{book.book.isbn}}</span>
 				</div>
 				<div class="year">
-					<span>{{book.edition}}{{"ª"}}/{{book.year}}</span>
+					<span>{{book.book.edition}}/{{book.book.year}}</span>
 				</div>
 				<div class="sug">
-				{% for s in suggestion %}
-					<span style="font-weight: bold;">{{s.name}}</span>
-					<span>{{s.email}}</span>
+				{% for suggestion in book.suggestions %}
+					<span style="font-weight: bold;">{{suggestion.name}}</span>
+					<span>{{suggestion.email}}</span>
 				{% endfor %}
 				</div>
 			</div>
-			{% endif %}
-		{% endfor %}
 	{% endfor %}
 		</div>
 	</div>

@@ -7,8 +7,10 @@ import os
 
 # Activate django-dbindexer for the default database
 DATABASES['native'] = DATABASES['default']
-DATABASES['default'] = {'ENGINE': 'dbindexer', 'TARGET': 'native'}
-AUTOLOAD_SITECONF = 'indexes'
+DATABASES['default'] = {'ENGINE': 'dbindexer', 'TARGET': 'gae'}
+DATABASES['gae'] = { 'ENGINE': 'djangoappengine.db' }
+
+AUTOLOAD_SITECONF = 'indexer'
 
 SECRET_KEY = '=r-$b*8hglm+858&9t043hlm6-&6-3d3vfc4((7yd0dbrakhvi'
 
@@ -19,6 +21,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'djangotoolbox',
     'autoload',
+    'indexer',
     'dbindexer',
     'search',
 	'biblioteca',

@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: iso-8859-15 -*-
+
 from django.db import models
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
@@ -57,12 +60,13 @@ class BookView:
     book = Book()
     writers = []
     suggestions = []
-    
-    def __init__(self, book, writers, suggestions):
-        self.book = book
-        self.writers = writers
-        self.suggestions = suggestions
+    total_amount = 0
 
+    def __init__(self, book, writers, suggestions, amount):
+        self.book = book
+        self.suggestions = suggestions
+        self.writers = writers
+        self.total_amount = amount
 
 def addSuggestion(request, writers_list):
     isbn_field = request.POST['isbn']
@@ -92,24 +96,30 @@ def searchBooks(value):
     result = []
     
     #Get books from id set (and their corresponding suggestions)
-    #Order books by title
+    books = []
+    if value is not None and len(value) > 0:
+        books = search(Book, value)
+    else:
+        books = Book.objects.all()
     
-    for b in search(Book, value).order_by('titulo'):
+    for b in books:
         book_ids.add(b.pk);
         s = Suggestion.objects.filter(book=b.pk).order_by('-date')
         w = Writer.objects.filter(book=b.pk).order_by('name')
-        result.append(BookView(book=b, suggestions=s, writers=w))
+        a = 0
+        for sug in s:
+            a += sug.amount
+        result.append(BookView(book=b, suggestions=s, writers=w, amount=a))
     
-    titles = [b.book.titulo for b in result]
     for writer in search(Writer, value):
         if(writer.book not in book_ids):
             book_ids.add(writer.book)
             s = Suggestion.objects.filter(book=writer.book).order_by('-date')
             w = Writer.objects.filter(book=writer.book).order_by('name')
-            
-            pos = bisect.bisect(titles, writer.book)
-            titles.insert(pos, writer.book)
-            result.insert(BookView(book=b, suggestions=s, writers=w))
+            a = 0
+            for sug in s:
+                a += sug.amount
+            result.append(BookView(book=b, suggestions=s, writers=w, amount=a))
 
     return result
 
@@ -127,7 +137,6 @@ def exportWorkbook(query, withCourse=1):
     books, suggestions, authors = searchBooks(query)
     book = Workbook(encoding='utf-8')
     sheet = book.add_sheet('Livros Sugeridos')
-    #cols = [u'Título','Autores','Ano','Editora',u'Edição','Sugerido por','Email','Quantidade sugerida',u'Comentário'];
     cols = ['ITEM', 'QTD', 'AUTORES', u'TÍTULO', 'EDITORA', 'ISBN', u'EDIÇÃO', 'ANO', 'SUGERIDO POR', 'EMAIL', u'COMENTÁRIO']
 
     if withCourse == 1:#Add 'DISCIPLINA'

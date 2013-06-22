@@ -14,7 +14,7 @@
 				<input type="text" placeholder="Buscar por t&iacute;tulo, autor, editora..." title="Buscar" value="{{ q }}" style="width: 210px; display: inline-block;" name="q"/>
 				<input type="submit" class="button" value="buscar" />
 			</form>
-			{% if group_book_list %}
+			{% if books %}
 			<form id="export_form" class="export" action="{% url biblioteca.views.books %}" method="post">
 				<input type="hidden" value="{{ q }}" name="q" />
 				<button class="button" title="Exportar como planilha" onClick="return exportButton();"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></button>
@@ -28,11 +28,11 @@
 				{% for book in books %}
 					<h3>
 						<div class="left">
-							<b>{{book.title}}</b>
-							<p class="author">({{book.year}})</p>
+							<b>{{book.book.title}}</b>
+							<p class="author">({{book.book.year}})</p>
 						</div>
 						<div class="right">
-							{% if book.purchased %}
+							{% if book.book.purchased %}
 								<div class="tags">
 									<span title="Livro comprado" class="ui-icon ui-icon-circle-check"></span>
 								</div>
@@ -47,46 +47,38 @@
 					</h3>
 					<div class="info">
 
-					{% for writer in writers %}
-						{% if forloop.counter == forloop.parentloop.counter %}
-							{% for w in writer %}
-								<p class="authors">{{w.name}}</p>
-							{% endfor %}
-						{% endif %}
+					{% for writer in book.writers %}
+						<p class="authors">{{w.name}}</p>
 					{% endfor %}
 	
 						<br/>
-						<label>Editora:</label><p>{{book.publisher}}</p>
-						<label>Edi&ccedil;&atilde;o:</label><p>{{book.edition}}</p><br/>
-						<label>ISBN:</label><p>{{book.isbn}}</p><br/>
+						<label>Editora:</label><p>{{book.book.publisher}}</p>
+						<label>Edi&ccedil;&atilde;o:</label><p>{{book.book.edition}}</p><br/>
+						<label>ISBN:</label><p>{{book.book.isbn}}</p><br/>
 						
-						{% for suggestion in suggestions %}
-							{% if forloop.counter == forloop.parentloop.counter %}
-							<div class="suggestions" style="background: none; border: 0;">
-								<div class="head" alt="{{book.isbn}}">
-									<span class="{{book.isbn}} ui-icon ui-icon-triangle-1-e"></span>
-									<span>Sugest&otilde;es</span>
-								</div>
-								<div id="{{book.isbn}}" style="display:none;">
-								{% for s in suggestion %}
-									<div class="suggestion">
-										<p class="name"/>{{ s.name }}</p>
-										<p class="email">({{ s.email }})</p><br/>
-										<label>Quantidade:</label><p>{{ s.amount }}</p><br/>
-										<label>Coment&aacute;rio:</label><p>{{ s.comment }}</p>
-									</div>
-								{% endfor %}
-								</div>
+						<div class="suggestions" style="background: none; border: 0;">
+							<div class="head" alt="{{book.book.isbn}}">
+								<span class="{{book.book.isbn}} ui-icon ui-icon-triangle-1-e"></span>
+								<span>Sugest&otilde;es</span>
 							</div>
-							{% endif %}
-						{% endfor %}
+							<div id="{{book.book.isbn}}" style="display:none;">
+							{% for suggestion in book.suggestions %}
+								<div class="suggestion">
+									<p class="name"/>{{ suggestion.name }}</p>
+									<p class="email">({{ suggestion.email }})</p><br/>
+									<label>Quantidade:</label><p>{{ suggestion.amount }}</p><br/>
+									<label>Coment&aacute;rio:</label><p>{{ suggestion.comment }}</p>
+								</div>
+							{% endfor %}
+							</div>
+						</div>
 					</div>
 				{% endfor %}
 			</div>
 		</div>
 		{% endif %}
 	</div>
-	{% if group_book_list %}
+	{% if book %}
 	<div class="main_navigator">
 		<button class="button rightmost"><span class="ui-icon ui-icon-seek-prev"></span></button>
 		<button class="button right"><span class="ui-icon ui-icon-triangle-1-w"></span></button>

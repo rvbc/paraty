@@ -1,10 +1,13 @@
+#!/usr/bin/python
+# -*- coding: iso-8859-15 -*-
+
 from django import forms
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.validators import RegexValidator
 import datetime
 
 class SuggestionForm(forms.Form):
-    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Apenas letras e n&uacute;meros permitidos.')
+    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', u'Apenas letras e números permitidos.')
     
     nome = forms.CharField(max_length=200)
     email = forms.EmailField()
@@ -28,7 +31,7 @@ class SuggestionForm(forms.Form):
         if value == '':#Filed is empty
             message = 'empty'
         elif field_name == 'isbn':#CharField(max_length=13)
-            message = 'O campo \'' + field_name + '\' suporta no maximo 13 letras ou n&uacute;meros'
+            message = u'O campo \'' + field_name + '\' suporta no maximo 13 letras ou números'
         elif field_name == 'nome' or field_name == 'comentario':#CharField(max_length=200)
             message = 'O campo \'' + field_name + '\' suporta somente 200 caracteres'
         elif field_name == 'titulo' or field_name == 'escritor' or field_name == 'editora' or field_name == 'disciplina':#CharField(max_length=100)

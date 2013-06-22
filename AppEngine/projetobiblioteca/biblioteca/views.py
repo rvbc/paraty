@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: iso-8859-15 -*-
+
 # Create your views here.
 from biblioteca.models import Book, User, Writer, Suggestion
 from biblioteca import models
@@ -31,19 +34,9 @@ def list_books(request,page):
         return export(request)
     else:#books' home
         c = RequestContext(request)
-        books, suggestions, writers = models.searchBooks('')
-
-        amounts = []
-        for suggestion in suggestions:
-            s = 0
-            for sug in suggestion:
-                s += sug.amount
-            amounts.append(s); 
+        books = models.searchBooks('')
 
         c['books'] = books
-        c['suggestions'] = suggestions
-        c['writers'] = writers
-        c['amounts'] = amounts
 
         if len(books) == 0:#Nothing found!
             #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
@@ -112,11 +105,9 @@ def search(request):
     c = RequestContext(request)
     if len(q) > 0:
         q = q.strip()
-    books, suggestions, writers = models.searchBooks(q)
+    books = models.searchBooks(q)
 
     c['books'] = books
-    c['suggestions'] = suggestions
-    c['writers'] = writers
     c['q'] = q
 
     if len(books) == 0:#Nothing found!
@@ -131,7 +122,7 @@ def export(request):
     c = RequestContext(request)
     if len(q) > 0:
         q = q.strip()
-    books, suggestions, writers = models.searchBooks(q)
+    books = models.searchBooks(q)
 
     planilha, name = models.exportWorkbook(q)
 
@@ -140,8 +131,6 @@ def export(request):
     if len(books) == 0:#Nothing found!
         #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
         c['books'] = books
-        c['suggestions'] = suggestions
-        c['writers'] = writers
         messages.add_message(request,messages.ERROR, 'Nenhum livro para ser exportado. Se uma busca foi feita, tente utilizar novos termos.')
         c['q'] = q
         return TemplateResponse(request, 'books.html', c)
@@ -163,7 +152,7 @@ def login(request):
                 if user.password == request.POST['password']:
                     request.session['login'] = user.login
                 else:
-                    messages.add_message(request, messages.ERROR, 'Senha inv&aacute;lida.')
+                    messages.add_message(request, messages.ERROR, u'Senha inválida.')
 
             except User.DoesNotExist:
                 messages.add_message(request, messages.ERROR, 'Login inexistente.')
@@ -171,7 +160,7 @@ def login(request):
         else:
             messages.add_message(request, messages.ERROR, 'Informe sua senha para login.')
     else:
-        messages.add_message(request, messages.ERROR, 'Informe seu nome de usu&aacute;rio para login.')
+        messages.add_message(request, messages.ERROR, 'Informe seu nome de usuário para login.')
 
     return HttpResponseRedirect(reverse('biblioteca.views.home'))
 
