@@ -74,7 +74,7 @@ def addSuggestion(request, writers_list):
     
     #suggestion
     processed_comment = processTextArea(request.POST['comentario'])
-    s = processed_comment + ' ' + request.POST['nome'] + ' ' + request.POST['email'] + ' ' + request.POST['disciplina']
+    s = processed_comment + ' ' + request.POST['nome'] + ' ' + request.POST['email']
     suggestion = Suggestion(date=datetime.datetime.now(), book=book, name=request.POST['nome'], email=request.POST['email'], course=request.POST['disciplina'], amount=request.POST['quantidade'], comment=processed_comment, search=strip_accents(s))
     suggestion.save()
 
