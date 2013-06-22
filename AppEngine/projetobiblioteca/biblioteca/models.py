@@ -15,6 +15,8 @@ import bisect
 import datetime
 import unicodedata
 
+excel_columns = [['Quantidade', 'QTD'], ['Autores', 'AUTORES'], [u'Título do livro', u'TÍTULO'], ['Editora', 'EDITORA'], ['ISBN', 'ISBN'], [u'Edição', u'EDIÇÃO'], ['Ano', 'ANO'], ['Disciplina', 'DISCIPLINA'],['Nome do professor', 'SUGERIDO POR'], ['Email do professor', 'EMAIL'], [u'Comentário do professor', u'COMENTÁRIO']]
+
 def strip_accents(s):
     return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
 
@@ -129,16 +131,24 @@ def processTextArea(comment):
     return '#'.join(lines)#join elements -> 'line1#line4#line5'
 
 
-def exportWorkbook(query, withCourse=1):
+def getExcelColumns():
+    return excel_columns
+
+def exportWorkbook(query, selection):
     #books, suggestions, authors = searchBooks(query)
     bookView = searchBooks(query)
     book = Workbook(encoding='utf-8')
     sheet = book.add_sheet('Livros Sugeridos')
-    cols = ['ITEM', 'QTD', 'AUTORES', u'TÍTULO', 'EDITORA', 'ISBN', u'EDIÇÃO', 'ANO', 'SUGERIDO POR', 'EMAIL', u'COMENTÁRIO']
-
-    if withCourse == 1:#Add 'DISCIPLINA'
-        cols = ['ITEM', 'QTD', 'AUTORES', u'TÍTULO', 'EDITORA', 'ISBN', u'EDIÇÃO', 'ANO', 'DISCIPLINA','SUGERIDO POR', 'EMAIL', u'COMENTÁRIO']
-
+    cols = ['ITEM']
+    colInds = {'ITEM': 0}
+    
+    c = 1
+    for col in excel_columns:
+        if col[1] in selection:
+            cols.append(col[1])
+            colInds[col[1]] = c
+            c = c + 1
+    
     c = 0
     while len(cols) > c:
         sheet.write(0,c,cols[c])
@@ -152,11 +162,11 @@ def exportWorkbook(query, withCourse=1):
     #sheet.col(8).width = sheet.col(8).width * 4; #comment
     
     #sheet.col(0).width = sheet.col(1).width * 2; #amount
-    sheet.col(2).width = sheet.col(2).width * 2; #authors
-    sheet.col(3).width = sheet.col(3).width * 2; #title
-    sheet.col(5).width = sheet.col(5).width * 3; #ISBN
-    sheet.col(9).width = sheet.col(9+withCourse).width * 2; #email
-    sheet.col(10).width = sheet.col(10+withCourse).width * 4; #comment
+    sheet.col(colInds['AUTORES']).width = sheet.col(colInds['AUTORES']).width * 2; #authors
+    sheet.col(colInds[u'TÍTULO']).width = sheet.col(colInds[u'TÍTULO']).width * 2; #title
+    sheet.col(colInds['ISBN']).width = sheet.col(colInds['ISBN']).width * 3; #ISBN
+    sheet.col(colInds['EMAIL']).width = sheet.col(colInds['EMAIL']).width * 2; #email
+    sheet.col(colInds[u'COMENTÁRIO']).width = sheet.col(colInds[u'COMENTÁRIO']).width * 4; #comment
 
     c = 0
     item = 0
@@ -177,31 +187,27 @@ def exportWorkbook(query, withCourse=1):
         #sheet.write(c+1,7,suggestions[c].amount)
         #sheet.write(c+1,8,suggestions[c].comment)
         
-        sheet.write(c+1,0,item+1)
+        sheet.write(c+1,colInds['ITEM'],item+1)
         #sheet.write(c+1,1,suggestions[item].amount)
         
-
-        sheet.write(c+1,3,bookView[item].book.title)
-        sheet.write(c+1,4,bookView[item].book.publisher)
-        sheet.write(c+1,5,bookView[item].book.isbn)
-        sheet.write(c+1,6,bookView[item].book.edition)
-        sheet.write(c+1,7,bookView[item].book.year)
+        sheet.write(c+1,colInds[u'TÍTULO'],bookView[item].book.title)
+        sheet.write(c+1,colInds['EDITORA'],bookView[item].book.publisher)
+        sheet.write(c+1,colInds['ISBN'],bookView[item].book.isbn)
+        sheet.write(c+1,colInds[u'EDIÇÃO'],bookView[item].book.edition)
+        sheet.write(c+1,colInds['ANO'],bookView[item].book.year)
         #sheet.write(c+1,8,suggestions[item].name)
         #sheet.write(c+1,9,suggestions[item].email)
         #sheet.write(c+1,10,suggestions[item].comment)
 
         countSuggestion = 0
-        
         for suggestion in bookView[item].suggestions:
-            sheet.write(c+1 + countSuggestion,1,suggestion.amount)
-            
-            if withCourse == 1:
-                sheet.write(c+1 + countSuggestion,8,suggestion.course)
-            
-            sheet.write(c+1 + countSuggestion,8+withCourse,suggestion.name)
-            sheet.write(c+1 + countSuggestion,9+withCourse,suggestion.email)
-            sheet.write(c+1 + countSuggestion,10+withCourse,suggestion.comment)
+            sheet.write(c+1 + countSuggestion,colInds['DISCIPLINA'],suggestion.course)
+            sheet.write(c+1 + countSuggestion,colInds['SUGERIDO POR'],suggestion.name)
+            sheet.write(c+1 + countSuggestion,colInds['EMAIL'],suggestion.email)
+            sheet.write(c+1 + countSuggestion,colInds[u'COMENTÁRIO'],suggestion.comment)
             countSuggestion = countSuggestion + 1
+        
+        sheet.write(c+1 + countSuggestion,colInds['QTD'],countSuggestion)
         
         #authorStr = '';
         #for author in authors[c]:
@@ -216,7 +222,7 @@ def exportWorkbook(query, withCourse=1):
             authorStr = authorStr + author.name + '\n'
             #sheet.write(c+1,2,author.name)
             c = c + 1
-        sheet.write_merge(r1=initial_row, c1=2, r2=c, c2=2, label=authorStr[:-1], style=easyxf('alignment: wrap True;'))
+        sheet.write_merge(r1=initial_row, c1=colInds['AUTORES'], r2=c, c2=colInds['AUTORES'], label=authorStr[:-1], style=easyxf('alignment: wrap True;'))
 
         if countSuggestion > len(bookView[item].writers):
             c = c + (countSuggestion - len(bookView[item].writers))

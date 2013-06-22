@@ -37,6 +37,7 @@ def list_books(request,page):
         books = models.searchBooks('')
 
         c['books'] = books
+        c['columns'] = models.getExcelColumns();
 
         if len(books) == 0:#Nothing found!
             #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
@@ -108,6 +109,7 @@ def search(request):
     books = models.searchBooks(q)
 
     c['books'] = books
+    c['columns'] = models.getExcelColumns();
     c['q'] = q
 
     if len(books) == 0:#Nothing found!
@@ -119,18 +121,20 @@ def search(request):
 
 def export(request):
     q = request.POST['q']
+    columns = [r[1] for r in models.getExcelColumns()]
     c = RequestContext(request)
     if len(q) > 0:
         q = q.strip()
     books = models.searchBooks(q)
 
-    planilha, name = models.exportWorkbook(q)
+    planilha, name = models.exportWorkbook(q, columns)
 
     #x = z#DEBUG
 
     if len(books) == 0:#Nothing found!
         #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
         c['books'] = books
+        c['columns'] = models.getExcelColumns();
         messages.add_message(request,messages.ERROR, 'Nenhum livro para ser exportado. Se uma busca foi feita, tente utilizar novos termos.')
         c['q'] = q
         return TemplateResponse(request, 'books.html', c)

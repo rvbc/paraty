@@ -1,4 +1,9 @@
 
+function exportLink(){
+	$('#export_dialog').dialog('open');
+	return false;
+}
+
 function exportButton(){
 	$('#export_form').submit();
 	return false;
@@ -24,5 +29,18 @@ $(
 		$('.header .radioset #books').click();
 		$('.suggestions .head').click(toggleSuggestions);
 		$('.ui-accordion-content').css('height', 'auto');
+		$('#export_dialog').dialog({ 
+			autoOpen: false,
+			modal: true,
+			buttons: {
+				"OK": function() {
+					exportButton();
+					$(this).dialog('close');
+				},
+				Cancel: function() {
+					$(this).dialog('close');
+				}
+			}
+		});
 	}
 );
