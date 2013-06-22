@@ -15,5 +15,9 @@ function add_author(){
 $(
 	function(){
 		$('.header .radioset #suggestion').click();
+		$('input[data-mask]').each(function() {
+			var input = $(this);
+			input.setMask(input.data('mask'));
+		});
 	}
 );

@@ -2,6 +2,8 @@
 
 {% block head %}
 	<link href="/css/suggest.css" type="text/css" rel="stylesheet">
+	<script src="/js/jquery-1.8.2.min.js"></script>
+	<script src="/js/jquery-meiomask.1.1.7.min.js"></script>
 	<script src="/js/suggest.js"></script>
 {% endblock %}
 
@@ -42,7 +44,8 @@
 					</div>
 					<p class="tip">Informe um autor por vez.</p>
 					
-					<input type="text" placeholder="ISBN" title="Informe o ISBN" value="{{form.isbn.value}}" name="isbn"/>
+					<input type="text" placeholder="ISBN" title="Informe o ISBN" value="{{form.isbn.value}}" name="isbn" maxlength="13" data-mask="isbn"/>
+					<p class="tip">Apenas letras e d&iacute;gitos, m&aacute;ximo de 13 caracteres.</p>
 					<input type="text" placeholder="Editora" title="Informe a editora" value="{{form.editora.value}}" name="editora"/>
 					<input class="small" type="text" placeholder="Ano" title="Informe o ano" value="{{form.ano.value}}" name="ano" style="display: inline-block;"/>
 					<input class="small" type="text" placeholder="Edi&ccedil;&atilde;o" title="Informe a edi&ccedil;&atilde;o" value="{{form.edicao.value}}" name="edicao" style="display: inline-block;"/>
