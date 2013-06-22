@@ -56,6 +56,7 @@ class Suggestion(models.Model):
     amount = models.IntegerField()
     comment = models.CharField(max_length=200)
     search = models.CharField(max_length=1000)
+    course = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name + ' suggests ' + str(self.amount) + ' volumes of \'' + self.book.title + '\''
@@ -74,7 +75,7 @@ def addSuggestion(request, writers_list):
     #suggestion
     processed_comment = processTextArea(request.POST['comentario'])
     s = processed_comment + ' ' + request.POST['nome'] + ' ' + request.POST['email']
-    suggestion = Suggestion(date=datetime.datetime.now(), book=book, name=request.POST['nome'], email=request.POST['email'], amount=request.POST['quantidade'], comment=processed_comment, search=strip_accents(s))
+    suggestion = Suggestion(date=datetime.datetime.now(), book=book, name=request.POST['nome'], email=request.POST['email'], course=request.POST['disciplina'], amount=request.POST['quantidade'], comment=processed_comment, search=strip_accents(s))
     suggestion.save()
 
 def searchSuggestion(value):

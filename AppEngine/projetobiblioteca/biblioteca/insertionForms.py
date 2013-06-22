@@ -8,6 +8,7 @@ class SuggestionForm(forms.Form):
     
     nome = forms.CharField(max_length=200)
     email = forms.EmailField()
+    disciplina = forms.CharField(max_length=100)
     
     titulo = forms.CharField(max_length=100)
     #escritor = forms.CharField(max_length=100)
@@ -30,7 +31,7 @@ class SuggestionForm(forms.Form):
             message = 'O campo \'' + field_name + '\' suporta no maximo 13 letras ou n&uacute;meros'
         elif field_name == 'nome' or field_name == 'comentario':#CharField(max_length=200)
             message = 'O campo \'' + field_name + '\' suporta somente 200 caracteres'
-        elif field_name == 'titulo' or field_name == 'escritor' or field_name == 'editora' or field_name == 'isbn':#CharField(max_length=100)
+        elif field_name == 'titulo' or field_name == 'escritor' or field_name == 'editora' or field_name == 'disciplina':#CharField(max_length=100)
             message = 'O campo \'' + field_name + '\' suporta somente 100 caracteres'
         elif field_name == 'edicao' or field_name == 'quantidade':#IntegerField
             message = 'Insira um inteiro correto para o campo \'' + field_name + '\''
