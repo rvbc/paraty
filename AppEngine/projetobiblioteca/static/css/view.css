@@ -172,10 +172,15 @@
 	width: 5%;
 }
 
-.body .table .editora {
+.body .table .editora, .year {
 	width: 10%;
 }
 
-.body .table .isbn, .author, .sug, .year, .title {
+.body .table .isbn, .author, .sug {
 	width: 15%;
 }
+
+.body .table .title {
+	width: 20%;
+}
+

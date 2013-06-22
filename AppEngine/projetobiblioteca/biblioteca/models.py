@@ -61,9 +61,12 @@ class Suggestion(models.Model):
     def __unicode__(self):
         return self.name + ' suggests ' + str(self.amount) + ' volumes of \'' + self.book.title + '\''
 
+    def run_query(name):
+        Writer.objects.filter(search__icontains=name)
+
 def addSuggestion(request, writers_list):
     #book
-    s = request.POST['titulo'] + ' ' + request.POST['editora'] + request.POST['isbn'] + request.POST['ano']
+    s = request.POST['titulo'] + ' ' + request.POST['editora'] + ' ' + request.POST['isbn'] + ' ' + request.POST['ano']
     book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, search=strip_accents(s), isbn=request.POST['isbn'])
     book.save()
     
@@ -74,64 +77,10 @@ def addSuggestion(request, writers_list):
     
     #suggestion
     processed_comment = processTextArea(request.POST['comentario'])
-    s = processed_comment + ' ' + request.POST['nome'] + ' ' + request.POST['email']
+    s = processed_comment + ' ' + request.POST['nome'] + ' ' + request.POST['email'] + ' ' + request.POST['disciplina']
     suggestion = Suggestion(date=datetime.datetime.now(), book=book, name=request.POST['nome'], email=request.POST['email'], course=request.POST['disciplina'], amount=request.POST['quantidade'], comment=processed_comment, search=strip_accents(s))
     suggestion.save()
 
-def searchSuggestion(value):
-    books_match, suggestions_match, writers_list_list = searchBooks(value)
-
-    books_grouping_by_title = [] #lista de lista
-    suggestion_grouping_by_book_title = []
-    writers_stringName_for_each_book_group = []
-
-    #Group books by title
-    count = 0
-    while len(books_match) > count:
-        #Create a group with current title
-        goup_list_books = [books_match[count]]
-        goup_list_suggestions = [suggestions_match[count]]
-        
-        current_title = books_match[count].title
-        count = count + 1
-        
-        while len(books_match) > count and books_match[count].title == current_title:
-            #Group until found a different title
-            goup_list_books.append(books_match[count])
-            goup_list_suggestions.append(suggestions_match[count])
-            count = count + 1
-            
-        books_grouping_by_title.append(goup_list_books)
-        suggestion_grouping_by_book_title.append(goup_list_suggestions)
-        writers_stringName_for_each_book_group.append(getWritersStringFromGroupBookWithSameTitle(goup_list_books))
-        
-        
-    #Suggestion table###############################
-    #suggestion.name
-    #suggestion_name = Suggestion.objects.filter(name__icontains=value)
-    #for s in suggestion_name:
-    #    book_id_set.add(s.book.pk)
-
-    #suggestion.email
-    #suggestion_email = Suggestion.objects.filter(email__icontains=value)
-    #for s in suggestion_email:
-    #    book_id_set.add(s.book.pk)
-
-    #suggestion.comment
-    #suggestion_comment = Suggestion.objects.filter(comment__icontains=value)
-    #for s in suggestion_comment:
-    #    book_id_set.add(s.book.pk)
-
-    #From book_id_set, we get the Book objects and their corresponding Suggestion's
-    #books_match = []
-    #suggestions_match = []
-    #for book_id in book_id_set:
-    #    books_match.append(Book.objects.get(pk=book_id))
-    #    suggestions_match.extend(Suggestion.objects.filter(book__exact=book_id))
-
-    #x = z #DEBUG!
-
-    return books_grouping_by_title, suggestion_grouping_by_book_title, writers_stringName_for_each_book_group
 
 def searchBooks(value):
     words_list = value.split()
@@ -139,87 +88,38 @@ def searchBooks(value):
     book_id_set = Set([])
 
     #Writer table###################################
-   
-    writers = Writer.objects.filter(search__icontains=strip_accents(words_list[0]))
-    for word in words_list[1:]:
-        writers = writers.filter(search__icontains=strip_accents(word))
-
-    for w in writers:
-        book_writer = w.book
-        book_id_set.add(book_writer.pk)
+    
+    for word in words_list:
+        writers = Writer.objects.filter(search__icontains=strip_accents(word))
+        
+        for w in writers:
+            book_id_set.add(w.book.pk)
     
     #Book table######################################
 
-    book_titles = Book.objects.filter(search__icontains=strip_accents(words_list[0]))
-    for word in words_list[1:]:
-        book_titles = book_titles.filter(search__icontains=strip_accents(word))
-
-    for b in book_titles:
-        book_id_set.add(b.pk)
+    for word in words_list:
+        book_titles = Book.objects.filter(search__icontains=strip_accents(word))
+        
+        for b in book_titles:
+            book_id_set.add(b.pk)
 
 
     #Get books from id set (and their corresponding suggestions)
-    books_match = Book.objects.filter(pk__in=book_id_set)
-    suggestions_match = []
-    #suggestions_match = Suggestion.objects.filter(book__in=book_id_set)
-
     #Order books by title
-    books_match = books_match.order_by('title')
-    #suggestions_match = suggestions_match.order_by('book__title')
+    books_match = Book.objects.filter(pk__in=book_id_set).order_by('title')
+
+    suggestions_match = []
+    writers_list_list = []
     for b in books_match:
-        s = Suggestion.objects.get(book=b.pk)
+        s = Suggestion.objects.filter(book=b.pk).order_by('-date')
         suggestions_match.append(s)
 
-    writers_list_list = getWritersFromBooks(books_match)
+        writers_book = Writer.objects.filter(book=b.pk).order_by('name')
+        writers_list_list.append(writers_book)
 
     return books_match, suggestions_match, writers_list_list
 
-def getWritersFromBooks(book_list):
-    writers_list_list = []
 
-    for b in book_list:
-        writers_book = Writer.objects.filter(book__exact=b.isbn)
-        writers_book.order_by('name')
-        writers_list_list.append(writers_book)
-    
-    #x = z#DEBUG
-
-    return writers_list_list
-
-def getWritersStringFromGroupBookWithSameTitle(group_book):
-
-    writers_list_list = getWritersFromBooks(group_book)
-    writers_nameSearch_set = Set([])
-    writers_string = ''
-
-    for writers_list in writers_list_list:
-    
-        for writer in writers_list:
-            if not writer.search in writers_nameSearch_set:
-                writers_nameSearch_set.add(writer.search)
-                writers_string = writers_string + ', ' + writer.name
-            
-        
-    writers_string = writers_string[2: ] + '.'
-
-    #x = z#DEBUG
-
-    return writers_string
-
-def joinListListWritersInListWritersString (writers_list_list):
-
-    writers_list_string = []
-
-    for writers_list in writers_list_list:
-        string_concat = ''
-
-        for writer in writers_list:
-            string_concat = string_concat + writer.name + ', '
-
-        writers_list_string.append(string_concat[:-2])
-    
-    return writers_list_string
-    
 def processTextArea(comment):
     lines = comment.split('\r\n') #['line1', '', '', 'line4', 'line5']
 
@@ -227,6 +127,7 @@ def processTextArea(comment):
         lines.remove('')
 
     return '#'.join(lines)#join elements -> 'line1#line4#line5'
+
 
 def exportWorkbook(query):
     books, suggestions, authors = searchBooks(query)

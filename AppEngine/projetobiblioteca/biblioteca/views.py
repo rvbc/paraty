@@ -10,6 +10,7 @@ import django.template
 from django.contrib import messages
 from django.template.response import TemplateResponse
 from django.template import RequestContext
+from django.utils import simplejson
 
 def home(request):
     t = django.template.loader.get_template("index.html")
@@ -30,15 +31,19 @@ def list_books(request,page):
         return export(request)
     else:#books' home
         c = RequestContext(request)
-        books, suggestions, writers = models.searchSuggestion('')
-        books_search, suggestions_search, writers_search = models.searchBooks('')
+        books, suggestions, writers = models.searchBooks('')
 
-        c['group_book_list'] = books
-        c['group_suggestion_list'] = suggestions
+        amounts = []
+        for suggestion in suggestions:
+            s = 0
+            for sug in suggestion:
+                s += sug.amount
+            amounts.append(s); 
+
+        c['books'] = books
+        c['suggestions'] = suggestions
         c['writers'] = writers
-        c['books_search'] = books_search
-        c['suggestions_search'] = suggestions_search
-        c['writers_search'] = models.joinListListWritersInListWritersString(writers_search)
+        c['amounts'] = amounts
 
         if len(books) == 0:#Nothing found!
             #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
