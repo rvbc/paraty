@@ -1,4 +1,5 @@
 ﻿from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 
 from sets import Set
 from xlwt import Workbook, easyxf
@@ -65,22 +66,30 @@ class Suggestion(models.Model):
         Writer.objects.filter(search__icontains=name)
 
 def addSuggestion(request, writers_list):
-    #book
-    s = request.POST['titulo'] + ' ' + request.POST['editora'] + ' ' + request.POST['isbn'] + ' ' + request.POST['ano']
-    book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, search=strip_accents(s), isbn=request.POST['isbn'])
-    book.save()
+    isbn_field = request.POST['isbn']
     
-    #writer
-    for writer_name in writers_list:
-        writer = Writer(name=writer_name, book=book, search=strip_accents(writer_name))
-        writer.save()
+    #If there is a book with isbn, then dont add book and writers again.
+    book = []
+    try:
+        book = Book.objects.get(pk=isbn_field)
+    except ObjectDoesNotExist:
+        
+        #book
+        s = request.POST['titulo'] + ' ' + request.POST['editora'] + request.POST['isbn'] + request.POST['ano']
+        book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, search=strip_accents(s), isbn=request.POST['isbn'].upper())
+        book.save()
+        
+        #writer
+        for writer_name in writers_list:
+            writer = Writer(name=writer_name, book=book, search=strip_accents(writer_name))
+            writer.save()
     
+        
     #suggestion
     processed_comment = processTextArea(request.POST['comentario'])
-    s = processed_comment + ' ' + request.POST['nome'] + ' ' + request.POST['email'] + ' ' + request.POST['disciplina']
+    s = processed_comment + ' ' + request.POST['nome'] + ' ' + request.POST['email']
     suggestion = Suggestion(date=datetime.datetime.now(), book=book, name=request.POST['nome'], email=request.POST['email'], course=request.POST['disciplina'], amount=request.POST['quantidade'], comment=processed_comment, search=strip_accents(s))
     suggestion.save()
-
 
 def searchBooks(value):
     words_list = value.split()
