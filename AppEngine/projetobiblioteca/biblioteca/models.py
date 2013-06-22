@@ -138,12 +138,15 @@ def processTextArea(comment):
     return '#'.join(lines)#join elements -> 'line1#line4#line5'
 
 
-def exportWorkbook(query):
+def exportWorkbook(query, withCourse=1):
     books, suggestions, authors = searchBooks(query)
     book = Workbook(encoding='utf-8')
     sheet = book.add_sheet('Livros Sugeridos')
     #cols = [u'Título','Autores','Ano','Editora',u'Edição','Sugerido por','Email','Quantidade sugerida',u'Comentário'];
     cols = ['ITEM', 'QTD', 'AUTORES', u'TÍTULO', 'EDITORA', 'ISBN', u'EDIÇÃO', 'ANO', 'SUGERIDO POR', 'EMAIL', u'COMENTÁRIO']
+
+    if withCourse == 1:#Add 'DISCIPLINA'
+        cols = ['ITEM', 'QTD', 'AUTORES', u'TÍTULO', 'EDITORA', 'ISBN', u'EDIÇÃO', 'ANO', 'DISCIPLINA','SUGERIDO POR', 'EMAIL', u'COMENTÁRIO']
 
     c = 0
     while len(cols) > c:
@@ -161,8 +164,8 @@ def exportWorkbook(query):
     sheet.col(2).width = sheet.col(2).width * 2; #authors
     sheet.col(3).width = sheet.col(3).width * 2; #title
     sheet.col(5).width = sheet.col(5).width * 3; #ISBN
-    sheet.col(9).width = sheet.col(9).width * 2; #email
-    sheet.col(10).width = sheet.col(10).width * 4; #comment
+    sheet.col(9).width = sheet.col(9+withCourse).width * 2; #email
+    sheet.col(10).width = sheet.col(10+withCourse).width * 4; #comment
 
     c = 0
     item = 0
@@ -184,7 +187,7 @@ def exportWorkbook(query):
         #sheet.write(c+1,8,suggestions[c].comment)
         
         sheet.write(c+1,0,item+1)
-        sheet.write(c+1,1,suggestions[item].amount)
+        #sheet.write(c+1,1,suggestions[item].amount)
         
 
         sheet.write(c+1,3,books[item].title)
@@ -192,9 +195,22 @@ def exportWorkbook(query):
         sheet.write(c+1,5,books[item].isbn)
         sheet.write(c+1,6,books[item].edition)
         sheet.write(c+1,7,books[item].year)
-        sheet.write(c+1,8,suggestions[item].name)
-        sheet.write(c+1,9,suggestions[item].email)
-        sheet.write(c+1,10,suggestions[item].comment)
+        #sheet.write(c+1,8,suggestions[item].name)
+        #sheet.write(c+1,9,suggestions[item].email)
+        #sheet.write(c+1,10,suggestions[item].comment)
+
+        countSuggestion = 0
+        
+        for suggestion in suggestions[item]:
+            sheet.write(c+1 + countSuggestion,1,suggestion.amount)
+            
+            if withCourse == 1:
+                sheet.write(c+1 + countSuggestion,8,suggestion.course)
+            
+            sheet.write(c+1 + countSuggestion,8+withCourse,suggestion.name)
+            sheet.write(c+1 + countSuggestion,9+withCourse,suggestion.email)
+            sheet.write(c+1 + countSuggestion,10+withCourse,suggestion.comment)
+            countSuggestion = countSuggestion + 1
         
         #authorStr = '';
         #for author in authors[c]:
@@ -211,7 +227,8 @@ def exportWorkbook(query):
             c = c + 1
         sheet.write_merge(r1=initial_row, c1=2, r2=c, c2=2, label=authorStr[:-1], style=easyxf('alignment: wrap True;'))
 
-
+        if len(suggestions[item]) > len(authors[item]):
+            c = c + (len(suggestions[item]) - len(authors[item]))
 
         c = c + 1
         item = item + 1
