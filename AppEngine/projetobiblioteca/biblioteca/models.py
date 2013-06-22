@@ -97,8 +97,12 @@ def searchBooks(value):
     
     #Get books from id set (and their corresponding suggestions)
     books = []
+    writers = []
     if value is not None and len(value) > 0:
         books = search(Book, value)
+        writers = search(Writer, value)
+        print '============================= search: '+value
+        print len(books)
     else:
         books = Book.objects.all()
     
@@ -111,7 +115,7 @@ def searchBooks(value):
             a += sug.amount
         result.append(BookView(book=b, suggestions=s, writers=w, amount=a))
     
-    for writer in search(Writer, value):
+    for writer in writers:
         if(writer.book not in book_ids):
             book_ids.add(writer.book)
             s = Suggestion.objects.filter(book=writer.book).order_by('-date')
