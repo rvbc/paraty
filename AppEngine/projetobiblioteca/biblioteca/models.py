@@ -162,11 +162,16 @@ def exportWorkbook(query, selection):
     #sheet.col(8).width = sheet.col(8).width * 4; #comment
     
     #sheet.col(0).width = sheet.col(1).width * 2; #amount
-    sheet.col(colInds['AUTORES']).width = sheet.col(colInds['AUTORES']).width * 2; #authors
-    sheet.col(colInds[u'TÍTULO']).width = sheet.col(colInds[u'TÍTULO']).width * 2; #title
-    sheet.col(colInds['ISBN']).width = sheet.col(colInds['ISBN']).width * 3; #ISBN
-    sheet.col(colInds['EMAIL']).width = sheet.col(colInds['EMAIL']).width * 2; #email
-    sheet.col(colInds[u'COMENTÁRIO']).width = sheet.col(colInds[u'COMENTÁRIO']).width * 4; #comment
+    if 'AUTORES' in colInds:
+        sheet.col(colInds['AUTORES']).width = sheet.col(colInds['AUTORES']).width * 2; #authors
+    if u'TÍTULO' in colInds:
+        sheet.col(colInds[u'TÍTULO']).width = sheet.col(colInds[u'TÍTULO']).width * 2; #title
+    if 'ISBN' in colInds:
+        sheet.col(colInds['ISBN']).width = sheet.col(colInds['ISBN']).width * 3; #ISBN
+    if 'EMAIL' in colInds:
+        sheet.col(colInds['EMAIL']).width = sheet.col(colInds['EMAIL']).width * 2; #email
+    if u'COMENTÁRIO' in colInds:
+        sheet.col(colInds[u'COMENTÁRIO']).width = sheet.col(colInds[u'COMENTÁRIO']).width * 4; #comment
 
     c = 0
     item = 0
@@ -187,25 +192,36 @@ def exportWorkbook(query, selection):
         #sheet.write(c+1,7,suggestions[c].amount)
         #sheet.write(c+1,8,suggestions[c].comment)
         
-        sheet.write(c+1,colInds['ITEM'],item+1)
+        if 'ITEM' in colInds:
+            sheet.write(c+1,colInds['ITEM'],item+1)
         #sheet.write(c+1,1,suggestions[item].amount)
         
-        sheet.write(c+1,colInds[u'TÍTULO'],bookView[item].book.title)
-        sheet.write(c+1,colInds['EDITORA'],bookView[item].book.publisher)
-        sheet.write(c+1,colInds['ISBN'],bookView[item].book.isbn)
-        sheet.write(c+1,colInds[u'EDIÇÃO'],bookView[item].book.edition)
-        sheet.write(c+1,colInds['ANO'],bookView[item].book.year)
+        if u'TÍTULO' in colInds:
+            sheet.write(c+1,colInds[u'TÍTULO'],bookView[item].book.title)
+        if 'EDITORA' in colInds:
+            sheet.write(c+1,colInds['EDITORA'],bookView[item].book.publisher)
+        if 'ISBN' in colInds:
+            sheet.write(c+1,colInds['ISBN'],bookView[item].book.isbn)
+        if u'EDIÇÃO' in colInds:
+            sheet.write(c+1,colInds[u'EDIÇÃO'],bookView[item].book.edition)
+        if 'ANO' in colInds:
+            sheet.write(c+1,colInds['ANO'],bookView[item].book.year)
         #sheet.write(c+1,8,suggestions[item].name)
         #sheet.write(c+1,9,suggestions[item].email)
         #sheet.write(c+1,10,suggestions[item].comment)
 
         countSuggestion = 0
         for suggestion in bookView[item].suggestions:
-            sheet.write(c+1 + countSuggestion,colInds['DISCIPLINA'],suggestion.course)
-            sheet.write(c+1 + countSuggestion,colInds['SUGERIDO POR'],suggestion.name)
-            sheet.write(c+1 + countSuggestion,colInds['EMAIL'],suggestion.email)
-            sheet.write(c+1 + countSuggestion,colInds[u'COMENTÁRIO'],suggestion.comment)
-            sheet.write(c+1 + countSuggestion,colInds['QTD'],suggestion.amount)
+            if 'DISCIPLINA' in colInds:
+                sheet.write(c+1 + countSuggestion,colInds['DISCIPLINA'],suggestion.course)
+            if 'SUGERIDO POR' in colInds:
+                sheet.write(c+1 + countSuggestion,colInds['SUGERIDO POR'],suggestion.name)
+            if 'EMAIL' in colInds:
+                sheet.write(c+1 + countSuggestion,colInds['EMAIL'],suggestion.email)
+            if u'COMENTÁRIO' in colInds:
+                sheet.write(c+1 + countSuggestion,colInds[u'COMENTÁRIO'],suggestion.comment)
+            if 'QTD' in colInds:
+                sheet.write(c+1 + countSuggestion,colInds['QTD'],suggestion.amount)
             countSuggestion = countSuggestion + 1
         
         
@@ -223,7 +239,8 @@ def exportWorkbook(query, selection):
             authorStr = authorStr + author.name + '\n'
             #sheet.write(c+1,2,author.name)
             c = c + 1
-        sheet.write_merge(r1=initial_row, c1=colInds['AUTORES'], r2=c, c2=colInds['AUTORES'], label=authorStr[:-1], style=easyxf('alignment: wrap True;'))
+        if 'AUTORES' in colInds:
+            sheet.write_merge(r1=initial_row, c1=colInds['AUTORES'], r2=c, c2=colInds['AUTORES'], label=authorStr[:-1], style=easyxf('alignment: wrap True;'))
 
         if countSuggestion > len(bookView[item].writers):
             c = c + (countSuggestion - len(bookView[item].writers))

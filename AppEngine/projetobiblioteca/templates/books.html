@@ -15,10 +15,23 @@
 				<input type="submit" class="button" value="buscar" />
 			</form>
 			{% if books %}
-			<form id="export_form" class="export" action="{% url biblioteca.views.books %}" method="post">
-				<input type="hidden" value="{{ q }}" name="q" />
-				<button class="button" title="Exportar como planilha" onClick="return exportButton();"><span class="ui-icon ui-icon-arrowreturnthick-1-s"></span></button>
-			</form>
+			<div class="export">
+				<button class="button" title="Exportar como planilha" onCLick="return exportLink();">
+					<span class="ui-icon ui-icon-arrowreturnthick-1-s"></span>
+				</button>
+			</div>
+			<div id="export_dialog" class="dialog" title="Exportar Planilha do Excel">
+				<form id="export_form" action="{% url biblioteca.views.table %}" method="post">
+					<input type="hidden" value="{{ q }}" name="q" />
+					{% if columns %}
+						{% for col in columns %}
+							<input type="checkbox" name="checks" value="{{ col.1 }}" checked="checked" />
+							<span for="checks">{{col.0}}</span><br/>
+						{% endfor %}
+					{% endif %}
+					<p>Escolha que informa&ccedil;&otilde;es ser&atilde;o exportadas como colunas na planilha:</p>
+				</form>
+			</div>
 			{% endif %}
 		</div>
 		
