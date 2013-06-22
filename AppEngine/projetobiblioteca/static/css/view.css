@@ -1,13 +1,6 @@
 
-.content .side_menu {
-	width: 39%;
-	display: inline-block;
-	vertical-align: middle;
-	margin-top: 2px;
-}
-
 .content .main_content {
-	width: 60%;
+	width: 100%;
 	display: inline-block;
 	vertical-align: top;
 }
@@ -25,57 +18,9 @@
 	text-align: right;
 }
 
-.side_menu .cleared {
-	clear: both;
-}
-
-.side_menu h3 {
-	margin-bottom: 2px;
-	color: #91342C;
-	display: inline-block;
-}
-
-.side_menu .navigator {
-	float: right;
-	text-align: right;
-	display: inline-block;
-}
-
-.side_menu .navigator button {
-	margin: 0;
-}
-
-.side_menu .navigator span {
-	padding: 0;
-}
-
-.side_menu .suggestion {
-	margin-top: 15px;
-}
-
-.side_menu .suggestion .name {
-	font-weight: bold;
-	font-size: 1.1em;
-}
-
-.side_menu .suggestion .email {
-	font-size: 0.9em;
-	margin: 0 0 0 5px;
-}
-
-.side_menu .suggestion label {
-	font-weight: bold;
-	margin: 0 5px 0 0;
-	display: inline-block;
-}
-
-.side_menu .suggestion p {
-	display: inline-block;
-}
-
 .main_content .accordion .author {
 	display: inline-block;
-	font-size: 1.0em;
+	font-size: 0.8em;
 	margin: 3px 0 3px 10px;
 	color: #DDDDDD;
 }
@@ -85,6 +30,7 @@
 }
 
 .main_content .accordion .left {
+	font-size: 1.5em;
 	min-width: 84%;
 	display: inline-block;
 	vertical-align: middle;
@@ -120,14 +66,43 @@
 	padding: 1px;
 }
 
+.main_content .accordion .info {
+	font-size: 0.9em;
+	color: #444;
+}
+
 .main_content .accordion .info label {
 	display: inline-block;
-	font-weight: bold;
 }
 
 .main_content .accordion .info p {
 	display: inline-block;
-	margin: 0 0 0 5px;
+	margin: 0 20px 0 5px;
+	font-weight: bold;
+}
+
+.main_content .accordion .info p.authors {
+	font-size: 1.5em;
+	margin-bottom: 2px;
+}
+
+.main_content .accordion .info p.name {
+	font-size: 1.2em;
+	margin-bottom: 5px;
+}
+
+.main_content .accordion .info .suggestions {
+	margin-top: 10px;
+	color: #000;
+}
+
+.main_content .accordion .info .suggestions h3 {
+	margin: 0;
+	font-size: 1.5em;
+}
+
+.main_content .accordion .info .suggestions .suggestion {
+	margin-top: 10px;
 }
 
 .body .main_navigator {

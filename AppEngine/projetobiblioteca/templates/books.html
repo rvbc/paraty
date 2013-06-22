@@ -11,7 +11,7 @@
 		<h1>Livros</h1>
 		<div class="block">
 			<form class="search" action="{% url biblioteca.views.search %}" method="get">
-				<input class="autocomplete" type="text" placeholder="Buscar por t&iacute;tulo, autor, editora..." title="Buscar" value="{{ q }}" style="width: 210px; display: inline-block;" name="q"/>
+				<input type="text" placeholder="Buscar por t&iacute;tulo, autor, editora..." title="Buscar" value="{{ q }}" style="width: 210px; display: inline-block;" name="q"/>
 				<input type="submit" class="button" value="buscar" />
 			</form>
 			{% if group_book_list %}
@@ -26,7 +26,7 @@
 		<div class="main_content">
 			<div class="accordion">
 				{% for book_group in group_book_list %}
-					<h3 onClick="return selectBook('{% for suggestion_group in group_suggestion_list %}{% if forloop.counter == forloop.parentloop.counter %}{{ suggestion_group.0.id }}{% endif %}{% endfor %}');">
+					<h3>
 						<div class="left">
 							<b>{{book_group.0.title}}</b>
 							<p class="author">({{book_group.0.year}})</p>
@@ -49,36 +49,36 @@
 
 					{% for writer in writers %}
 						{% if forloop.counter == forloop.parentloop.counter %}
-							<label>Autores:</label><p>{{writer}}</p><br/>
+							<p class="authors">{{writer}}</p><br/>
 						{% endif %}
 					{% endfor %}
 
-						<label>Editora:</label><p>{{book_group.0.publisher}}</p><br/>
-						<label>Edi&ccedil;&atilde;o:</label><p>{{book_group.0.edition}}{{"ª"}}</p><br/><br/>
+						<label>Editora:</label><p>{{book_group.0.publisher}}</p><label>Edi&ccedil;&atilde;o:</label><p>{{book_group.0.edition}}{{"ª"}}</p><br/>
 						<label>ISBN:</label><p>{{book_group.0.isbn}}</p><br/>
-						<label>Sugest&otilde;es:</label><p>{{book_group|length}}</p><br/><br/>
+						
+						<div class="suggestions">
+							{% for suggestion_group in group_suggestion_list %}
+								{% if forloop.counter == forloop.parentloop.counter %}
+							<div id="{{ suggestion_group.0.id }}" style="padding: 10px;" class="suggestions ui-widget ui-widget-content ui-corner-all">
+								<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
+									<div>
+										<h3>Sugest&otilde;es</h3>
+									</div>
+									{% for suggestion in suggestion_group %}
+										<div class="suggestion">
+											<p class="name"/>{{ suggestion.name }}</p><p class="email">({{ suggestion.email }})</p><br/>
+											<label>Quantidade:</label><p>{{ suggestion.amount }}</p><br/>
+											<label>Coment&aacute;rio:</label><p>{{ suggestion.comment }}</p>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+								{% endif %}
+							{% endfor %}
+						</div>
 					</div>
 				{% endfor %}
 			</div>
-		</div>
-		
-		<div class="side_menu">
-			{% for suggestion_group in group_suggestion_list %}
-				<div id="{{ suggestion_group.0.id }}" style="padding: 10px;" class="suggestions ui-widget ui-widget-content ui-corner-all">
-					<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
-						<div>
-							<h3>Sugest&otilde;es</h3>
-						</div>
-						{% for suggestion in suggestion_group %}
-							<div class="suggestion">
-								<span class="name"/>{{ suggestion.name }}</span><span class="email">({{ suggestion.email }})</span><br/>
-								<label>Quantidade:</label><p>{{ suggestion.amount }}</p><br/>
-								<label>Coment&aacute;rio:</label><p>{{ suggestion.comment }}</p>
-							</div>
-						{% endfor %}
-					</div>
-				</div>
-			{% endfor %}
 		</div>
 		{% endif %}
 	</div>
