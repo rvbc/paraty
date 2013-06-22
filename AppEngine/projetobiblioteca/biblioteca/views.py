@@ -121,7 +121,7 @@ def search(request):
 
 def export(request):
     q = request.POST['q']
-    columns = [r[1] for r in models.getExcelColumns()]
+    columns = request.POST.getlist('checks')
     c = RequestContext(request)
     if len(q) > 0:
         q = q.strip()

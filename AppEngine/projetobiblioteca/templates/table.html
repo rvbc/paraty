@@ -21,6 +21,12 @@
 			<div id="export_dialog" class="dialog" title="Exportar Planilha do Excel">
 				<form id="export_form" action="{% url biblioteca.views.table %}" method="post">
 					<input type="hidden" value="{{ q }}" name="q" />
+					{% if columns %}
+						{% for col in columns %}
+							<input type="checkbox" name="checks" value="{{ col.1 }}" checked="checked" />
+							<span for="checks">{{col.0}}</span><br/>
+						{% endfor %}
+					{% endif %}
 					<p>Escolha que informa&ccedil;&otilde;es ser&atilde;o exportadas como colunas na planilha:</p>
 				</form>
 			</div>
