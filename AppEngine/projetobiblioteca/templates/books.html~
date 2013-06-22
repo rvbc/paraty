@@ -62,13 +62,12 @@
 						
 						{% for suggestion in suggestions %}
 							{% if forloop.counter == forloop.parentloop.counter %}
-						<div style="padding: 10px;" class="suggestions">
-							<div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
+							<div class="suggestions" style="background: none; border: 0;">
 								<div class="head" alt="{{book.isbn}}">
 									<span class="{{book.isbn}} ui-icon ui-icon-triangle-1-e"></span>
 									<span>Sugest&otilde;es</span>
 								</div>
-								<div id="{{book.isbn}}" class="body">
+								<div id="{{book.isbn}}">
 								{% for s in suggestion %}
 									<div class="suggestion">
 										<p class="name"/>{{ s.name }}</p>
@@ -79,7 +78,6 @@
 								{% endfor %}
 								</div>
 							</div>
-						</div>
 							{% endif %}
 						{% endfor %}
 					</div>
