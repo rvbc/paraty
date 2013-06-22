@@ -177,7 +177,7 @@ def getWritersFromBooks(book_list):
     writers_list_list = []
 
     for b in book_list:
-        writers_book = Writer.objects.filter(book__exact=b.id)
+        writers_book = Writer.objects.filter(book__exact=b.isbn)
         writers_book.order_by('name')
         writers_list_list.append(writers_book)
     

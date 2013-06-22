@@ -23,7 +23,7 @@ class User(models.Model):
         return self.login
 
 class Book(models.Model):
-    isbn = models.CharField(max_length=20,primary_key=True)
+    isbn = models.CharField(max_length=13,primary_key=True)
     title = models.CharField(max_length=100)
     year = models.IntegerField()
     publisher = models.CharField(max_length=100)
