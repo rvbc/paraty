@@ -1,16 +1,16 @@
-﻿from django.db import models
+from django.db import models
+from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 
+from search.core import search
 from sets import Set
+from tempfile import TemporaryFile
 from xlwt import Workbook, easyxf
 
-from tempfile import TemporaryFile
-
+import bisect
 import datetime
-
 import unicodedata
-
-from django.http import HttpResponse
 
 def strip_accents(s):
     return ''.join((c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn'))
@@ -30,24 +30,16 @@ class Book(models.Model):
     publisher = models.CharField(max_length=100)
     edition = models.IntegerField()
     purchased = models.BooleanField()
-    search = models.CharField(max_length=1000)
-	
+    
     def __unicode__(self):
         return self.title
-
-    def run_query(name):
-        Book.objects.filter(search__icontains=name)
     
 class Writer(models.Model):
     name = models.CharField(max_length=100)
     book = models.ForeignKey(Book)
-    search = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name + ' wrote \'' + self.book.title + '\''
-
-    def run_query(name):
-        Writer.objects.filter(search__icontains=name)
 
 class Suggestion(models.Model):
     date = models.DateTimeField()
@@ -56,14 +48,21 @@ class Suggestion(models.Model):
     email = models.CharField(max_length=100)
     amount = models.IntegerField()
     comment = models.CharField(max_length=200)
-    search = models.CharField(max_length=1000)
     course = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name + ' suggests ' + str(self.amount) + ' volumes of \'' + self.book.title + '\''
 
-    def run_query(name):
-        Writer.objects.filter(search__icontains=name)
+class BookView:
+    book = Book()
+    writers = []
+    suggestions = []
+    
+    def __init__(self, book, writers, suggestions):
+        self.book = book
+        self.writers = writers
+        self.suggestions = suggestions
+
 
 def addSuggestion(request, writers_list):
     isbn_field = request.POST['isbn']
@@ -75,58 +74,44 @@ def addSuggestion(request, writers_list):
     except ObjectDoesNotExist:
         
         #book
-        s = request.POST['titulo'] + ' ' + request.POST['editora'] + request.POST['isbn'] + request.POST['ano']
-        book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, search=strip_accents(s), isbn=request.POST['isbn'].upper())
+        book = Book(title=request.POST['titulo'], year=request.POST['ano'], publisher=request.POST['editora'], edition=request.POST['edicao'], purchased=False, isbn=request.POST['isbn'].upper())
         book.save()
         
         #writer
         for writer_name in writers_list:
-            writer = Writer(name=writer_name, book=book, search=strip_accents(writer_name))
+            writer = Writer(name=writer_name, book=book)
             writer.save()
     
-        
     #suggestion
     processed_comment = processTextArea(request.POST['comentario'])
-    s = processed_comment + ' ' + request.POST['nome'] + ' ' + request.POST['email']
-    suggestion = Suggestion(date=datetime.datetime.now(), book=book, name=request.POST['nome'], email=request.POST['email'], course=request.POST['disciplina'], amount=request.POST['quantidade'], comment=processed_comment, search=strip_accents(s))
+    suggestion = Suggestion(date=datetime.datetime.now(), book=book, name=request.POST['nome'], email=request.POST['email'], course=request.POST['disciplina'], amount=request.POST['quantidade'], comment=processed_comment)
     suggestion.save()
 
 def searchBooks(value):
-    words_list = value.split()
-    words_list = words_list if len(words_list) > 0 else [u'']
-    book_id_set = Set([])
-
-    #Writer table###################################
+    book_ids = Set([])
+    result = []
     
-    for word in words_list:
-        writers = Writer.objects.filter(search__icontains=strip_accents(word))
-        
-        for w in writers:
-            book_id_set.add(w.book.pk)
-    
-    #Book table######################################
-
-    for word in words_list:
-        book_titles = Book.objects.filter(search__icontains=strip_accents(word))
-        
-        for b in book_titles:
-            book_id_set.add(b.pk)
-
-
     #Get books from id set (and their corresponding suggestions)
     #Order books by title
-    books_match = Book.objects.filter(pk__in=book_id_set).order_by('title')
-
-    suggestions_match = []
-    writers_list_list = []
-    for b in books_match:
+    
+    for b in search(Book, value).order_by('titulo'):
+        book_ids.add(b.pk);
         s = Suggestion.objects.filter(book=b.pk).order_by('-date')
-        suggestions_match.append(s)
+        w = Writer.objects.filter(book=b.pk).order_by('name')
+        result.append(BookView(book=b, suggestions=s, writers=w))
+    
+    titles = [b.book.titulo for b in result]
+    for writer in search(Writer, value):
+        if(writer.book not in book_ids):
+            book_ids.add(writer.book)
+            s = Suggestion.objects.filter(book=writer.book).order_by('-date')
+            w = Writer.objects.filter(book=writer.book).order_by('name')
+            
+            pos = bisect.bisect(titles, writer.book)
+            titles.insert(pos, writer.book)
+            result.insert(BookView(book=b, suggestions=s, writers=w))
 
-        writers_book = Writer.objects.filter(book=b.pk).order_by('name')
-        writers_list_list.append(writers_book)
-
-    return books_match, suggestions_match, writers_list_list
+    return result
 
 
 def processTextArea(comment):

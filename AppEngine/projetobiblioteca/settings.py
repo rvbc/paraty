@@ -20,6 +20,7 @@ INSTALLED_APPS = (
     'djangotoolbox',
     'autoload',
     'dbindexer',
+    'search',
 	'biblioteca',
 	'xlwt',
     'django.contrib.messages',
