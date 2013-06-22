@@ -112,10 +112,10 @@ def search(request):
     c = RequestContext(request)
     if len(q) > 0:
         q = q.strip()
-    books, suggestions, writers = models.searchSuggestion(q)
+    books, suggestions, writers = models.searchBooks(q)
 
-    c['group_book_list'] = books
-    c['group_suggestion_list'] = suggestions
+    c['books'] = books
+    c['suggestions'] = suggestions
     c['writers'] = writers
     c['q'] = q
 
@@ -131,7 +131,7 @@ def export(request):
     c = RequestContext(request)
     if len(q) > 0:
         q = q.strip()
-    books, suggestions, writers = models.searchSuggestion(q)
+    books, suggestions, writers = models.searchBooks(q)
 
     planilha, name = models.exportWorkbook(q)
 
@@ -139,8 +139,9 @@ def export(request):
 
     if len(books) == 0:#Nothing found!
         #colocar uma mensagem de erro. Mas eh melhor arrumar antes as mensagens de base.html
-        c['group_book_list'] = books
-        c['group_suggestion_list'] = suggestions
+        c['books'] = books
+        c['suggestions'] = suggestions
+        c['writers'] = writers
         messages.add_message(request,messages.ERROR, 'Nenhum livro para ser exportado. Se uma busca foi feita, tente utilizar novos termos.')
         c['q'] = q
         return TemplateResponse(request, 'books.html', c)

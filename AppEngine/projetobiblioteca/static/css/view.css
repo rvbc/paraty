@@ -96,9 +96,17 @@
 	color: #000;
 }
 
-.main_content .accordion .info .suggestions h3 {
+.main_content .accordion .info .suggestions .head {
+	display: inline-block;
+	cursor: pointer;
+}
+
+.main_content .accordion .info .suggestions .head span {
+	display: inline-block;
+	vertical-align: middle;
 	margin: 0;
 	font-size: 1.5em;
+	font-weight: bold;
 }
 
 .main_content .accordion .info .suggestions .suggestion {
