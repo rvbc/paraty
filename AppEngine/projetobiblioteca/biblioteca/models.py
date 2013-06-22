@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf8 -*-
 
 from django.db import models
 from django.db.models import Q
