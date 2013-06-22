@@ -87,7 +87,7 @@
 				</div>
 				<div class="sug">
 				{% for suggestion in book.suggestions %}
-					<span style="font-weight: bold;">{{suggestion.name}}</span>
+					<span style="font-weight: bold;">{{suggestion.name}} ({{suggestion.course}})</span>
 					<span>{{suggestion.email}}</span>
 				{% endfor %}
 				</div>
